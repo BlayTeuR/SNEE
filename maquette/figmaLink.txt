@@ -1,0 +1,5 @@
+Lien d'accès à la maquette figma :
+- Dev Mode link : https://www.figma.com/design/v6H7shBCCVvlkYrgrFVo8A/Maquette-SNEE?node-id=0-1&m=dev&t=JaZHvjlBMek3ztcz-1
+- prototype link : https://www.figma.com/proto/v6H7shBCCVvlkYrgrFVo8A/Maquette-SNEE?node-id=0-1&t=JaZHvjlBMek3ztcz-1
+
+Access link : https://www.figma.com/design/v6H7shBCCVvlkYrgrFVo8A/Maquette-SNEE?node-id=0-1&t=JaZHvjlBMek3ztcz-1
