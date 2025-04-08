@@ -27,12 +27,6 @@
                 <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
             </div>
 
-            <!-- Filtre par lieu -->
-            <div class="mb-4">
-                <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par lieu</label>
-                <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Lieu">
-            </div>
-
             <!-- Bouton de réinitialisation des filtres -->
             <div>
                 <button id="reset-filters" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Réinitialiser les filtres</button>
@@ -181,3 +175,33 @@
         </div>
     </div>
 </x-app-layout>
+
+
+<script>
+    let lastOpenedDropdown = null;
+
+    function toggleDropdown(id, buttonId) {
+        const dropdown = document.getElementById(id);
+        const button = document.getElementById(buttonId);
+
+        if (lastOpenedDropdown && lastOpenedDropdown !== dropdown) {
+            lastOpenedDropdown.classList.add('hidden');
+        }
+
+        // Basculer l'état du menu actuel
+        dropdown.classList.toggle('hidden');
+
+        // Mettre à jour la référence du dernier menu ouvert
+        lastOpenedDropdown = dropdown.classList.contains('hidden') ? null : dropdown;
+    }
+
+    function updateStatus(dropdownId, statusText, statusColor, buttonId) {
+        const button = document.getElementById(buttonId);
+        button.textContent = statusText;
+
+        button.classList.remove('bg-red-500', 'bg-orange-500', 'bg-blue-500', 'bg-green-500'); // Enlever les anciennes couleurs
+        button.classList.add(statusColor);
+
+        toggleDropdown(dropdownId, buttonId);
+    }
+</script>
