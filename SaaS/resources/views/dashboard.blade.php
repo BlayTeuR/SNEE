@@ -79,8 +79,8 @@
                                 <li onclick="updateStatus('status-1', 'Affecter', 'bg-orange-500', 'status-1-btn')" class="hover:bg-gray-200">
                                     <span class="inline-block w-3 h-3 rounded-full bg-orange-500 mr-2"></span> Affecter
                                 </li>
-                                <li onclick="updateStatus('status-1', 'Approvisionnement', 'bg-blue-500', 'status-1-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-blue-500 mr-2"></span> Approvisionnement
+                                <li onclick="updateStatus('status-1', 'Approvisionnement', 'bg-yellow-500', 'status-1-btn')" class="hover:bg-gray-200">
+                                    <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span> Approvisionnement
                                 </li>
                                 <li onclick="updateStatus('status-1', 'À facturer', 'bg-green-500', 'status-1-btn')" class="hover:bg-gray-200">
                                     <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span> À facturer
@@ -118,8 +118,8 @@
                                 <li onclick="updateStatus('status-2', 'Affecter', 'bg-orange-500', 'status-2-btn')" class="hover:bg-gray-200">
                                     <span class="inline-block w-3 h-3 rounded-full bg-orange-500 mr-2"></span> Affecter
                                 </li>
-                                <li onclick="updateStatus('status-2', 'Approvisionnement', 'bg-blue-500', 'status-2-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-blue-500 mr-2"></span> Approvisionnement
+                                <li onclick="updateStatus('status-2', 'Approvisionnement', 'bg-yellow-500', 'status-2-btn')" class="hover:bg-gray-200">
+                                    <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span> Approvisionnement
                                 </li>
                                 <li onclick="updateStatus('status-2', 'À facturer', 'bg-green-500', 'status-2-btn')" class="hover:bg-gray-200">
                                     <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span> À facturer
@@ -157,8 +157,8 @@
                                 <li onclick="updateStatus('status-3', 'Affecter', 'bg-orange-500', 'status-3-btn')" class="hover:bg-gray-200">
                                     <span class="inline-block w-3 h-3 rounded-full bg-orange-500 mr-2"></span> Affecter
                                 </li>
-                                <li onclick="updateStatus('status-3', 'Approvisionnement', 'bg-blue-500', 'status-3-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-blue-500 mr-2"></span> Approvisionnement
+                                <li onclick="updateStatus('status-3', 'Approvisionnement', 'bg-yellow-500', 'status-3-btn')" class="hover:bg-gray-200">
+                                    <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span> Approvisionnement
                                 </li>
                                 <li onclick="updateStatus('status-3', 'À facturer', 'bg-green-500', 'status-3-btn')" class="hover:bg-gray-200">
                                     <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span> À facturer
@@ -199,9 +199,11 @@
         const button = document.getElementById(buttonId);
         button.textContent = statusText;
 
-        button.classList.remove('bg-red-500', 'bg-orange-500', 'bg-blue-500', 'bg-green-500'); // Enlever les anciennes couleurs
+        button.classList.remove('bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500');
+
         button.classList.add(statusColor);
 
         toggleDropdown(dropdownId, buttonId);
     }
+
 </script>
