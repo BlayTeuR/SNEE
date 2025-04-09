@@ -20,7 +20,7 @@ Route::get('/facturation', function () {
 
 Route::get('/form', function() {
     return view('form');
-});
+})->name('form');
 
 Route::get('/stat', function () {
     return view('stat');
