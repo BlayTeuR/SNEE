@@ -50,6 +50,29 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @foreach ($depannages as $depannage)
+                        <tr class="hover:bg-gray-200">
+                            <td class="p-3 text-sm text-gray-700">{{ $depannage->nom }}</td>
+                            <td class="p-3 text-sm text-gray-700">{{ $depannage->adresse }}</td>
+                            <td class="p-3 text-sm text-gray-700">{{ $depannage->contact }}</td>
+                            <td class="p-3 text-sm text-gray-700">
+                                <button onclick="toggleDropdown('historique-{{ $depannage->id }}')" class="bg-gray-300 bg-opacity-50 rounded-lg">Afficher Historique</button>
+                                <ul id="historique-{{ $depannage->id }}" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
+                                    @foreach ($depannage->historique as $histo)
+                                        <li>{{ $histo }}</li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                            <td class="p-3 text-sm text-gray-700">
+                                <button id="status-{{ $depannage->id }}-btn" onclick="toggleDropdown('status-{{ $depannage->id }}', 'status-{{ $depannage->id }}-btn')" class="bg-gray-200 px-4 py-2 rounded-lg">
+                                    {{ $depannage->status }}
+                                </button>
+                            </td>
+                            <td class="p-3 text-sm text-gray-700">
+                                <a href="{{ route('depannage.show', $depannage->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
+                            </td>
+                        </tr>
+                    @endforeach
                     <tr class="hover:bg-gray-200">
                         <td class="p-3 text-sm text-gray-700">
                             Bastien Jallais

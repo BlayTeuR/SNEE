@@ -33,4 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Route transfert de données depuis BD
+ Route::get('/depannage/{id}', [\App\Http\Controllers\DeppanageController::class, 'show'])->name('depannage.show');
+
 require __DIR__.'/auth.php';
