@@ -69,7 +69,7 @@
                             </td>
                             <td class="p-3 text-sm text-gray-700">
                                 <button id="status-{{ $depannage->id }}-btn" onclick="toggleDropdown('status-{{ $depannage->id }}', 'status-{{ $depannage->id }}-btn')" class="bg-gray-200 px-4 py-2 rounded-lg">
-                                    {{ $depannage->status }}
+                                    {{ $depannage->status }} Choisir un statut
                                 </button>
                             </td>
                             <td class="p-3 text-sm text-gray-700">
@@ -77,125 +77,6 @@
                             </td>
                         </tr>
                     @endforeach
-                    <tr class="hover:bg-gray-200">
-                        <td class="p-3 text-sm text-gray-700">
-                            Bastien Jallais
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            13 route des Molières 88100
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            bastjals@gmail.com
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button onclick="toggleDropdown('historique-1')" class="bg-gray-300 bg-opacity-50 rounded-lg">Afficher Historique</button>
-                            <ul id="historique-1" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                <li>Dépannage 1</li>
-                                <li>Dépannage 2</li>
-                                <li>Dépannage 3</li>
-                            </ul>
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button id="status-1-btn" onclick="toggleDropdown('status-1', 'status-1-btn')" class="bg-gray-200 px-4 py-2 rounded-lg bg">
-                                Choisir un statut
-                            </button>
-                            <ul id="status-1" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                <li onclick="updateStatus('status-1', 'À planifier', 'bg-red-500', 'status-1-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-red-500 mr-2"></span> À planifier
-                                </li>
-                                <li onclick="updateStatus('status-1', 'Affecter', 'bg-orange-500', 'status-1-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-orange-500 mr-2"></span> Affecter
-                                </li>
-                                <li onclick="updateStatus('status-1', 'Approvisionnement', 'bg-yellow-500', 'status-1-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span> Approvisionnement
-                                </li>
-                                <li onclick="updateStatus('status-1', 'À facturer', 'bg-green-500', 'status-1-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span> À facturer
-                                </li>
-                            </ul>
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <a href="{{ route('dashboard') }}" class="text-blue-500 hover:underline">Voir plus</a>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-200">
-                        <td class="p-3 text-sm text-gray-700">
-                            John Doe
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            10 rue du Placieux, 54000
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            johndoe@gmail.com
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button onclick="toggleDropdown('historique-2')" class="bg-gray-300 bg-opacity-50 rounded-lg">Afficher Historique</button>
-                            <ul id="historique-2" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                <li>Aucun dépannage</li>
-                            </ul>
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button id="status-2-btn" onclick="toggleDropdown('status-2', 'status-2-btn')" class="bg-gray-200 px-4 py-2 rounded-lg">
-                                Choisir un statut
-                            </button>
-                            <ul id="status-2" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                <li onclick="updateStatus('status-2', 'À planifier', 'bg-red-500', 'status-2-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-red-500 mr-2"></span> À planifier
-                                </li>
-                                <li onclick="updateStatus('status-2', 'Affecter', 'bg-orange-500', 'status-2-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-orange-500 mr-2"></span> Affecter
-                                </li>
-                                <li onclick="updateStatus('status-2', 'Approvisionnement', 'bg-yellow-500', 'status-2-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span> Approvisionnement
-                                </li>
-                                <li onclick="updateStatus('status-2', 'À facturer', 'bg-green-500', 'status-2-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span> À facturer
-                                </li>
-                            </ul>
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <a href="{{ route('dashboard') }}" class="text-blue-500 hover:underline">Voir plus</a>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-200">
-                        <td class="p-3 text-sm text-gray-700">
-                            Maximus
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            4 rue des feuilles, 77800
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            max@gmail.com
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button onclick="toggleDropdown('historique-3')" class="bg-gray-300 bg-opacity-50 rounded-lg">Afficher Historique</button>
-                            <ul id="historique-3" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                <li>Dépannage 1</li>
-                            </ul>
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button id="status-3-btn" onclick="toggleDropdown('status-3', 'status-3-btn')" class="bg-gray-200 px-4 py-2 rounded-lg">
-                                Choisir un statut
-                            </button>
-                            <ul id="status-3" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                <li onclick="updateStatus('status-3', 'À planifier', 'bg-red-500', 'status-3-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-red-500 mr-2"></span> À planifier
-                                </li>
-                                <li onclick="updateStatus('status-3', 'Affecter', 'bg-orange-500', 'status-3-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-orange-500 mr-2"></span> Affecter
-                                </li>
-                                <li onclick="updateStatus('status-3', 'Approvisionnement', 'bg-yellow-500', 'status-3-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span> Approvisionnement
-                                </li>
-                                <li onclick="updateStatus('status-3', 'À facturer', 'bg-green-500', 'status-3-btn')" class="hover:bg-gray-200">
-                                    <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span> À facturer
-                                </li>
-                            </ul>
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <a href="{{ route('dashboard') }}" class="text-blue-500 hover:underline">Voir plus</a>
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
