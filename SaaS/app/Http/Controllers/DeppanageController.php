@@ -9,9 +9,9 @@ class DeppanageController extends Controller
 {
     public function index()
     {
-        $depannage = Depannage::all();
+        $depannages = Depannage::with('historiques')->get();
 
-        return view('dashboard', compact('depannage'));
+        return view('dashboard', compact('depannages'));
     }
 
     public function show($id)

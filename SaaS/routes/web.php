@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DeppanageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -7,9 +8,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DeppanageController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/facturation', function () {
     return view('facturation');

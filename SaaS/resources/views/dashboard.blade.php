@@ -54,13 +54,17 @@
                         <tr class="hover:bg-gray-200">
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->nom }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->adresse }}</td>
-                            <td class="p-3 text-sm text-gray-700">{{ $depannage->contact }}</td>
+                            <td class="p-3 text-sm text-gray-700">{{ $depannage->contact_email }}</td>
                             <td class="p-3 text-sm text-gray-700">
                                 <button onclick="toggleDropdown('historique-{{ $depannage->id }}')" class="bg-gray-300 bg-opacity-50 rounded-lg">Afficher Historique</button>
                                 <ul id="historique-{{ $depannage->id }}" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                    @foreach ($depannage->historique as $histo)
-                                        <li>{{ $histo }}</li>
-                                    @endforeach
+                                    @if($depannage->historiques->isNotEmpty())
+                                        @foreach ($depannage->historiques as $histo)
+                                            <li>{{ $histo->date }}</li> <!-- Afficher la date ou d'autres informations -->
+                                        @endforeach
+                                    @else
+                                        <li>Aucun historique</li>
+                                    @endif
                                 </ul>
                             </td>
                             <td class="p-3 text-sm text-gray-700">

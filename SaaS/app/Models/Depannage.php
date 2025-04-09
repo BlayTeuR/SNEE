@@ -9,6 +9,8 @@ class Depannage extends Model
 {
 
     use HasFactory;
+
+    protected $table = 'depannages';
     protected $fillable = [
         'nom', 'adresse', 'contact_email', 'statut', 'description_probleme',
         'telephone', 'type_materiel', 'message_erreur', 'infos_supplementaires'
@@ -16,7 +18,7 @@ class Depannage extends Model
 
     public function historiques()
     {
-        return $this->hasMany(Historique::class);
+        return $this->hasMany(Historique::class, 'depannage_id');
     }
 
     public function photos()

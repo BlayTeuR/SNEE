@@ -10,6 +10,6 @@ class Historique extends Model
 
     public function depannage()
     {
-        return $this->belongsTo(Depannage::class);
+        return $this->belongsTo(Depannage::class, 'depannage_id');
     }
 }
