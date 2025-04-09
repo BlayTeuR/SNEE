@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DeppanageController;
+use App\Http\Controllers\DepanageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -8,7 +8,11 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', [DeppanageController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/confirmation', function () {
+    return view('confirmation');
+})->name('confirmation.page');
+
+Route::get('/dashboard', [DepanageController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/facturation', function () {
     return view('facturation');
@@ -35,6 +39,8 @@ Route::middleware('auth')->group(function () {
 // Route transfert de données depuis BD
 
 // Depannage
- Route::get('/depannage/{id}', [\App\Http\Controllers\DeppanageController::class, 'show'])->name('depannage.show');
-Route::patch('/depannage/{id}/update-status', [DeppanageController::class, 'updateStatus'])->name('depannage.updateStatus');
+ Route::get('/depannage/{id}', [DepanageController::class, 'show'])->name('depannage.show');
+ Route::patch('/depannage/{id}/update-status', [DepanageController::class, 'updateStatus'])->name('depannage.updateStatus');
+ Route::post('/depannage/store', [DepanageController::class, 'store'])->name('depannage.store');
+
 require __DIR__.'/auth.php';

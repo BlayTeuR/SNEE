@@ -12,8 +12,15 @@ class Depannage extends Model
 
     protected $table = 'depannages';
     protected $fillable = [
-        'nom', 'adresse', 'contact_email', 'statut', 'description_probleme',
-        'telephone', 'type_materiel', 'message_erreur', 'infos_supplementaires'
+        'nom',
+        'adresse',
+        'contact_email',
+        'telephone',
+        'type_materiel',
+        'description_probleme',
+        'message_erreur',
+        'infos_supplementaires',
+        'statut',
     ];
 
     public function historiques()
@@ -23,6 +30,6 @@ class Depannage extends Model
 
     public function photos()
     {
-        return $this->hasMany(Photo::class);
+        return $this->hasMany(Photo::class, 'depannage_id');
     }
 }

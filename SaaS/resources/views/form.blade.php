@@ -16,7 +16,7 @@
 <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
     <h1 class="text-2xl font-bold text-gray-800 mb-4">Contact SAV</h1>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="{{route('depannage.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-4">
             <label for="name" class="block text-gray-700">Nom <span class="text-red-500">*</span></label>
@@ -27,10 +27,19 @@
             <label for="email" class="block text-gray-700">Email <span class="text-red-500">*</span></label>
             <input type="email" id="email" name="email" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
         </div>
-
+        @error('email')
+            <div class="text-red-500 text-sm mt-1">
+            {{ $message }}
+            </div>
+        @enderror
         <div class="mb-4">
             <label for="tel" class="block text-gray-700">Numéro de téléphone <span class="text-red-500">*</span></label>
             <input type="tel" id="tel" name="tel" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="add" class="block text-gray-700">Adresse d'intervention <span class="text-red-500">*</span></label>
+            <input type="text" id="add" name="add" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
         </div>
 
         <div class="mb-4">

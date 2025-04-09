@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/confirmation.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DeppanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DeppanageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/database/factories/DepannageFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/factories/DepannageFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/seeders/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/database/seeders/DepannageSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/seeders/DepannageSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DeppanageController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Photo.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Photo.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/form.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -192,6 +194,7 @@
       <workItem from="1744101133722" duration="5036000" />
       <workItem from="1744112239796" duration="11459000" />
       <workItem from="1744178758484" duration="13160000" />
+      <workItem from="1744198647467" duration="5743000" />
     </task>
     <servers />
   </component>

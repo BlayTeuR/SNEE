@@ -28,6 +28,11 @@
                 <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
             </div>
 
+            <div class="mb-4">
+                <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par lieu</label>
+                <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
+            </div>
+
             <!-- Bouton de réinitialisation -->
             <div>
                 <button id="reset-filters" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Réinitialiser les filtres</button>
