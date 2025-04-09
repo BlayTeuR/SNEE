@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
 });
 
 // Route transfert de données depuis BD
- Route::get('/depannage/{id}', [\App\Http\Controllers\DeppanageController::class, 'show'])->name('depannage.show');
 
+// Depannage
+ Route::get('/depannage/{id}', [\App\Http\Controllers\DeppanageController::class, 'show'])->name('depannage.show');
+Route::patch('/depannage/{id}/update-status', [DeppanageController::class, 'updateStatus'])->name('depannage.updateStatus');
 require __DIR__.'/auth.php';

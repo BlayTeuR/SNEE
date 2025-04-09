@@ -13,6 +13,6 @@ class DepannageSeeder extends Seeder
      */
     public function run(): void
     {
-        Depannage::factory(5)->create();
+        Depannage::factory(10)->create();
     }
 }
