@@ -60,15 +60,19 @@ class DepanageController extends Controller
                 'infos_supplementaires' => $request->input('infos'),
             ]);
 
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('images'), $imageName);
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    if ($image->isValid()) {
+                        $imageName = time() . '_' . $image->getClientOriginalName();
+                        $image->move(public_path('images'), $imageName);
 
-                $photo = $depannage->photos()->create([
-                    'chemin_photo' => $imageName,
-                ]);
+                        $depannage->photos()->create([
+                            'chemin_photo' => $imageName,
+                        ]);
+                    }
+                }
             }
+
             return redirect()->route('confirmation.page')->with('success', 'Votre demande a été enregistrée !');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());

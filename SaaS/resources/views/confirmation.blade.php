@@ -13,7 +13,7 @@
 <!-- Conteneur principal avec un alignement vertical -->
 <div class="flex flex-col items-center justify-center space-y-8">
     <!-- Image (au-dessus du formulaire) -->
-    <img src="{{ asset('images/logo.png') }}" alt="Logo de l'application" class="h-20 w-auto">
+    <img src="{{ asset('images/logo.png') }}" alt="Logo de l'application" class="h-40 w-auto">
 
     <!-- Formulaire (dans un bloc à part) -->
     <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl space-y-6">

@@ -14,7 +14,7 @@
 
 <!-- Formulaire (dans un bloc à part) -->
 <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">Contact SAV</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">Formulaire de contact</h1>
 
     <form action="{{route('depannage.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -28,9 +28,9 @@
             <input type="email" id="email" name="email" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
         </div>
         @error('email')
-            <div class="text-red-500 text-sm mt-1">
+        <div class="text-red-500 text-sm mt-1">
             {{ $message }}
-            </div>
+        </div>
         @enderror
         <div class="mb-4">
             <label for="tel" class="block text-gray-700">Numéro de téléphone <span class="text-red-500">*</span></label>
@@ -75,10 +75,17 @@
             <textarea id="infos" name="infos" rows="4" class="mt-1 w-full border-gray-300 rounded-md shadow-sm"></textarea>
         </div>
 
-        <div class="mb-4">
+        <div id="image-container" class="mb-4">
             <label for="image" class="block text-gray-700">Ajouter une image</label>
-            <input type="file" id="image" name="image" accept="image/*" class="mt-1 w-full">
+            <div class="flex items-center space-x-2">
+                <input type="file" id="image" name="images[]" accept="image/*" class="mt-1 w-full">
+                <button type="button" class="text-red-500 hidden" id="delete-img-btn">❌</button>
+            </div>
         </div>
+
+        <button type="button" id="add-image-btn" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600" style="display:none;">
+            Ajouter une autre image
+        </button>
 
         <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Envoyer
@@ -87,6 +94,74 @@
 </div>
 
 @vite('resources/js/app.js')
+
+<script>
+    let addImageBtn = document.getElementById('add-image-btn');
+    let imageContainer = document.getElementById('image-container');
+    let deleteImgBtn = document.getElementById('delete-img-btn');
+    let fileInput = document.getElementById('image');
+
+    // Fonction pour afficher/masquer le bouton "Ajouter une autre image" et la croix
+    function toggleDeleteButton() {
+        if (fileInput.value) {
+            // Si une image est téléchargée, montrer la croix et le bouton pour ajouter une autre image
+            deleteImgBtn.style.display = 'inline-block';
+            addImageBtn.style.display = 'inline-block';
+        } else {
+            // Sinon, cacher la croix et le bouton pour ajouter une autre image
+            deleteImgBtn.style.display = 'none';
+            addImageBtn.style.display = 'none';
+        }
+    }
+
+    // Afficher ou masquer la croix et le bouton lorsque l'image est téléchargée
+    fileInput.addEventListener('change', function() {
+        toggleDeleteButton();
+    });
+
+    // Ajouter un champ de téléchargement d'image supplémentaire
+    addImageBtn.addEventListener('click', function() {
+        var newInputContainer = document.createElement('div');
+        newInputContainer.classList.add('flex', 'items-center', 'space-x-2');
+
+        var newInput = document.createElement('input');
+        newInput.type = 'file';
+        newInput.name = 'images[]';
+        newInput.accept = 'image/*';
+        newInput.classList.add('mt-1', 'w-full');
+
+        var newDeleteButton = document.createElement('button');
+        newDeleteButton.type = 'button';
+        newDeleteButton.classList.add('text-red-500');
+        newDeleteButton.innerHTML = '❌';
+        newDeleteButton.addEventListener('click', function() {
+            newInputContainer.remove();
+            checkIfEmpty();
+        });
+
+        newInputContainer.appendChild(newInput);
+        newInputContainer.appendChild(newDeleteButton);
+        imageContainer.appendChild(newInputContainer);
+
+        checkIfEmpty();
+    });
+
+    // Vérifier si la liste d'images est vide pour masquer le bouton
+    function checkIfEmpty() {
+        if (imageContainer.querySelectorAll('input[type="file"]').length === 0) {
+            addImageBtn.style.display = 'none';
+        }
+    }
+
+    // Effacer l'image de la première entrée (croix)
+    deleteImgBtn.addEventListener('click', function() {
+        fileInput.value = ''; // Effacer le fichier
+        toggleDeleteButton();  // Mettre à jour l'affichage
+    });
+
+    // Initialisation du formulaire
+    toggleDeleteButton(); // Vérifier si un fichier est déjà sélectionné à l'initialisation
+</script>
 
 </body>
 </html>
