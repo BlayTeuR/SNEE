@@ -15,6 +15,10 @@ Route::get('/facturation', function () {
     return view('facturation');
 })->middleware(['auth', 'verified'])->name('facturation');
 
+Route::get('/form', function() {
+    return view('form');
+});
+
 Route::get('/stat', function () {
     return view('stat');
 })->middleware(['auth', 'verified'])->name('stat');
