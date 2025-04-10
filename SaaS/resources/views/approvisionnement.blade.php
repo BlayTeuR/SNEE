@@ -53,12 +53,29 @@
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->created_at->format('d/m/Y') }}</td>
                             <td class="p-3 text-sm text-gray-700">
                                     @if($approvisionnement->pieces->isEmpty())
-                                        <li class="p-3 text-sm text-gray-700">Aucune pièce</li>
-                                    @else
-                                        @foreach($approvisionnement->pieces as $piece)
-                                            <p class="p-3 text-sm text-gray-700">{{$piece->quantite}} {{ $piece->libelle}}</p>
-                                        @endforeach
-                                    @endif
+                                        <p class="p-3 text-sm text-gray-700">Aucune pièce</p>
+                                    <button onclick="toggleForm({{ $approvisionnement->id }})" class="bg-gray-200 p-1 rounded-lg">Ajouter une pièce</button>
+                                    <div id="form-{{ $approvisionnement->id }}" class="hidden mt-2">
+                                        <input type="text" id="libelle-{{ $approvisionnement->id }}" placeholder="Nom" class="block w-full p-2 border border-gray-300 rounded-lg mb-2">
+                                        <input type="number" id="quantite-{{ $approvisionnement->id }}" placeholder="Quantité" class="block w-full p-2 border border-gray-300 rounded-lg mb-2">
+                                        <button onclick="addPieces({{ $approvisionnement->id }})" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
+                                    </div>
+                                @else
+                                        <ul>
+                                            @foreach($approvisionnement->pieces as $piece)
+                                                <li class="p-3 text-sm text-gray-700 flex">
+                                                    <span>{{ $piece->quantite }} {{ $piece->libelle }}</span>
+                                                    <button onclick="delPieces({{$piece->id}})" type="button" class="text-xs ml-2 hover:text-gray-500" id="delete-img-btn">(supprimer)</button>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    <button onclick="toggleForm({{ $approvisionnement->id }})" class="bg-gray-200 p-1 rounded-lg">Ajouter une pièce</button>
+                                    <div id="form-{{ $approvisionnement->id }}" class="hidden mt-2">
+                                        <input type="text" id="libelle-{{ $approvisionnement->id }}" placeholder="Nom" class="block w-full p-2 border border-gray-300 rounded-lg mb-2">
+                                        <input type="number" id="quantite-{{ $approvisionnement->id }}" placeholder="Quantité" class="block w-full p-2 border border-gray-300 rounded-lg mb-2">
+                                        <button onclick="addPieces({{ $approvisionnement->id }})" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
+                                    </div>
+                                @endif
                             </td>
                             <td class="p-3 text-sm text-gray-700 relative">
                                 <button id="status-{{ $approvisionnement->id }}-btn"
@@ -88,6 +105,15 @@
     function toggleDropdown(id) {
         const dropdown = document.getElementById(id);
         dropdown.classList.toggle('hidden');
+    }
+
+    function toggleForm(approvisionnementId) {
+        const form = document.getElementById(`form-${approvisionnementId}`);
+        if (form) {
+            form.classList.toggle('hidden');
+        } else {
+            console.error(`Form with id form-${approvisionnementId} not found`);
+        }
     }
 
     function updateStatus(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId) {
@@ -123,5 +149,54 @@
 
         toggleDropdown(dropdownId);
     }
+
+    function addPieces(approvisionnementId){
+        const libelle = document.getElementById(`libelle-${approvisionnementId}`).value;
+        const quantite = document.getElementById(`quantite-${approvisionnementId}`).value;
+
+        if(!libelle || !quantite) {
+            alert('Veuillez remplir tous les champs.');
+            return;
+        }
+
+        fetch(`/approvisionnement/${approvisionnementId}/add-pieces`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({
+                libelle: libelle,
+                quantite: quantite,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+    }
+
+    function delPieces(pieceId){
+        fetch(`/pieces/del/${pieceId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+    }
+
 
 </script>

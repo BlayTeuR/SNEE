@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApprovisionnementController;
 use App\Http\Controllers\DepanageController;
+use App\Http\Controllers\PieceController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,5 +50,10 @@ Route::middleware('auth')->group(function () {
 
  // Approvisionnement
  Route::patch('/approvisionnement/{id}/update-status', [ApprovisionnementController::class, 'updateStatus'])->name('approvisionnement.updateStatus');
-Route::post('/approvisionnement/store', [ApprovisionnementController::class, 'store'])->name('approvisionnement.store');
+ Route::post('/approvisionnement/store', [ApprovisionnementController::class, 'store'])->name('approvisionnement.store');
+
+ //Piece
+ Route::post('/approvisionnement/{id}/add-pieces', [PieceController::class, 'addPieces'])->name('pieces.add');
+ Route::post('pieces/del/{id}', [PieceController::class, 'destroy'])->name('pieces.del');
+
 require __DIR__.'/auth.php';
