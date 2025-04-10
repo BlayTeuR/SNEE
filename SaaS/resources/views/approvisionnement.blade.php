@@ -42,6 +42,7 @@
                     <tr>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">ID Dépannage</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Date de création</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Piece(s)</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
                     </tr>
                     </thead>
@@ -50,6 +51,15 @@
                         <tr class="hover:bg-gray-100">
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->depannage_id }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->created_at->format('d/m/Y') }}</td>
+                            <td class="p-3 text-sm text-gray-700">
+                                    @if($approvisionnement->pieces->isEmpty())
+                                        <li class="p-3 text-sm text-gray-700">Aucune pièce</li>
+                                    @else
+                                        @foreach($approvisionnement->pieces as $piece)
+                                            <p class="p-3 text-sm text-gray-700">{{$piece->quantite}} {{ $piece->libelle}}</p>
+                                        @endforeach
+                                    @endif
+                            </td>
                             <td class="p-3 text-sm text-gray-700 relative">
                                 <button id="status-{{ $approvisionnement->id }}-btn"
                                         onclick="toggleDropdown('status-{{ $approvisionnement->id }}')"
@@ -60,9 +70,9 @@
                                     {{ $approvisionnement->statut }}
                                 </button>
                                 <ul id="status-{{ $approvisionnement->id }}" class="hidden absolute left-3 top-full bg-gray-100 p-2 mt-2 rounded shadow-md z-10 w-48">
-                                    <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'À planifier', 'bg-red-500','status-{{ $approvisionnement->id }}-btn')" class="hover:bg-gray-200 p-1 cursor-pointer">À planifier</li>
-                                    <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'En attente', 'bg-yellow-500','status-{{ $approvisionnement->id }}-btn')" class="hover:bg-gray-200 p-1 cursor-pointer">En attente</li>
-                                    <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'Fait', 'bg-green-500','status-{{ $approvisionnement->id }}-btn')" class="hover:bg-gray-200 p-1 cursor-pointer">Fait</li>
+                                    <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'À planifier', 'bg-red-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">À planifier</li>
+                                    <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'En attente', 'bg-yellow-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">En attente</li>
+                                    <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'Fait', 'bg-green-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">Fait</li>
                                 </ul>
                             </td>
                         </tr>
@@ -80,7 +90,7 @@
         dropdown.classList.toggle('hidden');
     }
 
-    function updateStatus(dropdownId, newStatus, newBgClass, buttonId) {
+    function updateStatus(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId) {
         const button = document.getElementById(buttonId);
         const dropdown = document.getElementById(dropdownId);
 
@@ -93,6 +103,25 @@
         // Cacher le dropdown
         dropdown.classList.add('hidden');
 
-        // Optionnel : appel AJAX pour sauvegarder côté serveur
+        fetch(`/approvisionnement/${approvisionnementId}/update-status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({
+                statut: newStatus,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+
+        toggleDropdown(dropdownId);
     }
+
 </script>

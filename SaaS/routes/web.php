@@ -47,4 +47,7 @@ Route::middleware('auth')->group(function () {
  Route::patch('/depannage/{id}/update-status', [DepanageController::class, 'updateStatus'])->name('depannage.updateStatus');
  Route::post('/depannage/store', [DepanageController::class, 'store'])->name('depannage.store');
 
+ // Approvisionnement
+ Route::patch('/approvisionnement/{id}/update-status', [ApprovisionnementController::class, 'updateStatus'])->name('approvisionnement.updateStatus');
+Route::post('/approvisionnement/store', [ApprovisionnementController::class, 'store'])->name('approvisionnement.store');
 require __DIR__.'/auth.php';
