@@ -25,9 +25,6 @@
         </div>
     </div>
 
-    <!-- Ajouter d'abord le script Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-
     <!-- Initialisation de la carte Leaflet -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {

@@ -65,7 +65,7 @@
                                 <button onclick="toggleDropdown('historique-{{ $depannage->id }}')" class="bg-gray-300 bg-opacity-50 px-3 py-1 rounded-lg hover:bg-gray-400">
                                     Afficher Historique
                                 </button>
-                                <ul id="historique-{{ $depannage->id }}" class="hidden absolute left-0 top-full bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
+                                <ul id="historique-{{ $depannage->id }}" class="hidden absolute left-3 top-full bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
                                     @if($depannage->historiques->isNotEmpty())
                                         @foreach ($depannage->historiques as $histo)
                                             <li>{{ $histo->date }}</li>

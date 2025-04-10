@@ -7,6 +7,7 @@
             <div class="mb-4">
                 <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
                 <select id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+                    <option value="all">À planifier</option>
                     <option value="all">En attente</option>
                     <option value="non-paye">Fait</option>
                 </select>
@@ -48,6 +49,7 @@
                         <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Nom</th>
                         <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Date d'émission</th>
                         <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Pièces</th>
+                        <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Statut</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -65,6 +67,14 @@
                             Pièces 1 * 4 <br>
                             Pièces 2 * 2 <br>
                             Pièces 3 * 1 <br>
+                        </td>
+                        <td class="p-3 text-sm text-gray-700">
+                            <button onclick="toggleDropdown('status-1')" class="bg-gray-300 bg-opacity-50 rounded-lg">Statut</button>
+                            <ul id="status-1" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
+                                <li>À planifier</li>
+                                <li>En attente</li>
+                                <li>Fait</li>
+                            </ul>
                         </td>
                     </tr>
                     </tbody>
