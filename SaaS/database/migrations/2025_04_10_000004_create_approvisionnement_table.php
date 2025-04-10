@@ -9,6 +9,7 @@ return new class extends Migration {
         Schema::create('approvisionnements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('depannage_id')->constrained()->onDelete('cascade');
+            $table->string('statut')->default('À planifier');
             $table->timestamps();
         });
     }
