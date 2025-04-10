@@ -28,9 +28,10 @@
                 <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
             </div>
 
+            <!-- Filtrer par lieu -->
             <div class="mb-4">
-                <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par lieu</label>
-                <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
+                <label for="lieu-filter" class="block text-sm font-medium text-gray-700">Filtrer par lieu</label>
+                <input type="text" id="lieu-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
             </div>
 
             <!-- Bouton de réinitialisation -->

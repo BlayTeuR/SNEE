@@ -32,4 +32,9 @@ class Depannage extends Model
     {
         return $this->hasMany(Photo::class, 'depannage_id');
     }
+
+    public function approvisionnements()
+    {
+        return $this->hasMany(Approvisionnement::class, 'depannage_id');
+    }
 }

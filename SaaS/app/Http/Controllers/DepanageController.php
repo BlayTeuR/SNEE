@@ -23,10 +23,19 @@ class DepanageController extends Controller
 
         // Récupérer le depannage
         $depannage = Depannage::findOrFail($id);
+        $ancienStatut = $depannage->statut;
 
         // Mettre à jour le statut
-        $depannage->statut = $request->input('statut');
+        $nouveauStatut = $request->input('statut');
+        $depannage->statut = $nouveauStatut;
         $depannage->save();
+
+        if($ancienStatut != 'Approvisionnement' && $nouveauStatut == 'Approvisionnement') {
+            // Créer un nouvel enregistrement dans la table 'approvisionnement'
+            $depannage->approvisionnements()->create([
+                'statut' => 'À planifier',
+            ]);
+        }
 
         return response()->json(['message' => 'Statut mis à jour avec succès!']);
     }
