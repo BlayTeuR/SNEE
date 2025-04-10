@@ -92,6 +92,9 @@
                                     <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'Fait', 'bg-green-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">Fait</li>
                                 </ul>
                             </td>
+                            <td class="p-3 text-sm text-gray-700 relative">
+                                <button onclick="toggleModal({{ $approvisionnement->id }})" class="bg-gray-200 p-1 rounded-lg">❌</button>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -99,12 +102,29 @@
             </div>
         </div>
     </div>
+    <!-- Modal de confirmation -->
+    <div id="confirm-delete-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-semibold mb-4">Confirmer la suppression</h2>
+            <p>Êtes-vous sûr de vouloir supprimer cet approvisionnement ? Cette action est irréversible.</p>
+            <div class="mt-4 flex justify-end space-x-4">
+                <button onclick="toggleModal()" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="delApprovisionnementConfirm()" class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
 </x-app-layout>
 
 <script>
-    function toggleDropdown(id) {
-        const dropdown = document.getElementById(id);
-        dropdown.classList.toggle('hidden');
+    let approvisionnementIdToDelete = null;
+
+    function toggleModal(approvisionnementId = null) {
+        const modal = document.getElementById('confirm-delete-modal');
+        if (approvisionnementId) {
+            approvisionnementIdToDelete = approvisionnementId;
+        }
+        modal.classList.toggle('hidden');
     }
 
     function toggleForm(approvisionnementId) {
@@ -114,6 +134,15 @@
         } else {
             console.error(`Form with id form-${approvisionnementId} not found`);
         }
+    }
+
+    function toggleConfirmDel(approvisionnementId) {
+        const confirmDel = document.getElementById(`confirm-del-${approvisionnementId}`);
+        if (!confirmDel) {
+            console.error(`Confirm delete with id confirm-del-${approvisionnementId} not found`);
+            return;
+        }
+        confirmDel.classList.toggle('hidden');
     }
 
     function updateStatus(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId) {
@@ -196,6 +225,27 @@
             .catch(error => {
                 console.error('Erreur:', error);
             });
+    }
+
+    function delApprovisionnementConfirm() {
+        if (approvisionnementIdToDelete !== null) {
+            fetch(`/approvisionnement/del/${approvisionnementIdToDelete}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                });
+        }
+        toggleModal(); // Fermer le modal après la suppression
     }
 
 

@@ -28,4 +28,13 @@ class ApprovisionnementController extends Controller
 
         return response()->json(['message' => 'Statut mis à jour avec succès!']);
     }
+
+    public function destroy($id)
+    {
+        // Suppression de l'approvisionnement
+        $approvisionnement = Approvisionnement::findOrFail($id);
+        $approvisionnement->delete();
+
+        return response()->json(['message' => 'Approvisionnement supprimé avec succès!']);
+    }
 }
