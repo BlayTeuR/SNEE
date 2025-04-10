@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('facturation')" :active="request()->routeIs('facturation')">
                         {{ __('Facturation') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('approvisionnement')" :active="request()->routeIs('approvisionnement')">
+                        {{ __('Approvisionnement') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('stat')" :active="request()->routeIs('stat')">
                         {{ __('Statistique') }}
                     </x-nav-link>

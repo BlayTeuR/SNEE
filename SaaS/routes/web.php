@@ -30,6 +30,10 @@ Route::get('/carte', function () {
     return view('carte');
 })->middleware(['auth', 'verified'])->name('carte');
 
+Route::get('/approvisionnement', function () {
+    return view('approvisionnement');
+})->middleware(['auth', 'verified'])->name('approvisionnement');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
