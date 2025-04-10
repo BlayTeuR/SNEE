@@ -7,10 +7,8 @@
             <div class="mb-4">
                 <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
                 <select id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-                    <option value="all">Tous</option>
-                    <option value="non-paye">Non payé</option>
-                    <option value="paye">Payé</option>
-                    <option value="en-attente">En attente</option>
+                    <option value="all">En attente</option>
+                    <option value="non-paye">Fait</option>
                 </select>
             </div>
 
@@ -28,8 +26,8 @@
 
             <!-- Filtre par montant -->
             <div class="mb-4">
-                <label for="amount-filter" class="block text-sm font-medium text-gray-700">Filtrer par montant</label>
-                <input type="number" id="amount-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Montant">
+                <label for="amount-filter" class="block text-sm font-medium text-gray-700">Filtrer par ID</label>
+                <input type="number" id="amount-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="ID">
             </div>
 
             <!-- Bouton de réinitialisation des filtres -->
@@ -46,14 +44,29 @@
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr class="bg-gray-50">
+                        <th class="p-3 tewt-sm font-semibold tracking-wide text-left">ID depannage</th>
                         <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Nom</th>
                         <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Date d'émission</th>
                         <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Pièces</th>
-                        <th class="p-3 tewt-sm font-semibold tracking-wide text-left">ID depannage</th>
                     </tr>
                     </thead>
                     <tbody>
-
+                    <tr class="hover:bg-gray-200">
+                        <td class="p-3 text-sm text-gray-700">
+                            1
+                        </td>
+                        <td class="p-3 text-sm text-gray-700">
+                            Bastien Jallais
+                        </td>
+                        <td class="p-3 text-sm text-gray-700">
+                            14/11/2024
+                        </td>
+                        <td class="p-3 text-sm text-gray-700">
+                            Pièces 1 * 4 <br>
+                            Pièces 2 * 2 <br>
+                            Pièces 3 * 1 <br>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

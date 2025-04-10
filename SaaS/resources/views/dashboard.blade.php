@@ -45,6 +45,7 @@
                 <table class="w-full table-fixed">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">ID</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Nom</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Adresse</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Contact</th>
@@ -56,6 +57,7 @@
                     <tbody>
                     @foreach ($depannages as $depannage)
                         <tr class="hover:bg-gray-100">
+                            <td class="p-3 text-sm text-gray-700">{{ $depannage->id }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->nom }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->adresse }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->contact_email }}</td>
