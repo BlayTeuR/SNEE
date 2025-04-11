@@ -56,7 +56,7 @@ class DepanageController extends Controller
             // Créer un nouvel enregistrement dans la table 'facturation'
             $depannage->facturations()->create([
                 'montant' => 0,
-                'statut' => 'Non payé',
+                'statut' => 'Non envoyée',
             ]);
         }
 

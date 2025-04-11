@@ -65,4 +65,8 @@ Route::middleware('auth')->group(function () {
  //Type
  Route::put('/type/{id}/update', [TypeController::class, 'updateType'])->name('update.type');
 
-require __DIR__.'/auth.php';
+ //Facturation
+ Route::post('facturation/del/{id}', [FacturationsController::class, 'destroy'])->name('facturation.del');
+ Route::put('facturation/{id}/update-date', [FacturationsController::class, 'updateDate'])->name('facturation.update.date');
+
+ require __DIR__.'/auth.php';

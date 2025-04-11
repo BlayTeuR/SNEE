@@ -46,11 +46,11 @@
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr class="bg-gray-50">
-                        <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Nom</th>
-                        <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Date d'émission</th>
-                        <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Montant</th>
-                        <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Statut</th>
-                        <th class="p-3 tewt-sm font-semibold tracking-wide text-left">Contact</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Nom</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Date d'émission</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Montant</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Contact</th>
                     </tr>
                     </thead>
                     <tbody>

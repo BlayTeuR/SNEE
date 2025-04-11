@@ -41,4 +41,9 @@ class Depannage extends Model
     public function types(){
         return $this->hasOne(Type::class, 'depannage_id');
     }
+
+    public function facturations()
+    {
+        return $this->hasMany(Facturations::class, 'depannage_id');
+    }
 }
