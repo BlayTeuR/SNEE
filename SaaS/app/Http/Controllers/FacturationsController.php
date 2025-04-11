@@ -38,6 +38,24 @@ class FacturationsController extends Controller
 
         return redirect('/facturation')->with('success', 'date mise à jour avec succèes!');
     }
+
+    public function updateMontant(Request $request, $id)
+    {
+        // Validation des données envoyées
+        $request->validate([
+            'montant' => 'required|numeric|min:0',
+        ]);
+
+        // Récupérer la facturation
+        $facturation = Facturations::findOrFail($id);
+
+        // Mettre à jour le montant
+        $nouveauMontant = $request->input('montant');
+        $facturation->montant = $nouveauMontant;
+        $facturation->save();
+
+        return redirect('/facturation')->with('success', 'montant mis à jour avec succès!');
+    }
     public function updateStatus(Request $request, $id)
     {
         // Validation des données envoyées

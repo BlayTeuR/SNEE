@@ -67,13 +67,13 @@
                                 @endif
                                 <!-- Bouton d'édition -->
                                 <button
-                                    onclick="openModal({{ $facturation->id }})"
+                                    onclick="openModalDate({{ $facturation->id }})"
                                     class="ml-2 text-blue-500 hover:text-blue-700 hover:underline">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
 
                                 <!-- Modal -->
-                                <div id="modal-{{ $facturation->id }}" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center z-50 flex">
+                                <div id="modal-{{ $facturation->id }}-date" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center z-50 flex">
                                     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
                                         <h2 class="text-lg font-semibold">Modifier la date d'intervention</h2>
 
@@ -87,7 +87,7 @@
 
                                             <!-- Boutons Valider et Annuler -->
                                             <div class="mt-4 flex justify-end">
-                                                <button type="button" onclick="closeModal({{ $facturation->id }})" class="px-4 py-2 bg-red-500 text-white rounded-lg mr-2 hover:bg-red-600">Annuler</button>
+                                                <button type="button" onclick="closeModalDate({{ $facturation->id }})" class="px-4 py-2 bg-red-500 text-white rounded-lg mr-2 hover:bg-red-600">Annuler</button>
                                                 <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Valider</button>
                                             </div>
                                         </form>
@@ -95,7 +95,38 @@
                                 </div>
 
                             </td>
-                            <td class="p-3 text-sm text-gray-700">{{ $facturation->montant }}€</td>
+                            <td class="p-3 text-sm text-gray-700">
+                            {{ $facturation->montant }} €
+                            <!-- Bouton d'édition -->
+                            <button
+                                onclick="openModalMontant({{ $facturation->id }})"
+                                class="ml-2 text-blue-500 hover:text-blue-700 hover:underline">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+
+                            <!-- Modal -->
+                            <div id="modal-{{ $facturation->id }}-montant" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center z-50 flex">
+                                <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                                    <h2 class="text-lg font-semibold">Modifier le montant du dépannage</h2>
+
+                                    <form id="form-{{ $facturation->id }}" action="{{ route('facturation.update.montant', $facturation->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+
+                                        <!-- Liste déroulante pour Contrat -->
+                                        <label for="montant" class="block mt-4 text-sm text-gray-700">Montant</label>
+                                        <input type="number" id="montant" name="montant" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+
+                                        <!-- Boutons Valider et Annuler -->
+                                        <div class="mt-4 flex justify-end">
+                                            <button type="button" onclick="closeModalMontant({{ $facturation->id }})" class="px-4 py-2 bg-red-500 text-white rounded-lg mr-2 hover:bg-red-600">Annuler</button>
+                                            <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Valider</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            </td>
                             <td class="p-3 text-sm text-gray-700">
                                 <button onclick="toggleDropdown('status-{{ $facturation->id }}')" class="bg-gray-300 bg-opacity-50 rounded-lg">Statut</button>
                                 <ul id="status-{{ $facturation->id }}" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
@@ -166,11 +197,19 @@
         toggleModal();
     }
 
-    function openModal(facturationId) {
-        document.getElementById(`modal-${facturationId}`).classList.remove('hidden');
+    function openModalDate(facturationId) {
+        document.getElementById(`modal-${facturationId}-date`).classList.remove('hidden');
     }
 
-    function closeModal(facturationId) {
-        document.getElementById(`modal-${facturationId}`).classList.add('hidden');
+    function closeModalDate(facturationId) {
+        document.getElementById(`modal-${facturationId}-date`).classList.add('hidden');
     }
+    function openModalMontant(facturationId) {
+        document.getElementById(`modal-${facturationId}-montant`).classList.remove('hidden');
+    }
+
+    function closeModalMontant(facturationId) {
+        document.getElementById(`modal-${facturationId}-montant`).classList.add('hidden');
+    }
+
 </script>

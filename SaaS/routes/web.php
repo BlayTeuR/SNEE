@@ -68,5 +68,6 @@ Route::middleware('auth')->group(function () {
  //Facturation
  Route::post('facturation/del/{id}', [FacturationsController::class, 'destroy'])->name('facturation.del');
  Route::put('facturation/{id}/update-date', [FacturationsController::class, 'updateDate'])->name('facturation.update.date');
+ Route::put('facturation/{id}/update-montant', [FacturationsController::class, 'updateMontant'])->name('facturation.update.montant');
 
  require __DIR__.'/auth.php';
