@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->text('description_probleme');
             $table->string('telephone');
             $table->string('type_materiel');
-            $table->string('message_erreur')->nullable();  // Ajout de la colonne 'message_erreur'
+            $table->string('message_erreur')->nullable();
             $table->text('infos_supplementaires')->nullable();
             $table->timestamps();
         });
