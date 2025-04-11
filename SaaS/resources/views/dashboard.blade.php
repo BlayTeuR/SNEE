@@ -67,7 +67,7 @@
                                 <!-- Bouton d'édition -->
                                 <button
                                     onclick="openModal({{ $depannage->id }})"
-                                    class="ml-2 text-blue-500 hover:text-blue-700">
+                                    class="ml-2 text-blue-500 hover:text-blue-700 hover:underline">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
 

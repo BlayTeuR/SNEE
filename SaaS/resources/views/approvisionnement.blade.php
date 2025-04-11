@@ -41,6 +41,7 @@
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">ID Dépannage</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Pour client</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Date de création</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Piece(s)</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
@@ -50,30 +51,77 @@
                     @foreach($approvisionnements as $approvisionnement)
                         <tr class="hover:bg-gray-100">
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->depannage_id }}</td>
+                            <td class="p-3 text-sm text-gray-700">{{$approvisionnement->depannage->nom}}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->created_at->format('d/m/Y') }}</td>
                             <td class="p-3 text-sm text-gray-700">
                                     @if($approvisionnement->pieces->isEmpty())
                                         <p class="p-3 text-sm text-gray-700">Aucune pièce</p>
-                                    <button onclick="toggleForm({{ $approvisionnement->id }})" class="bg-gray-200 p-1 rounded-lg">Ajouter une pièce</button>
-                                    <div id="form-{{ $approvisionnement->id }}" class="hidden mt-2">
-                                        <input type="text" id="libelle-{{ $approvisionnement->id }}" placeholder="Nom" class="block w-full p-2 border border-gray-300 rounded-lg mb-2">
-                                        <input type="number" id="quantite-{{ $approvisionnement->id }}" placeholder="Quantité" class="block w-full p-2 border border-gray-300 rounded-lg mb-2">
-                                        <button onclick="addPieces({{ $approvisionnement->id }})" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
+                                    <button
+                                        onclick="openModalPiece({{ $approvisionnement->id }})"
+                                        class="ml-2 text-blue-500 hover:text-blue-700 hover:underline">
+                                        <i class="fas fa-edit"></i> Ajouter une pièce
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div id="modal-{{ $approvisionnement->id }}-piece" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center z-50 flex">
+                                        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                                            <h2 class="text-lg font-semibold">Nom de la pièce</h2>
+
+                                            <form id="form-{{ $approvisionnement->id }}" action="{{ route('pieces.update', $approvisionnement->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <label for="libelle" class="block mt-4 text-sm text-gray-700">Nom de la pièce</label>
+                                                <input type="text" id="libelle" name="libelle" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+
+                                                <label for="quantite" class="block mt-4 text-sm text-gray-700">Nombre de pièce(s)</label>
+                                                <input type="number" id="quantite" name="quantite" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+
+                                                <!-- Boutons Valider et Annuler -->
+                                                <div class="mt-4 flex justify-end">
+                                                    <button type="button" onclick="closeModalPiece({{ $approvisionnement->id }})" class="px-4 py-2 bg-red-500 text-white rounded-lg mr-2 hover:bg-red-600">Annuler</button>
+                                                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Valider</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 @else
                                         <ul>
                                             @foreach($approvisionnement->pieces as $piece)
                                                 <li class="p-3 text-sm text-gray-700 flex">
-                                                    <span>{{ $piece->quantite }} {{ $piece->libelle }}</span>
-                                                    <button onclick="delPieces({{$piece->id}})" type="button" class="text-xs ml-2 hover:text-gray-500" id="delete-img-btn">(supprimer)</button>
+                                                    <span>{{ $piece->quantite }} * {{ $piece->libelle }}</span>
+                                                    <button onclick="delPieces({{$piece->id}})" type="button" class="text-xs ml-2 text-red-500 hover:text-red-600 hover:underline" id="delete-img-btn">(supprimer)</button>
                                                 </li>
                                             @endforeach
                                         </ul>
-                                    <button onclick="toggleForm({{ $approvisionnement->id }})" class="bg-gray-200 p-1 rounded-lg">Ajouter une pièce</button>
-                                    <div id="form-{{ $approvisionnement->id }}" class="hidden mt-2">
-                                        <input type="text" id="libelle-{{ $approvisionnement->id }}" placeholder="Nom" class="block w-full p-2 border border-gray-300 rounded-lg mb-2">
-                                        <input type="number" id="quantite-{{ $approvisionnement->id }}" placeholder="Quantité" class="block w-full p-2 border border-gray-300 rounded-lg mb-2">
-                                        <button onclick="addPieces({{ $approvisionnement->id }})" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
+                                    <button
+                                        onclick="openModalPiece({{ $approvisionnement->id }})"
+                                        class="ml-2 text-blue-500 hover:text-blue-700 hover:underline">
+                                        <i class="fas fa-edit"></i> Ajouter une pièce
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div id="modal-{{ $approvisionnement->id }}-piece" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center z-50 flex">
+                                        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                                            <h2 class="text-lg font-semibold">Nom de la pièce</h2>
+
+                                            <form id="form-{{ $approvisionnement->id }}" action="{{ route('pieces.update', $approvisionnement->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <label for="libelle" class="block mt-4 text-sm text-gray-700">Nom de la pièce</label>
+                                                <input type="text" id="libelle" name="libelle" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+
+                                                <label for="quantite" class="block mt-4 text-sm text-gray-700">Nombre de pièce(s)</label>
+                                                <input type="number" id="quantite" name="quantite" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+
+                                                <!-- Boutons Valider et Annuler -->
+                                                <div class="mt-4 flex justify-end">
+                                                    <button type="button" onclick="closeModalPiece({{ $approvisionnement->id }})" class="px-4 py-2 bg-red-500 text-white rounded-lg mr-2 hover:bg-red-600">Annuler</button>
+                                                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Valider</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 @endif
                             </td>
@@ -117,6 +165,15 @@
 </x-app-layout>
 
 <script>
+
+    function openModalPiece(approvisionnementId) {
+        document.getElementById(`modal-${approvisionnementId}-piece`).classList.remove('hidden');
+    }
+
+    function closeModalPiece(approvisionnementId) {
+        document.getElementById(`modal-${approvisionnementId}-piece`).classList.add('hidden');
+    }
+
     let approvisionnementIdToDelete = null;
 
     function toggleDropdown(id) {
@@ -252,5 +309,19 @@
         }
         toggleModal();
     }
+
+    document.addEventListener('click', function(event) {
+        const isClickInsideMenu = event.target.closest('.relative');
+        const isClickInsideDropdown = event.target.closest('.absolute');
+        const isClickInsideButton = event.target.closest('.cursor-pointer');
+
+        // Si le clic n'est pas à l'intérieur d'un bouton de menu ou d'un menu, fermer les menus ouverts
+        if (!isClickInsideMenu && !isClickInsideDropdown && !isClickInsideButton) {
+            if (lastOpenedDropdown) {
+                lastOpenedDropdown.classList.add('hidden');
+                lastOpenedDropdown = null;
+            }
+        }
+    });
 
 </script>

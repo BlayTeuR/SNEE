@@ -48,26 +48,30 @@ Route::middleware('auth')->group(function () {
 // Route transfert spécial de données depuis BD
 
 // Depannage
- Route::get('/depannage/{id}', [DepanageController::class, 'show'])->name('depannage.show')->middleware(['auth', 'verified']);
- Route::patch('/depannage/{id}/update-status', [DepanageController::class, 'updateStatus'])->name('depannage.updateStatus');
- Route::post('/depannage/store', [DepanageController::class, 'store'])->name('depannage.store');
- Route::post('depannage/del/{id}', [DepanageController::class, 'destroy'])->name('depannage.del');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/depannage', [DepanageController::class, 'index'])->name('depannage');
+    Route::get('/depannage/{id}', [DepanageController::class, 'show'])->name('depannage.show')->middleware(['auth', 'verified']);
+    Route::patch('/depannage/{id}/update-status', [DepanageController::class, 'updateStatus'])->name('depannage.updateStatus');
+    Route::post('/depannage/store', [DepanageController::class, 'store'])->name('depannage.store');
+    Route::post('depannage/del/{id}', [DepanageController::class, 'destroy'])->name('depannage.del');
 
- // Approvisionnement
- Route::patch('/approvisionnement/{id}/update-status', [ApprovisionnementController::class, 'updateStatus'])->name('approvisionnement.updateStatus');
- Route::post('approvisionnement/del/{id}', [ApprovisionnementController::class, 'destroy'])->name('approvisionnement.del');
- Route::post('/approvisionnement/store', [ApprovisionnementController::class, 'store'])->name('approvisionnement.store');
+    // Approvisionnement
+    Route::patch('/approvisionnement/{id}/update-status', [ApprovisionnementController::class, 'updateStatus'])->name('approvisionnement.updateStatus');
+    Route::post('approvisionnement/del/{id}', [ApprovisionnementController::class, 'destroy'])->name('approvisionnement.del');
+    Route::post('/approvisionnement/store', [ApprovisionnementController::class, 'store'])->name('approvisionnement.store');
 
- //Piece
- Route::post('/approvisionnement/{id}/add-pieces', [PieceController::class, 'addPieces'])->name('pieces.add');
- Route::post('pieces/del/{id}', [PieceController::class, 'destroy'])->name('pieces.del');
+    //Piece
+    Route::post('/approvisionnement/{id}/add-pieces', [PieceController::class, 'addPieces'])->name('pieces.add');
+    Route::post('pieces/del/{id}', [PieceController::class, 'destroy'])->name('pieces.del');
+    Route::put('/pieces/{id}/update', [PieceController::class, 'updatePiece'])->name('pieces.update');
 
- //Type
- Route::put('/type/{id}/update', [TypeController::class, 'updateType'])->name('update.type');
+    //Type
+    Route::put('/type/{id}/update', [TypeController::class, 'updateType'])->name('update.type');
 
- //Facturation
- Route::post('facturation/del/{id}', [FacturationsController::class, 'destroy'])->name('facturation.del');
- Route::put('facturation/{id}/update-date', [FacturationsController::class, 'updateDate'])->name('facturation.update.date');
- Route::put('facturation/{id}/update-montant', [FacturationsController::class, 'updateMontant'])->name('facturation.update.montant');
+    //Facturation
+    Route::post('facturation/del/{id}', [FacturationsController::class, 'destroy'])->name('facturation.del');
+    Route::put('facturation/{id}/update-date', [FacturationsController::class, 'updateDate'])->name('facturation.update.date');
+    Route::put('facturation/{id}/update-montant', [FacturationsController::class, 'updateMontant'])->name('facturation.update.montant');
+});
 
  require __DIR__.'/auth.php';

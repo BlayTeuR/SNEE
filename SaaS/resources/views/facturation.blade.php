@@ -162,18 +162,34 @@
 
 <script>
     let facturationToDelete = null;
+    let lastOpenedDropdown = null;
+    let openedModals = new Set();
 
     function toggleDropdown(id) {
         const dropdown = document.getElementById(id);
         dropdown.classList.toggle('hidden');
+
+        if (!dropdown.classList.contains('hidden')) {
+            lastOpenedDropdown = dropdown;
+        } else {
+            lastOpenedDropdown = null;
+        }
     }
 
     function toggleModal(facturationId = null) {
         const modal = document.getElementById('confirm-delete-modal');
+
         if (facturationId) {
             facturationToDelete = facturationId;
         }
+
         modal.classList.toggle('hidden');
+
+        if (!modal.classList.contains('hidden')) {
+            openedModals.add(modal);
+        } else {
+            openedModals.delete(modal);
+        }
     }
 
     function delFacturation() {
@@ -194,22 +210,33 @@
                     console.error('Erreur:', error);
                 });
         }
+
         toggleModal();
     }
 
     function openModalDate(facturationId) {
-        document.getElementById(`modal-${facturationId}-date`).classList.remove('hidden');
+        const modal = document.getElementById(`modal-${facturationId}-date`);
+        modal.classList.remove('hidden');
+        openedModals.add(modal);
     }
 
     function closeModalDate(facturationId) {
-        document.getElementById(`modal-${facturationId}-date`).classList.add('hidden');
+        const modal = document.getElementById(`modal-${facturationId}-date`);
+        modal.classList.add('hidden');
+        openedModals.delete(modal);
     }
+
     function openModalMontant(facturationId) {
-        document.getElementById(`modal-${facturationId}-montant`).classList.remove('hidden');
+        const modal = document.getElementById(`modal-${facturationId}-montant`);
+        modal.classList.remove('hidden');
+        openedModals.add(modal);
     }
 
     function closeModalMontant(facturationId) {
-        document.getElementById(`modal-${facturationId}-montant`).classList.add('hidden');
+        const modal = document.getElementById(`modal-${facturationId}-montant`);
+        modal.classList.add('hidden');
+        openedModals.delete(modal);
     }
+
 
 </script>
