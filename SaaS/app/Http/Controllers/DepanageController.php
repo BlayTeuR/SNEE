@@ -21,6 +21,12 @@ class DepanageController extends Controller
         $depannage = Depannage::findOrFail($id);
         $depannage->delete();
 
+        // Suppression du type associé
+        $type = Type::where('depannage_id', $id)->first();
+        if ($type) {
+            $type->delete();
+        }
+
         return response()->json(['message' => 'Dépannage supprimé avec succès!']);
     }
 
@@ -89,10 +95,11 @@ class DepanageController extends Controller
 
             // Création du Type associé au Depannage
             $type = new Type([
+                'depannage_id' => $depannage->id,
                 'garantie' => 'Non renseigné',
                 'contrat' => 'Non renseigné',
             ]);
-            $depannage->type()->save($type);
+            $depannage->types()->save($type);
 
             // Gestion des images
             if ($request->hasFile('images')) {
