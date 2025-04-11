@@ -49,7 +49,7 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-16">ID</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Nom</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Adresse</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Contact</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Type</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Historique</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Plus d'information</th>
@@ -168,7 +168,7 @@
         toggleDropdown(dropdownId);
     }
 
-    function delApprovisionnementConfirm() {
+    function delDepannage() {
         if (depannageIdToDelete !== null) {
             fetch(`/depannage/del/${depannageIdToDelete}`, {
                 method: 'POST',

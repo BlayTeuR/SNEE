@@ -45,6 +45,13 @@ class DepanageController extends Controller
                 'statut' => 'À planifier',
             ]);
         }
+        if($ancienStatut != 'À facturer' && $nouveauStatut == 'À facturer') {
+            // Créer un nouvel enregistrement dans la table 'facturation'
+            $depannage->facturations()->create([
+                'montant' => 0,
+                'statut' => 'Non payé',
+            ]);
+        }
 
         return response()->json(['message' => 'Statut mis à jour avec succès!']);
     }

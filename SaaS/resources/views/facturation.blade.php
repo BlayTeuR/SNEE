@@ -76,6 +76,29 @@
                         bastjals@gmail.com
                     </td>
                 </tr>
+                <tr>
+                    @foreach($facturations as $facturation)
+                        <tr class="hover:bg-gray-200">
+                            <td class="p-3 text-sm text-gray-700">{{ $facturation->name }}</td>
+                            <td class="p-3 text-sm text-gray-700">
+                                {{ $facturation->date }}
+                            </td>
+                            <td class="p-3 text-sm text-gray-700">
+                                {{ $facturation->amount }}€
+                            </td>
+                            <td class="p-3 text-sm text-gray-700">
+                                <button onclick="toggleDropdown('status-{{ $facturation->id }}')" class="bg-gray-300 bg-opacity-50 rounded-lg">Statut</button>
+                                <ul id="status-{{ $facturation->id }}" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
+                                    <li>{{ $facturation->status }}</li>
+                                    <li>Payé</li>
+                                    <li>En attente</li>
+                                </ul>
+                            </td>
+                            <td class="p-3 text-sm text-gray-700">
+                                {{ $facturation->contact }}
+                            </td>
+                    @endforeach
+                </tr>
                 </tbody>
             </table>
         </div>
