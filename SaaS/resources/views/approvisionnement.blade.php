@@ -93,7 +93,7 @@
                                 </ul>
                             </td>
                             <td class="p-3 text-sm text-gray-700 relative">
-                                <button onclick="toggleModal({{ $approvisionnement->id }})" class="bg-gray-200 p-1 rounded-lg">❌</button>
+                                <button onclick="toggleModal({{ $approvisionnement->id }})">❌</button>
                             </td>
                         </tr>
                     @endforeach
@@ -118,6 +118,11 @@
 
 <script>
     let approvisionnementIdToDelete = null;
+
+    function toggleDropdown(id) {
+        const dropdown = document.getElementById(id);
+        dropdown.classList.toggle('hidden');
+    }
 
     function toggleModal(approvisionnementId = null) {
         const modal = document.getElementById('confirm-delete-modal');
@@ -245,8 +250,7 @@
                     console.error('Erreur:', error);
                 });
         }
-        toggleModal(); // Fermer le modal après la suppression
+        toggleModal();
     }
-
 
 </script>

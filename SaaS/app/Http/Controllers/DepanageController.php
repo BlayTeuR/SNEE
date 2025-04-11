@@ -14,6 +14,15 @@ class DepanageController extends Controller
         return view('dashboard', compact('depannages'));
     }
 
+    public function destroy($id)
+    {
+        // Suppression du dépannage
+        $depannage = Depannage::findOrFail($id);
+        $depannage->delete();
+
+        return response()->json(['message' => 'Dépannage supprimé avec succès!']);
+    }
+
     public function updateStatus(Request $request, $id)
     {
         // Validation des données envoyées

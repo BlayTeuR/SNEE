@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
  Route::get('/depannage/{id}', [DepanageController::class, 'show'])->name('depannage.show');
  Route::patch('/depannage/{id}/update-status', [DepanageController::class, 'updateStatus'])->name('depannage.updateStatus');
  Route::post('/depannage/store', [DepanageController::class, 'store'])->name('depannage.store');
+ Route::post('depannage/del/{id}', [DepanageController::class, 'destroy'])->name('depannage.del');
 
  // Approvisionnement
  Route::patch('/approvisionnement/{id}/update-status', [ApprovisionnementController::class, 'updateStatus'])->name('approvisionnement.updateStatus');

@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/ApprovisionnementController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/ApprovisionnementController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/approvisionnement.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/approvisionnement.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -191,7 +192,7 @@
       <workItem from="1744178758484" duration="13160000" />
       <workItem from="1744198647467" duration="8892000" />
       <workItem from="1744265308393" duration="12204000" />
-      <workItem from="1744284953930" duration="8771000" />
+      <workItem from="1744284953930" duration="11714000" />
     </task>
     <servers />
   </component>
