@@ -37,4 +37,8 @@ class Depannage extends Model
     {
         return $this->hasMany(Approvisionnement::class, 'depannage_id');
     }
+
+    public function types(){
+        return $this->hasOne(Type::class, 'depannage_id');
+    }
 }

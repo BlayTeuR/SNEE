@@ -15,6 +15,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dépannage') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('entretien')" :active="request()->routeIs('entretien')">
+                        {{ __('Entretien') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('facturation')" :active="request()->routeIs('facturation')">
                         {{ __('Facturation') }}
                     </x-nav-link>
@@ -80,7 +83,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('facturation')" :active="request()->routeIs('facturation')">
-                {{ __('Facturation') }}
+                {{ __('Facturations') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('stat')" :active="request()->routeIs('stat')">
                 {{ __('Statistique') }}

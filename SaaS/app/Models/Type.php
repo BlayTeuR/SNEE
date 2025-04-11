@@ -13,6 +13,6 @@ class Type extends Model
     ];
 
     public function depannage(){
-        return $this->belongsTo(Depannage::class, 'depannage_id');
+        return $this->hasOne(Depannage::class, 'depannage_id');
     }
 }

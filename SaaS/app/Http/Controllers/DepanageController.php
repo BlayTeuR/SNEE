@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Depannage;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
 class DepanageController extends Controller
 {
     public function index()
     {
-        $depannages = Depannage::with('historiques')->get();
+        $depannages = Depannage::with('historiques', 'types')->get();
 
         return view('dashboard', compact('depannages'));
     }
@@ -57,7 +58,8 @@ class DepanageController extends Controller
     }
 
     // méthode store pour enregistrer un dépannage
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         try {
             // Validation des données
             $request->validate([
@@ -72,7 +74,7 @@ class DepanageController extends Controller
                 'image' => 'nullable|image|max:2048',
             ]);
 
-            // Association de l'image au dépannage en l'enregistrant dans la table 'photo'
+            // Création du Depannage
             $depannage = Depannage::create([
                 'nom' => $request->input('name'),
                 'adresse' => $request->input('add'),
@@ -85,6 +87,14 @@ class DepanageController extends Controller
                 'infos_supplementaires' => $request->input('infos'),
             ]);
 
+            // Création du Type associé au Depannage
+            $type = new Type([
+                'garantie' => 'Non renseigné',
+                'contrat' => 'Non renseigné',
+            ]);
+            $depannage->type()->save($type);
+
+            // Gestion des images
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
                     if ($image->isValid()) {

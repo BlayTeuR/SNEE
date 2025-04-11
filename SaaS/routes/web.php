@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\ApprovisionnementController;
 use App\Http\Controllers\DepanageController;
+use App\Http\Controllers\FacturationsController;
 use App\Http\Controllers\PieceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TypeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,14 +20,16 @@ Route::get('/confirmation', function () {
 Route::get('/dashboard', [DepanageController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 // Passe les données de la table approvionnement à la vue 'approvisionnement'
 Route::get('/approvisionnement', [ApprovisionnementController::class, 'index'])->middleware(['auth', 'verified'])->name('approvisionnement');
-
-Route::get('/facturation', function () {
-    return view('facturation');
-})->middleware(['auth', 'verified'])->name('facturation');
+// Passe les données de la table facturation à la vue 'facturation'
+Route::get('/facturation', [FacturationsController::class, 'index'])->middleware(['auth', 'verified'])->name('facturation');
 
 Route::get('/form', function() {
     return view('form');
 })->name('form');
+
+Route::get('/entretien', function() {
+    return view('entretien');
+})->name('entretien');
 
 Route::get('/stat', function () {
     return view('stat');
@@ -44,7 +48,7 @@ Route::middleware('auth')->group(function () {
 // Route transfert spécial de données depuis BD
 
 // Depannage
- Route::get('/depannage/{id}', [DepanageController::class, 'show'])->name('depannage.show');
+ Route::get('/depannage/{id}', [DepanageController::class, 'show'])->name('depannage.show')->middleware(['auth', 'verified']);
  Route::patch('/depannage/{id}/update-status', [DepanageController::class, 'updateStatus'])->name('depannage.updateStatus');
  Route::post('/depannage/store', [DepanageController::class, 'store'])->name('depannage.store');
  Route::post('depannage/del/{id}', [DepanageController::class, 'destroy'])->name('depannage.del');
@@ -57,5 +61,8 @@ Route::middleware('auth')->group(function () {
  //Piece
  Route::post('/approvisionnement/{id}/add-pieces', [PieceController::class, 'addPieces'])->name('pieces.add');
  Route::post('pieces/del/{id}', [PieceController::class, 'destroy'])->name('pieces.del');
+
+ //Type
+ Route::put('/type/{id}/update', [TypeController::class, 'updateType'])->name('update.type');
 
 require __DIR__.'/auth.php';

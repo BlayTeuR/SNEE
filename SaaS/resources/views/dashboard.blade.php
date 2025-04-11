@@ -49,7 +49,7 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-16">ID</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Nom</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Adresse</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Type</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Type de client</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Historique</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Plus d'information</th>
@@ -61,7 +61,51 @@
                             <td class="p-3 text-sm text-gray-700 w-16 truncate">{{ $depannage->id }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->nom }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->adresse }}</td>
-                            <td class="p-3 text-sm text-gray-700">{{ $depannage->contact_email }}</td>
+                            <td class="p-3 text-sm text-gray-700">
+                                {{$depannage->types->contrat}}, {{$depannage->types->garantie}}
+
+                                <!-- Bouton d'édition -->
+                                <button
+                                    onclick="openModal({{ $depannage->id }})"
+                                    class="ml-2 text-blue-500 hover:text-blue-700">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+
+                                <!-- Modal -->
+                                <div id="modal-{{ $depannage->id }}" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center z-50 flex">
+                                    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                                        <h2 class="text-lg font-semibold">Modifier le type de contrat et de garantie</h2>
+
+                                        <form id="form-{{ $depannage->id }}" action="{{ route('update.type', $depannage->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+
+                                            <!-- Liste déroulante pour Garantie -->
+                                            <label for="garantie" class="block mt-4 text-sm text-gray-700">Garantie</label>
+                                            <select id="garantie-{{ $depannage->id }}" name="garantie" class="w-full p-2 mt-2 border rounded">
+                                                <option value="Avec garanti" {{ $depannage->types->garantie == 'Avec garanti' ? 'selected' : '' }}>Avec garanti</option>
+                                                <option value="Sans garanti" {{ $depannage->types->garantie == 'Sans garanti' ? 'selected' : '' }}>Sans garanti</option>
+                                            </select>
+
+                                            <!-- Liste déroulante pour Contrat -->
+                                            <label for="contrat" class="block mt-4 text-sm text-gray-700">Contrat</label>
+                                            <select id="contrat-{{ $depannage->id }}" name="contrat" class="w-full p-2 mt-2 border rounded">
+                                                <option value="Contrat de maintenance" {{ $depannage->types->contrat == 'Contrat de maintenance' ? 'selected' : '' }}>Contrat de maintenance</option>
+                                                <option value="Sans contrat" {{ $depannage->types->contrat == 'Sans contrat' ? 'selected' : '' }}>Sans contrat</option>
+                                            </select>
+
+
+                                            <!-- Boutons Valider et Annuler -->
+                                            <div class="mt-4 flex justify-end">
+                                                <button type="button" onclick="closeModal({{ $depannage->id }})" class="px-4 py-2 bg-red-500 text-white rounded-lg mr-2 hover:bg-red-600">Annuler</button>
+                                                <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Valider</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </td>
+
                             <td class="p-3 text-sm text-gray-700 relative">
                                 <button onclick="toggleDropdown('historique-{{ $depannage->id }}')" class="bg-gray-300 bg-opacity-50 px-3 py-1 rounded-lg hover:bg-gray-400">
                                     Afficher Historique
@@ -122,8 +166,45 @@
 
 
 <script>
+
+    function toggleChoice(buttonId) {
+        const buttons = document.querySelectorAll(`#${buttonId}, #${buttonId}-2`); // Sélectionner les deux boutons correspondants
+
+        // Bascule entre les deux états
+        buttons.forEach(button => {
+            button.classList.toggle('bg-blue-500');
+            button.classList.toggle('bg-blue-600');
+            button.classList.toggle('bg-gray-500');
+            button.classList.toggle('bg-gray-600');
+        });
+    }
+
+    function openModal(depannageId) {
+        document.getElementById(`modal-${depannageId}`).classList.remove('hidden');
+    }
+
+    // Fonction pour fermer le modal
+    function closeModal(depannageId) {
+        document.getElementById(`modal-${depannageId}`).classList.add('hidden');
+    }
+
+    // Fermer le modal si on clique à l'extérieur
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('bg-opacity-50')) {
+            const modalId = event.target.id.split('-')[1];
+            closeModal(modalId);
+        }
+    });
+
     let lastOpenedDropdown = null;
     let depannageIdToDelete = null;
+
+    // Fonction pour afficher ou masquer le menu déroulant
+    function toggleMenu(menuId) {
+        const menu = document.getElementById(menuId);
+        // Si le menu est visible, on le cache, sinon on l'affiche
+        menu.classList.toggle('hidden');
+    }
 
     function toggleDropdown(id, buttonId = null) {
         const dropdown = document.getElementById(id);
@@ -189,14 +270,24 @@
         toggleModal();
     }
 
+    document.addEventListener('click', function(event) {
+        const isClickInsideMenu = event.target.closest('.relative');
+        const isClickInsideDropdown = event.target.closest('.absolute');
+        const isClickInsideButton = event.target.closest('.cursor-pointer');
+
+        // Si le clic n'est pas à l'intérieur d'un bouton de menu ou d'un menu, fermer les menus ouverts
+        if (!isClickInsideMenu && !isClickInsideDropdown && !isClickInsideButton) {
+            if (lastOpenedDropdown) {
+                lastOpenedDropdown.classList.add('hidden');
+                lastOpenedDropdown = null;
+            }
+        }
+    });
+
 </script>
 
 <style>
-    .status-circle {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        margin-right: 8px;
+    button:focus {
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Ajout d'une bordure lumineuse autour du bouton */
     }
 </style>
