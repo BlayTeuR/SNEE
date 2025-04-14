@@ -33,6 +33,32 @@ class DepanageController extends Controller
             $query->where('adresse', 'like', '%' . $request->lieu . '%');
         }
 
+        // Filtrer par type (garantie / contrat)
+        if ($request->filled('garantie')) {
+            $garantieMap = [
+                'oui' => 'Avec garantie',
+                'non' => 'Sans garantie',
+            ];
+
+            if (array_key_exists($request->garantie, $garantieMap)) {
+                $query->whereHas('types', function ($q) use ($request, $garantieMap) {
+                    $q->where('garantie', $garantieMap[$request->garantie]);
+                });
+            }
+        }
+        if ($request->filled('contrat')) {
+            $contratMap = [
+                'oui' => 'Contrat de maintenance',
+                'non' => 'Sans contrat',
+            ];
+
+            if (array_key_exists($request->contrat, $contratMap)) {
+                $query->whereHas('types', function ($q) use ($request, $contratMap) {
+                    $q->where('contrat', $contratMap[$request->contrat]);
+                });
+            }
+        }
+
         // Appliquer le tri avant de récupérer les résultats
         $depannages = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 

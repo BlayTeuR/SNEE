@@ -26,14 +26,8 @@
 
                 <!-- Filtrer par nom -->
                 <div class="mb-4">
-                    <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par type de client</label>
+                    <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
                     <input type="text" name="nom" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
-                </div>
-
-                <!-- Filtrer par type de client -->
-                <div class="mb-4">
-                    <label for="type-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
-                    <input type="text" name="type" id="type-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
                 </div>
 
                 <!-- Filtrer par lieu -->
@@ -42,8 +36,26 @@
                     <input type="text" name="lieu" id="lieu-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Lieu" value="{{ request('lieu') }}">
                 </div>
 
-                <!-- Bouton de réinitialisation -->
+            <!-- Filtrer par garantie -->
                 <div>
+                    <label class="block text-sm font-medium text-gray-700">Garantie :</label>
+                    <input type="radio" name="garantie" value="oui" {{ request('garantie') == 'oui' ? 'checked' : '' }}> Oui
+                    <input type="radio" name="garantie" value="non" {{ request('garantie') == 'non' ? 'checked' : '' }}> Non
+                    <input type="radio" name="garantie" value="" {{ request('garantie') === null ? 'checked' : '' }}> Tous
+                    <br>
+                </div>
+
+            <!-- Filtrer par contrat -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Contrat :</label>
+                    <input type="radio" name="contrat" value="oui" {{ request('contrat') == 'oui' ? 'checked' : '' }}> Oui
+                    <input type="radio" name="contrat" value="non" {{ request('contrat') == 'non' ? 'checked' : '' }}> Non
+                    <input type="radio" name="contrat" value="" {{ request('contrat') === null ? 'checked' : '' }}> Tous
+                </div>
+
+            <!-- Bouton de réinitialisation -->
+                <div>
+                    <br>
                     <a href="{{ route('dashboard') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
                 </div>
 
@@ -99,8 +111,8 @@
                                             <!-- Liste déroulante pour Garantie -->
                                             <label for="garantie" class="block mt-4 text-sm text-gray-700">Garantie</label>
                                             <select id="garantie-{{ $depannage->id }}" name="garantie" class="w-full p-2 mt-2 border rounded">
-                                                <option value="Avec garanti" {{ $depannage->types->garantie == 'Avec garanti' ? 'selected' : '' }}>Avec garanti</option>
-                                                <option value="Sans garanti" {{ $depannage->types->garantie == 'Sans garanti' ? 'selected' : '' }}>Sans garanti</option>
+                                                <option value="Avec garantie" {{ $depannage->types->garantie == 'Avec garantie' ? 'selected' : '' }}>Avec garantie</option>
+                                                <option value="Sans garantie" {{ $depannage->types->garantie == 'Sans garantie' ? 'selected' : '' }}>Sans garantie</option>
                                             </select>
 
                                             <!-- Liste déroulante pour Contrat -->

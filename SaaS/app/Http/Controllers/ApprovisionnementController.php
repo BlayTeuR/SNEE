@@ -7,27 +7,34 @@ use Illuminate\Http\Request;
 
 class ApprovisionnementController extends Controller
 {
-    public function index(Request $request){
-        $approvisionnements = Approvisionnement::with('depannage', 'pieces')->get();
-
+    public function index(Request $request) {
         $query = Approvisionnement::with('depannage', 'pieces');
 
-        if($request->filled('statut') && request()->statut !== 'all') {
-            $query->where('statut', request()->statut);
+        // Filtrer par statut
+        if ($request->filled('statut') && $request->statut !== 'all') {
+            $query->where('statut', $request->statut);
         }
 
-        if($request->filled('date')) {
+        // Filtrer par date
+        if ($request->filled('date')) {
             $query->whereDate('created_at', $request->date);
         }
 
-        if($request->filled('nom')) {
-            $query->where('nom', 'like', '%' . $request->nom . '%');
+        // Filtrer par nom
+        if ($request->filled('nom')) {
+            $query->join('depannages', 'approvisionnements.depannage_id', '=', 'depannages.id')
+                ->where('depannages.nom', 'like', '%' . $request->nom . '%');
         }
 
-        if($request->filled('id')) {
-            $query->where('depannage_id', 'like', '%' . $request->id . '%');
+        // Filtrer par ID
+        if ($request->filled('id')) {
+            $query->where('depannage_id', $request->id);
         }
 
+        // Récupérer les approvisionnements filtrés
+        $approvisionnements = $query->get();
+
+        // Retourner la vue avec les approvisionnements filtrés
         return view('approvisionnement', compact('approvisionnements'));
     }
 

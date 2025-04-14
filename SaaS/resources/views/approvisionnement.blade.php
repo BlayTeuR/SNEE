@@ -3,34 +3,37 @@
         <!-- Filtres -->
         <div class="w-1/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
 
-            <form method="GET" action="{{route('approvisionnement')}}">
+            <form method="GET" action="{{ route('approvisionnement') }}">
+                <h2 class="text-lg font-bold">Filtres</h2>
 
-            <h2 class="text-lg font-bold">Filtres</h2>
+                <!-- Filtrer par statut -->
+                <div class="mb-4">
+                    <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
+                    <select name="statut" id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+                        <option value="all">Tous</option>
+                        <option value="À planifier">À planifier</option>
+                        <option value="En attente">En attente</option>
+                        <option value="Fait">Fait</option>
+                    </select>
+                </div>
 
-            <div class="mb-4">
-                <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
-                <select id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-                    <option value="all">Tous</option>
-                    <option value="À planifier">À planifier</option>
-                    <option value="En attente">En attente</option>
-                    <option value="Fait">Fait</option>
-                </select>
-            </div>
+                <!-- Filtrer par date -->
+                <div class="mb-4">
+                    <label for="date-filter" class="block text-sm font-medium text-gray-700">Filtrer par date</label>
+                    <input type="date" name="date" id="date-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date') }}">
+                </div>
 
-            <div class="mb-4">
-                <label for="date-filter" class="block text-sm font-medium text-gray-700">Filtrer par date</label>
-                <input type="date" id="date-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-            </div>
+                <!-- Filtrer par nom -->
+                <div class="mb-4">
+                    <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
+                    <input type="text" name="nom" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
+                </div>
 
-            <div class="mb-4">
-                <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
-                <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
-            </div>
-
-            <div class="mb-4">
-                <label for="amount-filter" class="block text-sm font-medium text-gray-700">Filtrer par ID</label>
-                <input type="number" id="amount-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="ID">
-            </div>
+                <!-- Filtrer par ID -->
+                <div class="mb-4">
+                    <label for="amount-filter" class="block text-sm font-medium text-gray-700">Filtrer par ID</label>
+                    <input type="number" name="id" id="amount-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="ID" value="{{ request('id') }}">
+                </div>
 
                 <!-- Bouton de réinitialisation -->
                 <div>
@@ -42,6 +45,7 @@
                     <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 mt-4">Appliquer les filtres</button>
                 </div>
             </form>
+
         </div>
 
         <!-- Liste des approvisionnements -->
