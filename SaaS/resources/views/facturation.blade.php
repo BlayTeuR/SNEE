@@ -127,12 +127,17 @@
                             </div>
 
                             </td>
-                            <td class="p-3 text-sm text-gray-700">
-                                <button onclick="toggleDropdown('status-{{ $facturation->id }}')" class="bg-gray-300 bg-opacity-50 rounded-lg">Statut</button>
-                                <ul id="status-{{ $facturation->id }}" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                    <li>{{ $facturation->statut }}</li>
-                                    <li>Envoyée</li>
-                                    <li>Non envoyée</li>
+                            <td class="p-3 text-sm text-gray-700 relative">
+                                <button id="status-{{ $facturation->id }}-btn"
+                                        onclick="toggleDropdown('status-{{ $facturation->id }}')"
+                                        class="px-4 py-2 rounded-lg text-white
+                                        {{ $facturation->statut == 'Non envoyée' ? 'bg-red-500' :
+                                           ($facturation->statut == 'Envoyée' ? 'bg-green-500' : 'bg-gray-500')}}">
+                                    {{ $facturation->statut }}
+                                </button>
+                                <ul id="status-{{ $facturation->id }}" class="hidden absolute left-3 top-full bg-gray-100 p-2 mt-2 rounded shadow-md z-10 w-48">
+                                    <li onclick="updateStatus('status-{{ $facturation->id }}', 'Non envoyée', 'bg-red-500', 'status-{{ $facturation->id }}-btn', {{ $facturation->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">Non envoyée</li>
+                                    <li onclick="updateStatus('status-{{ $facturation->id }}', 'Envoyée', 'bg-green-500', 'status-{{ $facturation->id }}-btn', {{ $facturation->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">Envoyée</li>
                                 </ul>
                             </td>
                             <td class="p-3 text-sm text-gray-700">{{ $facturation->contact }}</td>
@@ -168,12 +173,6 @@
     function toggleDropdown(id) {
         const dropdown = document.getElementById(id);
         dropdown.classList.toggle('hidden');
-
-        if (!dropdown.classList.contains('hidden')) {
-            lastOpenedDropdown = dropdown;
-        } else {
-            lastOpenedDropdown = null;
-        }
     }
 
     function toggleModal(facturationId = null) {
@@ -212,6 +211,40 @@
         }
 
         toggleModal();
+    }
+
+    function updateStatus(dropdownId, newStatus, newBgClass, buttonId, facturationId) {
+        const button = document.getElementById(buttonId);
+        const dropdown = document.getElementById(dropdownId);
+
+        // Mise à jour du texte
+        button.textContent = newStatus;
+
+        // Mise à jour de la couleur de fond
+        button.className = 'px-4 py-2 rounded-lg text-white ' + newBgClass;
+
+        // Cacher le dropdown
+        dropdown.classList.add('hidden');
+
+        fetch(`/facturation/${facturationId}/update-status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({
+                statut: newStatus,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+
+        toggleDropdown(dropdownId);
     }
 
     function openModalDate(facturationId) {

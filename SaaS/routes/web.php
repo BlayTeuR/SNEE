@@ -72,6 +72,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('facturation/del/{id}', [FacturationsController::class, 'destroy'])->name('facturation.del');
     Route::put('facturation/{id}/update-date', [FacturationsController::class, 'updateDate'])->name('facturation.update.date');
     Route::put('facturation/{id}/update-montant', [FacturationsController::class, 'updateMontant'])->name('facturation.update.montant');
+    Route::patch('facturation/{id}/update-status', [FacturationsController::class, 'updateStatus'])->name('facturation.update.status');
 });
 
  require __DIR__.'/auth.php';

@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/PieceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/PieceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/approvisionnement.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/approvisionnement.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/facturation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/facturation.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
@@ -195,7 +192,8 @@
       <workItem from="1744265308393" duration="12204000" />
       <workItem from="1744284953930" duration="11714000" />
       <workItem from="1744351587097" duration="13497000" />
-      <workItem from="1744371386967" duration="9705000" />
+      <workItem from="1744371386967" duration="10433000" />
+      <workItem from="1744610686295" duration="6521000" />
     </task>
     <servers />
   </component>
