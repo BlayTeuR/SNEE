@@ -1,44 +1,53 @@
 <x-app-layout>
     <div class="flex flex-col md:flex-row bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
-        <!-- Filtres -->
         <div class="w-full md:w-1/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
-            <h2 class="text-lg font-bold">Filtres</h2>
 
-            <!-- Filtrer par statut -->
-            <div class="mb-4">
-                <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
-                <select id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-                    <option value="all">Tous</option>
-                    <option value="planifier">À planifier</option>
-                    <option value="affecter">Affecter</option>
-                    <option value="approvisionnement">Approvisionnement</option>
-                    <option value="facturer">À facturer</option>
-                </select>
-            </div>
+        <form method="GET" action="{{ route('dashboard') }}">
+            <!-- Filtres -->
+                <h2 class="text-lg font-bold">Filtres</h2>
 
-            <!-- Filtrer par date -->
-            <div class="mb-4">
-                <label for="date-filter" class="block text-sm font-medium text-gray-700">Filtrer par date</label>
-                <input type="date" id="date-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-            </div>
+                <!-- Filtrer par statut -->
+                <div class="mb-4">
+                    <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
+                    <select name="statut" id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+                        <option value="all">Tous</option>
+                        <option value="À planifier">À planifier</option>
+                        <option value="Affecter">Affecter</option>
+                        <option value="Approvisionnement">Approvisionnement</option>
+                        <option value="À facturer">À facturer</option>
+                    </select>
+                </div>
 
-            <!-- Filtrer par nom -->
-            <div class="mb-4">
-                <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
-                <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
-            </div>
+                <!-- Filtrer par date -->
+                <div class="mb-4">
+                    <label for="date-filter" class="block text-sm font-medium text-gray-700">Filtrer par date</label>
+                    <input type="date" name="date" id="date-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date') }}">
+                </div>
 
-            <!-- Filtrer par lieu -->
-            <div class="mb-4">
-                <label for="lieu-filter" class="block text-sm font-medium text-gray-700">Filtrer par lieu</label>
-                <input type="text" id="lieu-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Lieu">
-            </div>
+                <!-- Filtrer par nom -->
+                <div class="mb-4">
+                    <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
+                    <input type="text" name="nom" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
+                </div>
 
-            <!-- Bouton de réinitialisation -->
-            <div>
-                <button id="reset-filters" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Réinitialiser les filtres</button>
+                <!-- Filtrer par lieu -->
+                <div class="mb-4">
+                    <label for="lieu-filter" class="block text-sm font-medium text-gray-700">Filtrer par lieu</label>
+                    <input type="text" name="lieu" id="lieu-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Lieu" value="{{ request('lieu') }}">
+                </div>
+
+                <!-- Bouton de réinitialisation -->
+                <div>
+                    <a href="{{ route('dashboard') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
+                </div>
+
+                <!-- Bouton pour appliquer les filtres -->
+                <div>
+                    <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 mt-4">Appliquer les filtres</button>
+                </div>
             </div>
-        </div>
+        </form>
+
 
         <!-- Liste des dépannages -->
         <div class="w-full md:w-3/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">

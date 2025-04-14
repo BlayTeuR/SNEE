@@ -8,9 +8,33 @@ use Illuminate\Http\Request;
 
 class DepanageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $depannages = Depannage::with('historiques', 'types')->get();
+        // Commencer la requête de base
+        $query = Depannage::with('historiques', 'types');
+
+        // Filtrer par statut
+        if ($request->filled('statut') && $request->statut !== 'all') {
+            $query->where('statut', $request->statut);
+        }
+
+        // Filtrer par date (ex: date de création)
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        // Filtrer par nom
+        if ($request->filled('nom')) {
+            $query->where('nom', 'like', '%' . $request->nom . '%');
+        }
+
+        // Filtrer par lieu (adresse ici ?)
+        if ($request->filled('lieu')) {
+            $query->where('adresse', 'like', '%' . $request->lieu . '%');
+        }
+
+        // Appliquer le tri avant de récupérer les résultats
+        $depannages = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
         return view('dashboard', compact('depannages'));
     }
