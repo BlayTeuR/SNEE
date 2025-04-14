@@ -26,8 +26,14 @@
 
                 <!-- Filtrer par nom -->
                 <div class="mb-4">
-                    <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
+                    <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par type de client</label>
                     <input type="text" name="nom" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
+                </div>
+
+                <!-- Filtrer par type de client -->
+                <div class="mb-4">
+                    <label for="type-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
+                    <input type="text" name="type" id="type-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
                 </div>
 
                 <!-- Filtrer par lieu -->
@@ -45,8 +51,9 @@
                 <div>
                     <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 mt-4">Appliquer les filtres</button>
                 </div>
-            </div>
         </form>
+        </div>
+
 
 
         <!-- Liste des dépannages -->

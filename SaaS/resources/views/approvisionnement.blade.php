@@ -2,6 +2,9 @@
     <div class="flex bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <!-- Filtres -->
         <div class="w-1/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
+
+            <form method="GET" action="{{route('approvisionnement')}}">
+
             <h2 class="text-lg font-bold">Filtres</h2>
 
             <div class="mb-4">
@@ -29,9 +32,16 @@
                 <input type="number" id="amount-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="ID">
             </div>
 
-            <div>
-                <button id="reset-filters" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Réinitialiser les filtres</button>
-            </div>
+                <!-- Bouton de réinitialisation -->
+                <div>
+                    <a href="{{ route('approvisionnement') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
+                </div>
+
+                <!-- Bouton pour appliquer les filtres -->
+                <div>
+                    <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 mt-4">Appliquer les filtres</button>
+                </div>
+            </form>
         </div>
 
         <!-- Liste des approvisionnements -->

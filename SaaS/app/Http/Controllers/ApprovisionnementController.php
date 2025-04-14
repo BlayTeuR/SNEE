@@ -7,8 +7,26 @@ use Illuminate\Http\Request;
 
 class ApprovisionnementController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $approvisionnements = Approvisionnement::with('depannage', 'pieces')->get();
+
+        $query = Approvisionnement::with('depannage', 'pieces');
+
+        if($request->filled('statut') && request()->statut !== 'all') {
+            $query->where('statut', request()->statut);
+        }
+
+        if($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        if($request->filled('nom')) {
+            $query->where('nom', 'like', '%' . $request->nom . '%');
+        }
+
+        if($request->filled('id')) {
+            $query->where('depannage_id', 'like', '%' . $request->id . '%');
+        }
 
         return view('approvisionnement', compact('approvisionnements'));
     }
