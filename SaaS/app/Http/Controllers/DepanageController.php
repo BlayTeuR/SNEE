@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Depannage;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Termwind\Components\Element;
 
 class DepanageController extends Controller
 {
@@ -87,7 +88,7 @@ class DepanageController extends Controller
             'statut' => 'required|string|in:À planifier,Affecter,Approvisionnement,À facturer',
         ]);
 
-        // Récupérer le depannage
+        // Récupérer le dépannage
         $depannage = Depannage::findOrFail($id);
         $ancienStatut = $depannage->statut;
 
@@ -96,12 +97,27 @@ class DepanageController extends Controller
         $depannage->statut = $nouveauStatut;
         $depannage->save();
 
+        // Si le statut est "Affecter"
+        if ($nouveauStatut == 'Affecter') {
+            // Vérifier si la date est déjà renseignée
+            if ($depannage->depannage_date == null) {
+                // Si la date est null, demander à l'utilisateur de renseigner une date
+                return response()->json(['action' => 'request_date']);
+            } else {
+                // Si la date est déjà renseignée, demander à l'utilisateur s'il souhaite la modifier
+                return response()->json(['action' => 'modify_date', 'date' => $depannage->depannage_date]);
+            }
+        }
+
+        // Si le statut passe de "Approvisionnement" à un autre statut
         if($ancienStatut != 'Approvisionnement' && $nouveauStatut == 'Approvisionnement') {
             // Créer un nouvel enregistrement dans la table 'approvisionnement'
             $depannage->approvisionnements()->create([
                 'statut' => 'À planifier',
             ]);
         }
+
+        // Si le statut passe de "À facturer" à un autre statut
         if($ancienStatut != 'À facturer' && $nouveauStatut == 'À facturer') {
             // Créer un nouvel enregistrement dans la table 'facturation'
             $depannage->facturations()->create([
@@ -111,6 +127,21 @@ class DepanageController extends Controller
         }
 
         return response()->json(['message' => 'Statut mis à jour avec succès!']);
+    }
+
+    public function updateDate(Request $request, $id)
+    {
+        $request->validate([
+            'date_depannage' => 'required|date',
+        ]);
+        $depannage = Depannage::find($id);
+        if (!$depannage) {
+            return response()->json(['error' => 'Dépannage non trouvé.'], 404);
+        }
+        $depannage->date_depannage = $request->date_depannage;
+        $depannage->save();
+
+        return response()->json(['success' => 'Statut et date mise à jour avec succès.']);
     }
 
     // méthode store pour enregistrer un dépannage

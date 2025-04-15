@@ -39,7 +39,7 @@
             <!-- Filtrer par garantie -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Garantie :</label>
-                    <input type="radio" name="garantie" value="oui" {{ request('garantie') == 'oui' ? 'checked' : '' }}> Oui
+                    <input type="radio" name="garantie" value="oui" {{ request('garantie') == 'oui' ? 'checked' : '' }} > Oui
                     <input type="radio" name="garantie" value="non" {{ request('garantie') == 'non' ? 'checked' : '' }}> Non
                     <input type="radio" name="garantie" value="" {{ request('garantie') === null ? 'checked' : '' }}> Tous
                     <br>
@@ -65,8 +65,6 @@
                 </div>
         </form>
         </div>
-
-
 
         <!-- Liste des dépannages -->
         <div class="w-full md:w-3/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
@@ -190,10 +188,27 @@
             </div>
         </div>
     </div>
+
+    <div id="create-date-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-semibold mb-4">A quelle date voulez-vous associer ce dépannage ?</h2>
+            <div class="mt-4 flex justify-end space-x-4">
+                <label for="date-create" class="block text-sm font-medium text-gray-700">Choisir une date</label>
+                <input type="date" name="date-create" id="date-create" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date-crate') }}">
+                <button onclick="toggleModalDate(false)" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="updateDate()" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
+            </div>
+        </div>
+    </div>
 </x-app-layout>
 
 
 <script>
+
+    let currentDeppangeId = null;
+    let pendingStatut = null;
+    let lastOpenedDropdown = null;
+    let depannageIdToDelete = null;
 
     function toggleChoice(buttonId) {
         const buttons = document.querySelectorAll(`#${buttonId}, #${buttonId}-2`); // Sélectionner les deux boutons correspondants
@@ -224,8 +239,15 @@
         }
     });
 
-    let lastOpenedDropdown = null;
-    let depannageIdToDelete = null;
+    function toggleModalDate(show = true) {
+        console.log("appel de toggleModalDate avec show =", show);
+        const modal = document.getElementById('create-date-modal');
+        if (show) {
+            modal.classList.remove('hidden');
+        } else {
+            modal.classList.add('hidden');
+        }
+    }
 
     // Fonction pour afficher ou masquer le menu déroulant
     function toggleMenu(menuId) {
@@ -257,12 +279,28 @@
         const button = document.getElementById(buttonId);
         const depannageId = buttonId.split('-')[1];
 
+        if(statusText === 'Affecter'){
+            currentDeppangeId = depannageId;
+            pendingStatut = {
+                dropdownId,
+                statusText,
+                statusColor,
+                buttonId,
+            };
+            toggleModalDate(true);
+            return;
+        }
+
+        performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button);
+        toggleDropdown(dropdownId);
+    }
+
+    function performStatusUpdate(ropdownId, statusText, statusColor, depannageId, button){
         button.textContent = statusText;
         button.classList.remove('bg-gray-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500');
         button.classList.add(statusColor);
 
-        // AJAX update
-        fetch(`/depannage/${depannageId}/update-status`, {
+        fetch('/depannage/${depannageId}/update-status', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -271,10 +309,42 @@
             body: JSON.stringify({ statut: statusText }),
         })
             .then(response => response.json())
-            .then(data => console.log(data.message))
+            .then(data => {
+                console.log(data);
+                if (data.message) alert(data.message);
+            })
             .catch(error => console.error('Erreur:', error));
+    }
 
-        toggleDropdown(dropdownId);
+    function updateDate() {
+        const date = document.getElementById('date-create').value;
+
+        fetch(`/depannage/${currentDeppangeId}/update-date`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ date_depannage: date })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success || 'Date enregistrée !');
+                toggleModalDate(false);
+
+                // On met à jour le statut seulement après que la date soit confirmée
+                if (pendingStatus) {
+                    const { dropdownId, statusText, statusColor, buttonId } = pendingStatus;
+                    const button = document.getElementById(buttonId);
+                    performStatusUpdate(dropdownId, statusText, statusColor, currentDepannageId, button);
+                    toggleDropdown(dropdownId);
+                    pendingStatus = null;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Erreur lors de l’enregistrement de la date.');
+            });
     }
 
     function delDepannage() {

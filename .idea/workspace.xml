@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/caconfirmation.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/caform.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000003_create_depannages_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000003_create_depannages_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/guest.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/guest.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -198,7 +199,7 @@
       <workItem from="1744371386967" duration="10433000" />
       <workItem from="1744610686295" duration="10077000" />
       <workItem from="1744630351835" duration="8816000" />
-      <workItem from="1744697097101" duration="2238000" />
+      <workItem from="1744697097101" duration="11954000" />
     </task>
     <servers />
   </component>

@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('type_materiel');
             $table->string('message_erreur')->nullable();
             $table->text('infos_supplementaires')->nullable();
+            $table->date('date_depannage')->nullable();
             $table->timestamps();
         });
     }
