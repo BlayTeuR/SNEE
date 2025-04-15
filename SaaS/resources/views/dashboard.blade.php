@@ -277,7 +277,7 @@
 
     function updateStatus(dropdownId, statusText, statusColor, buttonId) {
         const button = document.getElementById(buttonId);
-        const depannageId = buttonId.split('-')[1];
+        const depannageId = buttonId.split('-')[1].trim();
 
         if(statusText === 'Affecter'){
             currentDeppangeId = depannageId;
@@ -296,11 +296,12 @@
     }
 
     function performStatusUpdate(ropdownId, statusText, statusColor, depannageId, button){
+        console.log()
         button.textContent = statusText;
         button.classList.remove('bg-gray-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500');
         button.classList.add(statusColor);
 
-        fetch('/depannage/${depannageId}/update-status', {
+        fetch(`/depannage/${depannageId}/update-status`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -311,7 +312,6 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                if (data.message) alert(data.message);
             })
             .catch(error => console.error('Erreur:', error));
     }
@@ -336,7 +336,7 @@
                 if (pendingStatus) {
                     const { dropdownId, statusText, statusColor, buttonId } = pendingStatus;
                     const button = document.getElementById(buttonId);
-                    performStatusUpdate(dropdownId, statusText, statusColor, currentDepannageId, button);
+                    performStatusUpdate(dropdownId, statusText, statusColor, currentDeppangeId, button);
                     toggleDropdown(dropdownId);
                     pendingStatus = null;
                 }
