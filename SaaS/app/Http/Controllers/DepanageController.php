@@ -117,6 +117,8 @@ class DepanageController extends Controller
     public function store(Request $request)
     {
         try {
+
+            $formSource = $request->input('form_source');
             // Validation des données
             $request->validate([
                 'name' => 'required|string|max:255',
@@ -165,7 +167,12 @@ class DepanageController extends Controller
                 }
             }
 
-            return redirect()->route('confirmation.page')->with('success', 'Votre demande a été enregistrée !');
+            if($formSource == 'formulaire_ca'){
+                return redirect()->route('caconfirmation.page')->with('success', 'Votre demande a été enregistrée !');
+
+            } else {
+                return redirect()->route('confirmation.page')->with('success', 'Votre demande a été enregistrée !');
+            }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());
         }

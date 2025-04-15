@@ -26,7 +26,7 @@
                         @endif
                     </ul>
                     <p class="text-xs"><strong>Type de matériel:</strong> {{ $depannage->type_materiel}}</p>
-                    <p class="text-xs"><strong>Panne rencontrée:</strong> {{ $depannage->message_erreur}}</p>
+                    <p class="text-xs"><strong>Panne rencontrée:</strong> {{ $depannage->description_probleme}}</p>
                     <p class="text-xs"><strong>Message d'erreur sur la carte électronique:</strong> {{ $depannage->message_erreur}}</p>
                     <p class="text-xs"><strong>Informations supplémentaires:</strong> {{ $depannage->infos_suppementaires}}</p>
                 </div>

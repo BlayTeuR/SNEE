@@ -18,7 +18,7 @@
 
     <form action="{{route('depannage.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="form_source" value="formulaire_classique">
+        <input type="hidden" name="form_source" value="formulaire_ca">
         <div class="mb-4">
             <label for="name" class="block text-gray-700">Nom <span class="text-red-500">*</span></label>
             <input type="text" id="name" name="name" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
@@ -62,8 +62,8 @@
         </div>
 
         <div class="mb-4">
-            <label for="panne" class="block text-gray-700">Panne rencontrée <span class="text-red-500">*</span></label>
-            <textarea type="text" id="panne" name="panne" rows="4" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required></textarea>
+            <label for="panne" class="block text-gray-700">Tâche(s) à effectuer <span class="text-red-500">*</span></label>
+            <textarea id="panne" name="panne" rows="4" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required></textarea>
         </div>
 
         <div class="mb-4">

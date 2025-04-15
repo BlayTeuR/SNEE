@@ -16,6 +16,10 @@ Route::get('/confirmation', function () {
     return view('confirmation');
 })->name('confirmation.page');
 
+Route::get('/caconfirmation', function () {
+    return view('caconfirmation');
+})->name('caconfirmation.page');
+
 // Passe les données de la table 'depannage' à la vue 'dashboard'
 Route::get('/dashboard', [DepanageController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 // Passe les données de la table approvionnement à la vue 'approvisionnement'
@@ -26,6 +30,10 @@ Route::get('/facturation', [FacturationsController::class, 'index'])->middleware
 Route::get('/form', function() {
     return view('form');
 })->name('form');
+
+Route::get('/caform', function() {
+    return view('caform');
+})->name('caform');
 
 Route::get('/entretien', function() {
     return view('entretien');
