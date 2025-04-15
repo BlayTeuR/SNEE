@@ -10,6 +10,7 @@
                     <p class="text-xs"><strong>Nom:</strong> {{ $depannage->nom }}</p>
                     <p class="text-xs"><strong>Adresse:</strong> {{ $depannage->adresse }}</p>
                     <p class="text-xs"><strong>Contact:</strong> {{ $depannage->contact_email }}</p>
+                    <p class="text-xs"><strong>Téléphone</strong> {{ $depannage->telephone  }}</p>
                     <p class="text-xs"><strong>Type de client:</strong> {{$depannage->types->contrat}}, {{$depannage->types->garantie}}</p>
                     <p class="text-xs"><strong>Statut:</strong> {{ $depannage->statut }}</p>
                 </div>
