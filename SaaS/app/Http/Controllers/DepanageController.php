@@ -163,6 +163,13 @@ class DepanageController extends Controller
                 'image' => 'nullable|image|max:2048',
             ]);
 
+            $provenance = 'ajout manuel';
+            if($formSource == 'formulaire_ca'){
+                $provenance = 'chargé d\'affaire';
+            } elseif ($formSource == 'formulaire_classique') {
+                $provenance = 'client';
+            }
+
             // Création du Depannage
             $depannage = Depannage::create([
                 'nom' => $request->input('name'),
@@ -174,6 +181,7 @@ class DepanageController extends Controller
                 'type_materiel' => $request->input('demande_type'),
                 'message_erreur' => $request->input('elec'),
                 'infos_supplementaires' => $request->input('infos'),
+                'provenance' => $provenance,
             ]);
 
             // Création du Type associé au Depannage

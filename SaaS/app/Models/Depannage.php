@@ -21,6 +21,7 @@ class Depannage extends Model
         'message_erreur',
         'infos_supplementaires',
         'statut',
+        'date_depannage',
     ];
 
     public function historiques()

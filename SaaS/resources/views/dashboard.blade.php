@@ -296,7 +296,6 @@
     }
 
     function performStatusUpdate(ropdownId, statusText, statusColor, depannageId, button){
-        console.log()
         button.textContent = statusText;
         button.classList.remove('bg-gray-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500');
         button.classList.add(statusColor);
@@ -329,21 +328,21 @@
         })
             .then(res => res.json())
             .then(data => {
-                alert(data.success || 'Date enregistrée !');
+                console.log("date enregistrée avec succès", data);
                 toggleModalDate(false);
 
                 // On met à jour le statut seulement après que la date soit confirmée
-                if (pendingStatus) {
-                    const { dropdownId, statusText, statusColor, buttonId } = pendingStatus;
+                if (pendingStatut) {
+                    console.log("pendingStatus", pendingStatut);
+                    const { dropdownId, statusText, statusColor, buttonId } = pendingStatut;
                     const button = document.getElementById(buttonId);
                     performStatusUpdate(dropdownId, statusText, statusColor, currentDeppangeId, button);
-                    toggleDropdown(dropdownId);
-                    pendingStatus = null;
+                    pendingStatut = null;
                 }
             })
             .catch(err => {
                 console.error(err);
-                alert('Erreur lors de l’enregistrement de la date.');
+                console.log("erreur enregistrement de la date", err);
             });
     }
 

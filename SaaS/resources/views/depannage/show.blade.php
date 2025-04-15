@@ -15,6 +15,13 @@
                 </div>
                 <div class="border border-black p-4 mb-4">
                     <h3 class="font-semibold mb-4">Description du problème</h3>
+                    <p class="text-xs"><strong>Date d'intervention</strong>
+                    @if($depannage->date_depannage == null)
+                        : pas encore planifiée
+                        @else
+                        {{ $depannage->date_depannage }}
+                        @endif
+                    </p>
                     <p class="text-xs"><strong>Historique:</strong></p>
                     <ul>
                         @if($depannage->historiques->isNotEmpty())
