@@ -10,7 +10,38 @@ class FacturationsController extends Controller
 {
     public function index(Request $request)
     {
-        $facturations = Facturations::with('depannage')->get();
+        $query = Facturations::with('depannage');
+
+        if ($request->filled('statut') && $request->statut !== 'all') {
+            $query->where('statut', $request->statut);
+        }
+
+        // Filtrer par date d'émission
+        if ($request->filled('emission')) {
+            $query->whereDate('created_at', $request->emission);
+        }
+
+        // Filtrer par date d'intervention
+        if ($request->filled('intervention')) {
+            $query->whereDate('date_intervention', $request->intervention);
+        }
+
+        // Filtrer par nom (via la relation depannage)
+        if ($request->filled('nom')) {
+            $query->join('depannages', 'approvisionnements.depannage_id', '=', 'depannages.id')
+                ->where('depannages.nom', 'like', '%' . $request->nom . '%');
+        }
+
+        // Filtrer par montant minimum et/ou maximum
+        if ($request->filled('montant_min')) {
+            $query->where('montant', '>=', $request->montant_min);
+        }
+
+        if ($request->filled('montant_max')) {
+            $query->where('montant', '<=', $request->montant_max);
+        }
+
+        $facturations = $query->get();
 
         return view('facturation', compact('facturations'));
     }

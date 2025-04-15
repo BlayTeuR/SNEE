@@ -2,39 +2,56 @@
     <div class="flex bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <!-- Filtres -->
         <div class="w-1/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
-            <h2 class="text-lg font-bold">Filtres</h2>
-            <!-- Filtres ici -->
-            <div class="mb-4">
-                <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
-                <select id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-                    <option value="all">Tous</option>
-                    <option value="non-paye">Envoyée</option>
-                    <option value="paye">Non envoyée</option>
-                </select>
-            </div>
 
-            <!-- Filtre par date -->
-            <div class="mb-4">
-                <label for="date-filter" class="block text-sm font-medium text-gray-700">Filtrer par date</label>
-                <input type="date" id="date-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-            </div>
+            <form method="GET" action="{{ route('facturation') }}">
+                <h2 class="text-lg font-bold">Filtres</h2>
 
-            <!-- Filtre par nom -->
-            <div class="mb-4">
-                <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
-                <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
-            </div>
+                <!-- Statut -->
+                <div class="mb-4">
+                    <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
+                    <select id="status-filter" name="statut" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+                        <option value="all">Tous</option>
+                        <option value="Non envoyée">Non envoyée</option>
+                        <option value="Envoyée">Envoyée</option>
+                    </select>
+                </div>
 
-            <!-- Filtre par montant -->
-            <div class="mb-4">
-                <label for="amount-filter" class="block text-sm font-medium text-gray-700">Filtrer par montant</label>
-                <input type="number" id="amount-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Montant">
-            </div>
+                <!-- Date d’émission -->
+                <div class="mb-4">
+                    <label for="date-filter" class="block text-sm font-medium text-gray-700">Filtrer par date d'émission</label>
+                    <input type="date" id="date-filter" name="emission" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('emission') }}">
+                </div>
 
-            <!-- Bouton de réinitialisation des filtres -->
-            <div>
-                <button id="reset-filters" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Réinitialiser les filtres</button>
-            </div>
+                <!-- Date d’intervention -->
+                <div class="mb-4">
+                    <label for="date-filter-intervention" class="block text-sm font-medium text-gray-700">Filtrer par date d'intervention</label>
+                    <input type="date" id="date-filter-intervention" name="intervention" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('intervention') }}">
+                </div>
+
+                <!-- Nom -->
+                <div class="mb-4">
+                    <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
+                    <input type="text" id="name-filter" name="nom" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
+                </div>
+
+                <!-- Montants -->
+                <div class="mb-4">
+                    <label for="amount-min-filter" class="block text-sm font-medium text-gray-700">Filtrer par montant</label>
+
+                    <input type="number" id="amount-min-filter" name="montant_min" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Montant minimum" value="{{ request('montant_min') }}">
+
+                    <input type="number" id="amount-max-filter" name="montant_max" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Montant maximum" value="{{ request('montant_max') }}">
+                </div>
+
+                <!-- Boutons -->
+                <div>
+                    <a href="{{ route('facturation') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
+                </div>
+                <div>
+                    <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 mt-4">Appliquer les filtres</button>
+                </div>
+            </form>
+
         </div>
 
         <!-- Liste des factures -->
