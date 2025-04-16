@@ -48,6 +48,11 @@ class ApprovisionnementController extends Controller
 
         // Mettre à jour le statut
         $nouveauStatut = $request->input('statut');
+        if($nouveauStatut === 'Fait') {
+            $approvisionnement->date_validation = now();
+        } else {
+            $approvisionnement->date_validation = null;
+        }
         $approvisionnement->statut = $nouveauStatut;
         $approvisionnement->save();
 

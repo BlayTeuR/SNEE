@@ -10,6 +10,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('depannage_id')->constrained()->onDelete('cascade');
             $table->string('statut')->default('À planifier');
+            $table->date('date_validation')->nullable();
             $table->timestamps();
         });
     }
