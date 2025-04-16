@@ -35,17 +35,9 @@ Route::get('/caform', function() {
     return view('caform');
 })->name('caform');
 
-Route::get('/entretien', function() {
-    return view('entretien');
-})->name('entretien');
-
-Route::get('/stat', function () {
-    return view('stat');
-})->middleware(['auth', 'verified'])->name('stat');
-
 Route::get('/carte', function () {
     return view('carte');
-})->middleware(['auth', 'verified'])->name('carte');
+})->name('carte');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -57,6 +49,19 @@ Route::middleware('auth')->group(function () {
 
 // Depannage
 Route::middleware(['auth', 'verified'])->group(function () {
+    //Accès au vue
+    Route::get('/historique', function () {
+        return view('historique');
+    })->name('historique');
+
+    Route::get('/stat', function () {
+        return view('stat');
+    })->name('stat');
+
+    Route::get('/entretien', function() {
+        return view('entretien');
+    })->name('entretien');
+
     //Form
     Route::get('/adminform', function(){return view('adminform');})->name('adminform');
 
