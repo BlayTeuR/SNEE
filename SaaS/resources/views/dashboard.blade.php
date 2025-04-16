@@ -83,8 +83,20 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @php
+                    $count = 1;
+                    @endphp
                     @foreach ($depannages as $depannage)
-                        <tr class="hover:bg-gray-100">
+                        @if($count % 2 == 0)
+                            @php
+                                $bgColor = 'bg-gray-100';
+                            @endphp
+                            @else
+                            @php
+                                $bgColor = 'bg-white';
+                                @endphp
+                        @endif
+                        <tr class="hover:bg-gray-200 {{$bgColor}}">
                             <td class="p-3 text-sm text-gray-700 w-32 relative z-10">
                                 @php
                                     $icons = [
@@ -95,6 +107,7 @@
 
                                     $provenance = strtolower($depannage->provenance);
                                     $iconData = $icons[$provenance] ?? ['icon' => '❓', 'label' => 'Inconnu'];
+                                    $count++;
                                 @endphp
                                 <div class="flex items-center space-x-2">
                                     <span class="text-gray-800 font-medium">{{ $depannage->id }}</span>

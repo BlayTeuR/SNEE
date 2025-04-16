@@ -9,11 +9,11 @@
                 <!-- Filtrer par statut -->
                 <div class="mb-4">
                     <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
-                    <select name="statut" id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-                        <option value="all">Tous</option>
-                        <option value="À planifier">À planifier</option>
-                        <option value="En attente">En attente</option>
-                        <option value="Fait">Fait</option>
+                    <select name="type" id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+                        <option value="Facturation" {{ request('type') == 'Facturation' ? 'selected' : '' }}>Facturation</option>
+                        <option value="Approvisionnement" {{ request('type') == 'Approvisionnement' ? 'selected' : '' }}>Approvisionnement</option>
+                        <option value="Dépannage" {{ request('type') == 'Dépannage' || !request('type') ? 'selected' : '' }}>Dépannage</option>
+                        <option value="Entretient" {{ request('type') == 'Entretient' ? 'selected' : '' }}>Entretient</option>
                     </select>
                 </div>
 
@@ -251,8 +251,6 @@
             .catch(error => {
                 console.error('Erreur:', error);
             });
-
-        toggleDropdown(dropdownId);
     }
 
     function addPieces(approvisionnementId){

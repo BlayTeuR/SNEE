@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/adminform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/adminform.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/approvisionnement.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/approvisionnement.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/navigation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/navigation.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
@@ -199,7 +201,7 @@
       <workItem from="1744630351835" duration="8816000" />
       <workItem from="1744697097101" duration="12593000" />
       <workItem from="1744716938852" duration="7263000" />
-      <workItem from="1744783484308" duration="6269000" />
+      <workItem from="1744783484308" duration="10868000" />
     </task>
     <servers />
   </component>

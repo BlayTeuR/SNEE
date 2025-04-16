@@ -30,7 +30,7 @@
                     <x-nav-link :href="route('carte')" :active="request()->routeIs('carte')">
                         {{ __('Carte') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('historique')" :active="request()->routeIs('historique')">
+                    <x-nav-link :href="route('historique', ['type' => 'Dépannage'])" :active="request()->routeIs('historique')">
                         {{ __('Historique') }}
                     </x-nav-link>
                 </div>

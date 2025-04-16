@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApprovisionnementController;
 use App\Http\Controllers\DepanageController;
 use App\Http\Controllers\FacturationsController;
+use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\PieceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TypeController;
@@ -50,9 +51,7 @@ Route::middleware('auth')->group(function () {
 // Depannage
 Route::middleware(['auth', 'verified'])->group(function () {
     //Accès au vue
-    Route::get('/historique', function () {
-        return view('historique');
-    })->name('historique');
+    Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique');
 
     Route::get('/stat', function () {
         return view('stat');
