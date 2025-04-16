@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <!-- Filtres -->
-        <div class="w-1/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
+        <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
 
             <form method="GET" action="{{ route('facturation') }}">
                 <h2 class="text-lg font-bold">Filtres</h2>
@@ -55,7 +55,7 @@
         </div>
 
         <!-- Liste des factures -->
-        <div class="w-3/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
+        <div class="w-5/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
             <!-- Contenu scrollable -->
             <div class="flex-1 overflow-auto">
                 <table class="w-full table-fixed">

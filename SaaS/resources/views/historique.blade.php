@@ -44,12 +44,169 @@
 
         <!-- table des historiques -->
         <div class="w-full md:w-5/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
-            @if($type == 'Facturation')
-                <h2 class="text-lg font-bold">Historique des facturations</h2>
-            @elseif($type == 'Approvisionnement')
-                <h2 class="text-lg font-bold">Historique des approvisionnements</h2>
-            @elseif($type == 'Dépannage')
-                <h2 class="text-lg font-bold">Historique des dépannages</h2>
+            @if($type == 'facturation')
+                <h2 class="text-lg font-bold">Historique des facturations envoyées</h2>
+                <div class="flex-1 overflow-auto">
+                <table class="w-full table-fixed mt-3">
+                    <thead class="bg-gray-50 border-b-2 border-gray-200">
+                    <tr class="bg-gray-50">
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">ID depannage</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom client</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Date d'émission</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Date d'intervention</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Montant</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Statut</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($model as $m)
+                        <tr class="hover:bg-gray-200">
+                            <td class="p-3 text-sm text-gray-700">{{ $m->depannage_id }}</td>
+                            <td class="p-3 text-sm text-gray-700">{{ $m->depannage->nom }}</td>
+                            <td class="p-3 text-sm text-gray-700">{{ $m->created_at->format('d/m/Y') }}</td>
+                            <td class="p-3 text-sm text-gray-700">
+                                @if($m->date_intervention)
+                                    {{ $m->date_intervention}}
+                                @else
+                                    Non définie
+                                @endif
+                            </td>
+                            <td class="p-3 text-sm text-gray-700">
+                                {{ $m->montant }} €
+                            </td>
+                            <td class="p-3 text-sm text-gray-700">
+                                    {{ $m->statut }}
+                            </td>
+                            <td class="p-3 text-sm text-gray-700">{{ $m->contact }}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                </div>
+            @elseif($type == 'approvisionnement')
+                <h2 class="text-lg font-bold">Historique des approvisionnements fait</h2>
+                <div class="flex-1 overflow-auto">
+                    <table class="w-full mt-3">
+                        <thead class="bg-gray-50 border-b-2 border-gray-200">
+                        <tr>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">ID Dépannage</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Pour client</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Date de création</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Date de validation</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Piece(s)</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($model as $m)
+                            <tr class="hover:bg-gray-200">
+                                <td class="p-3 text-sm text-gray-700">{{ $m->depannage_id }}</td>
+                                <td class="p-3 text-sm text-gray-700">{{$m->depannage->nom}}</td>
+                                <td class="p-3 text-sm text-gray-700">{{ $m->created_at->format('Y-m-d') }}</td>
+                                <td class="p-3 text-sm text-gray-700">{{ $m->date_validation }}</td>
+                                <td class="p-3 text-sm text-gray-700">
+                                    @if($m->pieces->isEmpty())
+                                        <p class="p-3 text-sm text-gray-700">Aucune pièce</p>
+                                    @else
+                                        <ul>
+                                            @foreach($m->pieces as $piece)
+                                                <li class="p-3 text-sm text-gray-700 flex">
+                                                    <span>{{ $piece->quantite }} * {{ $piece->libelle }}</span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </td>
+                                <td class="p-3 text-sm text-gray-700 relative">
+                                        {{ $m->statut }}
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @elseif($type == 'depannage')
+                <h2 class="text-lg font-bold">Historique des dépannages à facturer</h2>
+                <div class="flex-1 overflow-auto">
+                    <table class="w-full table-fixed mt-3">
+                        <thead class="bg-gray-50 border-b-2 border-gray-200">
+                        <tr>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left w-32">ID</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Adresse</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Type de client</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Historique</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Statut</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @php
+                            $count = 1;
+                        @endphp
+                        @foreach ($model as $m)
+                            @if($count % 2 == 0)
+                                @php
+                                    $bgColor = 'bg-gray-100';
+                                @endphp
+                            @else
+                                @php
+                                    $bgColor = 'bg-white';
+                                @endphp
+                            @endif
+                            <tr class="hover:bg-gray-200 {{$bgColor}}">
+                                <td class="p-3 text-sm text-gray-700 w-32 relative z-10">
+                                    @php
+                                        $icons = [
+                                            'chargé d\'affaire' => ['icon' => '💼', 'label' => 'Chargé d\'affaire'],
+                                            'client' => ['icon' => '👤', 'label' => 'Client'],
+                                            'ajout manuel' => ['icon' => '🛠️', 'label' => 'Ajout manuel'],
+                                        ];
+
+                                        $provenance = strtolower($m->provenance);
+                                        $iconData = $icons[$provenance] ?? ['icon' => '❓', 'label' => 'Inconnu'];
+                                    @endphp
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-gray-800 font-medium">{{ $m->id }}</span>
+                                        <div class="relative group">
+                                            <span class="text-lg">{{ $iconData['icon'] }}</span>
+                                            <span class="absolute left-1/2 transform -translate-x-1/2 top-full mt-1 px-2 py-1 text-[10px] rounded bg-gray-700 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50 shadow">
+                                        {{ $iconData['label'] }}
+                                        </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-sm text-gray-700">{{ $m->nom }}</td>
+                                <td class="p-3 text-sm text-gray-700">{{ $m->adresse }}</td>
+                                <td class="p-3 text-sm text-gray-700">
+                                    {{$m->types->contrat}}, {{$m->types->garantie}}
+                                </td>
+
+                                <td class="p-3 text-sm text-gray-700 relative">
+                                    <button onclick="toggleDropdown('historique-{{ $m->id }}')" class="bg-gray-300 bg-opacity-50 px-3 py-1 rounded-lg hover:bg-gray-400">
+                                        Afficher Historique
+                                    </button>
+                                    <ul id="historique-{{ $m->id }}" class="hidden absolute left-3 top-full bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
+                                        @if($m->historiques->isNotEmpty())
+                                            @foreach ($m->historiques as $histo)
+                                                <li>{{ $histo->date }}</li>
+                                            @endforeach
+                                        @else
+                                            <li>Aucun historique</li>
+                                        @endif
+                                    </ul>
+                                </td>
+                                <td class="p-3 text-sm text-gray-700 relative">
+                                        {{ $m->statut }}
+                                </td>
+                                <td class="p-3 text-sm text-gray-700">
+                                    <a href="{{ route('depannage.show', $m->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
             <div class="flex-1 overflow-auto">
                 <table class="w-full table-fixed">

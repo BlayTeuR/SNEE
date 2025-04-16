@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <!-- Filtres -->
-        <div class="w-1/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
+        <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
 
             <form method="GET" action="{{ route('approvisionnement') }}">
                 <h2 class="text-lg font-bold">Filtres</h2>
@@ -49,7 +49,7 @@
         </div>
 
         <!-- Liste des approvisionnements -->
-        <div class="w-3/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
+        <div class="w-5/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
             <div class="flex-1 overflow-auto">
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
@@ -63,7 +63,7 @@
                     </thead>
                     <tbody>
                     @foreach($approvisionnements as $approvisionnement)
-                        <tr class="hover:bg-gray-100">
+                        <tr class="hover:bg-gray-200">
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->depannage_id }}</td>
                             <td class="p-3 text-sm text-gray-700">{{$approvisionnement->depannage->nom}}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->created_at->format('d/m/Y') }}</td>
