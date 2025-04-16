@@ -6,6 +6,7 @@ use App\Http\Controllers\FacturationsController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\PieceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\TypeController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,9 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Accès au vue
     Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique');
 
-    Route::get('/stat', function () {
-        return view('stat');
-    })->name('stat');
+    Route::get('/stat', [StatistiqueController::class, 'index'])->name('stat');
 
     Route::get('/entretien', function() {
         return view('entretien');

@@ -2,22 +2,26 @@
     <div class="py-10 px-6 max-w-7xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-800 mb-8">Statistiques des dépannages</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-10">
             <div class="bg-white rounded-2xl shadow p-6">
                 <h2 class="text-sm text-gray-500 mb-2">Total des dépannages</h2>
-                <p class="text-3xl font-semibold text-blue-600">124</p>
+                <p class="text-3xl font-semibold text-purple-600">{{$depannages->count()}}</p>
             </div>
             <div class="bg-white rounded-2xl shadow p-6">
                 <h2 class="text-sm text-gray-500 mb-2">À planifier</h2>
-                <p class="text-3xl font-semibold text-yellow-500">32</p>
+                <p class="text-3xl font-semibold text-red-500">{{$depannages->where('statut', '=', 'À planifier')->count()}}</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow p-6">
+                <h2 class="text-sm text-gray-500 mb-2">En approvisionnement</h2>
+                <p class="text-3xl font-semibold text-blue-500">{{$depannages->where('statut', '=', 'Approvisionnement')->count()}}</p>
             </div>
             <div class="bg-white rounded-2xl shadow p-6">
                 <h2 class="text-sm text-gray-500 mb-2">Affectés</h2>
-                <p class="text-3xl font-semibold text-green-500">48</p>
+                <p class="text-3xl font-semibold text-yellow-500">{{$depannages->where('statut', '=', 'Affecter')->count()}}</p>
             </div>
             <div class="bg-white rounded-2xl shadow p-6">
                 <h2 class="text-sm text-gray-500 mb-2">À facturer</h2>
-                <p class="text-3xl font-semibold text-red-500">9</p>
+                <p class="text-3xl font-semibold text-green-500">{{$depannages->where('statut', '=', 'À facturer')->count()}}</p>
             </div>
         </div>
 

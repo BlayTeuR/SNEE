@@ -11,6 +11,6 @@ class StatistiqueController extends Controller
         $approvisionnements = \App\Models\Approvisionnement::all();
         $facturations = \App\Models\Facturations::all();
 
-        return view('statistique', compact('depannages', 'approvisionnements', 'facturations'));
+        return view('stat', compact('depannages', 'approvisionnements', 'facturations'));
     }
 }

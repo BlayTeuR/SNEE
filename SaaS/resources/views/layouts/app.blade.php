@@ -37,6 +37,9 @@
             </main>
         </div>
 
+        <!-- Mini barre de chargement -->
+        <div id="progress-bar" class="fixed top-0 left-0 h-1 bg-blue-500 z-50 transition-width duration-600 ease-out w-0"></div>
+
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     </body>
 </html>

@@ -14,7 +14,14 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            transitionProperty: {
+                'width': 'width',
+            },
+            transitionDuration: {
+                '600': '600ms',
+            }
         },
+
     },
 
     plugins: [forms],
