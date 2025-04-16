@@ -30,15 +30,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="flex justify-between items-center border rounded-lg px-4 py-3">
                     <span class="text-gray-700">Client</span>
-                    <span class="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded-full">65</span>
+                    <span class="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded-full">{{$depannages->where('provenance', '=', 'client')->count()}}</span>
                 </div>
                 <div class="flex justify-between items-center border rounded-lg px-4 py-3">
                     <span class="text-gray-700">Chargé d'affaire</span>
-                    <span class="text-sm bg-green-100 text-green-700 px-2 py-1 rounded-full">42</span>
+                    <span class="text-sm bg-green-100 text-green-700 px-2 py-1 rounded-full">{{$depannages->where('provenance', '=', 'chargé d\'affaire')->count()}}</span>
                 </div>
                 <div class="flex justify-between items-center border rounded-lg px-4 py-3">
                     <span class="text-gray-700">Ajout manuel</span>
-                    <span class="text-sm bg-gray-100 text-gray-700 px-2 py-1 rounded-full">17</span>
+                    <span class="text-sm bg-gray-100 text-gray-700 px-2 py-1 rounded-full">{{$depannages->where('provenance', '=', 'ajout manuel')->count()}}</span>
                 </div>
             </div>
         </div>
@@ -47,13 +47,13 @@
             <h2 class="text-xl font-bold text-gray-800 mb-4">Répartition par type de matériel</h2>
             <ul class="space-y-2">
                 <li class="flex justify-between text-gray-700">
-                    <span>Portail</span><span>55</span>
+                    <span>Portail</span><span>{{$depannages->where('type_materiel', '=', 'Portail')->count()}}</span>
                 </li>
                 <li class="flex justify-between text-gray-700">
-                    <span>Portillon</span><span>38</span>
+                    <span>Portillon</span><span>{{$depannages->where('type_materiel', '=', 'Portillon')->count()}}</span>
                 </li>
                 <li class="flex justify-between text-gray-700">
-                    <span>Barrière</span><span>31</span>
+                    <span>Barrière</span><span>{{$depannages->where('type_materiel', '=', 'Barrière')->count()}}</span>
                 </li>
             </ul>
         </div>
