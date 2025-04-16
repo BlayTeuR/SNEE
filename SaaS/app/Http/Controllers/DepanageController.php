@@ -61,7 +61,7 @@ class DepanageController extends Controller
         }
 
         // Appliquer le tri avant de récupérer les résultats
-        $depannages = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+        $depannages = $query->orderBy('created_at', 'desc')->get();
 
         return view('dashboard', compact('depannages'));
     }
@@ -208,9 +208,10 @@ class DepanageController extends Controller
 
             if($formSource == 'formulaire_ca'){
                 return redirect()->route('caconfirmation.page')->with('success', 'Votre demande a été enregistrée !');
-
-            } else {
+            } else if ($formSource == 'formulaire_classique'){
                 return redirect()->route('confirmation.page')->with('success', 'Votre demande a été enregistrée !');
+            } else {
+                return redirect()->route('dashboard')->with('success', 'ajout du dépannage effectué avec succès !');
             }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());

@@ -57,6 +57,10 @@ Route::middleware('auth')->group(function () {
 
 // Depannage
 Route::middleware(['auth', 'verified'])->group(function () {
+    //Form
+    Route::get('/adminform', function(){return view('adminform');})->name('adminform');
+
+    //Depannage
     Route::get('/depannage', [DepanageController::class, 'index'])->name('depannage');
     Route::get('/depannage/{id}', [DepanageController::class, 'show'])->name('depannage.show')->middleware(['auth', 'verified']);
     Route::patch('/depannage/{id}/update-status', [DepanageController::class, 'updateStatus'])->name('depannage.updateStatus');

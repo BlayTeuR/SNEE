@@ -84,18 +84,18 @@
                     </thead>
                     <tbody>
                     @foreach ($depannages as $depannage)
-                        @php
-                            $icons = [
-                                'chargé d\'affaire' => ['icon' => '💼', 'label' => 'Chargé d\'affaire'],
-                                'client' => ['icon' => '👤', 'label' => 'Client'],
-                                'ajout manuel' => ['icon' => '🛠️', 'label' => 'Ajout manuel'],
-                            ];
-
-                            $provenance = strtolower($depannage->provenance);
-                            $iconData = $icons[$provenance] ?? ['icon' => '❓', 'label' => 'Inconnu'];
-                        @endphp
                         <tr class="hover:bg-gray-100">
                             <td class="p-3 text-sm text-gray-700 w-32 relative z-10">
+                                @php
+                                    $icons = [
+                                        'chargé d\'affaire' => ['icon' => '💼', 'label' => 'Chargé d\'affaire'],
+                                        'client' => ['icon' => '👤', 'label' => 'Client'],
+                                        'ajout manuel' => ['icon' => '🛠️', 'label' => 'Ajout manuel'],
+                                    ];
+
+                                    $provenance = strtolower($depannage->provenance);
+                                    $iconData = $icons[$provenance] ?? ['icon' => '❓', 'label' => 'Inconnu'];
+                                @endphp
                                 <div class="flex items-center space-x-2">
                                     <span class="text-gray-800 font-medium">{{ $depannage->id }}</span>
                                     <div class="relative group">
@@ -198,6 +198,10 @@
                 </table>
             </div>
         </div>
+        <a href="{{ route('adminform') }}"
+           class="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-3xl w-16 h-16 flex items-center justify-center rounded-full shadow-lg transition duration-300 ease-in-out z-50">
+            +
+        </a>
     </div>
     <!-- Modal de confirmation -->
     <div id="confirm-delete-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
