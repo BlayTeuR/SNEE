@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="flex flex-col md:flex-row bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
-        <div class="w-full md:w-1/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
+        <div class="w-full md:w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
 
         <form method="GET" action="{{ route('dashboard') }}">
             <!-- Filtres -->
@@ -67,24 +67,45 @@
         </div>
 
         <!-- Liste des dépannages -->
-        <div class="w-full md:w-3/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
+        <div class="w-full md:w-5/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
             <div class="flex-1 overflow-auto">
                 <table class="w-full table-fixed">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-16">ID</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Nom</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Adresse</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Type de client</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Historique</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Plus d'information</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-32">ID</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Adresse</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Type de client</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Historique</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Statut</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-16"></th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($depannages as $depannage)
+                        @php
+                            $icons = [
+                                'chargé d\'affaire' => ['icon' => '💼', 'label' => 'Chargé d\'affaire'],
+                                'client' => ['icon' => '👤', 'label' => 'Client'],
+                                'ajout manuel' => ['icon' => '🛠️', 'label' => 'Ajout manuel'],
+                            ];
+
+                            $provenance = strtolower($depannage->provenance);
+                            $iconData = $icons[$provenance] ?? ['icon' => '❓', 'label' => 'Inconnu'];
+                        @endphp
                         <tr class="hover:bg-gray-100">
-                            <td class="p-3 text-sm text-gray-700 w-16 truncate">{{ $depannage->id }}</td>
+                            <td class="p-3 text-sm text-gray-700 w-32 relative z-10">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-gray-800 font-medium">{{ $depannage->id }}</span>
+                                    <div class="relative group">
+                                        <span class="text-lg">{{ $iconData['icon'] }}</span>
+                                        <span class="absolute left-1/2 transform -translate-x-1/2 top-full mt-1 px-2 py-1 text-[10px] rounded bg-gray-700 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50 shadow">
+                                        {{ $iconData['label'] }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->nom }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->adresse }}</td>
                             <td class="p-3 text-sm text-gray-700">
@@ -167,8 +188,9 @@
                             <td class="p-3 text-sm text-gray-700">
                                 <a href="{{ route('depannage.show', $depannage->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                             </td>
-                            <td class="p-3 text-sm text-gray-700 relative">
-                                <button onclick="toggleModal({{ $depannage->id }})">❌</button>
+                            <!-- Colonne suppression -->
+                            <td class="p-1 text-xs text-gray-700 w-10 text-center">
+                                <button onclick="toggleModal({{ $depannage->id }})" class="text-red-600 hover:text-red-800">❌</button>
                             </td>
                         </tr>
                     @endforeach
