@@ -1,4 +1,7 @@
 <x-app-layout>
+    @php
+        $currentApprovisionnementId = null;
+    @endphp
     <div class="flex bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <!-- Filtres -->
         <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
@@ -59,6 +62,8 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Date de création</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Piece(s)</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left"></th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -78,6 +83,7 @@
                         <tr class="hover:bg-gray-200 {{$bgColor}}" id="row-{{$approvisionnement->id}}">
                             @php
                                 $count++;
+                                $currentApprovisionnementId = $approvisionnement->id;
                             @endphp
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->depannage_id }}</td>
                             <td class="p-3 text-sm text-gray-700">{{$approvisionnement->depannage->nom}}</td>
@@ -170,6 +176,13 @@
                                 </ul>
                             </td>
                             <td class="p-3 text-sm text-gray-700 relative">
+                                @if($approvisionnement->statut == 'Fait')
+                                    <button onclick="handleStatutChange('', '', '', '', {{$approvisionnement->id}}, false)" class="text-blue-500 hover:underline hover:text-blue-600">Archiver</button>
+                                    @else
+                                    <p></p>
+                                @endif
+                            </td>
+                            <td class="p-3 text-sm text-gray-700 relative">
                                 <button onclick="toggleModal({{ $approvisionnement->id }})">❌</button>
                             </td>
                         </tr>
@@ -202,6 +215,19 @@
             <div class="flex justify-end space-x-4">
                 <button onclick="confirmArchive(false)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Rester visible</button>
                 <button onclick="confirmArchive(true)" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Historique uniquement</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation d'archivage Bis -->
+    <div id="confirmation-modal-bis" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3 relative">
+            <!-- Croix de fermeture -->
+            <h2 class="text-xl font-bold mb-4">Archivage de l'approvisionnement</h2>
+            <p class="mb-6">Souhaitez-vous que cet approvisionnement reste visible ou qu’il soit seulement dans l’historique ?</p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="cancelArchiveBis()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Annuler</button>
+                <button onclick="archiver()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Archiver</button>
             </div>
         </div>
     </div>
@@ -265,7 +291,6 @@
         document.getElementById('confirmation-modal').classList.add('hidden');
 
         toggleDropdown(window.selectedDropdownId)
-        // Réinitialiser les variables
         window.selectedDropdownId = null;
         window.selectedStatus = null;
         window.selectedBgClass = null;
@@ -273,8 +298,13 @@
         window.selectedApproId = null;
     }
 
-    function handleStatutChange(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId) {
-        if (newStatus === 'Fait') {
+    function cancelArchiveBis() {
+        document.getElementById('confirmation-modal-bis').classList.add('hidden');
+        window.selectedApproId = null;
+    }
+
+    function handleStatutChange(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId, archived = '') {
+        if (newStatus === 'Fait' && archived === '') {
             window.selectedDropdownId = dropdownId;
             window.selectedStatus = newStatus;
             window.selectedBgClass = newBgClass;
@@ -282,6 +312,9 @@
             window.selectedApproId = approvisionnementId;
 
             document.getElementById('confirmation-modal').classList.remove('hidden');
+        } else if (archived === false) {
+            document.getElementById('confirmation-modal-bis').classList.remove('hidden');
+            window.selectedApproId = approvisionnementId;
         } else {
             updateStatus(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId);
         }
@@ -313,11 +346,8 @@
         })
             .then(response => response.json())
             .then(data => {
+                location.reload();
                 console.log(data.message);
-                if (archive) {
-                    const row = document.getElementById(`row-${approvisionnementId}`);
-                    if (row) row.remove();
-                }
             })
             .catch(error => {
                 console.error('Erreur:', error);
@@ -342,6 +372,27 @@
             body: JSON.stringify({
                 libelle: libelle,
                 quantite: quantite,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+    }
+
+    function archiver(){
+        console.log("ID DEP = " + window.selectedApproId);
+        fetch(`approvisionnement/${window.selectedApproId}/archiver`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            }, body: JSON.stringify({
+                id: window.selectedApproId,
             })
         })
             .then(response => response.json())

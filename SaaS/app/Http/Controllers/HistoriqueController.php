@@ -24,7 +24,7 @@ class HistoriqueController extends Controller
                 $model = Depannage::with('historiques', 'types')->where('statut', '=', 'À facturer')->get();
                 break;
             case 'approvisionnement':
-                $model = Approvisionnement::with('depannage', 'pieces')->where('statut', '=', 'Fait')->get();
+                $model = Approvisionnement::with('depannage', 'pieces')->where('statut', '=', 'Fait')->where('archived', '=', true)->get();
                 break;
             case 'facturation':
                 $model = Facturations::with('depannage')->where('Statut', '=', 'Envoyée')->get();

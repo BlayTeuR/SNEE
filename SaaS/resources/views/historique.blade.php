@@ -1,4 +1,7 @@
 <x-app-layout>
+    @php
+        $currentApprovisionnementId = null;
+    @endphp
     <div class="flex flex-col md:flex-row bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <div class="w-full md:w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
 
@@ -95,10 +98,14 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-left">Date de validation</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left">Piece(s)</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left"></th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($model as $m)
+                            @php
+                                $currentApprovisionnementId = $m->id;
+                            @endphp
                             <tr class="hover:bg-gray-200">
                                 <td class="p-3 text-sm text-gray-700">{{ $m->depannage_id }}</td>
                                 <td class="p-3 text-sm text-gray-700">{{$m->depannage->nom}}</td>
@@ -119,6 +126,9 @@
                                 </td>
                                 <td class="p-3 text-sm text-gray-700 relative">
                                         {{ $m->statut }}
+                                </td>
+                                <td>
+                                    <button onclick="toggleModalDesarchiver('{{$m->id}}')" class="text-sm text-red-500 hover:underline hover:text-red-600">Désarchiver</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -215,11 +225,57 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de confirmation -->
+    <div id="modal-desarchiver-approvisionnement" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-semibold mb-4">Voulez-vous désarchiver cet approvisionnement ?</h2>
+            <p class="text-gray-800">
+                Si vous confirmez, cet approvisionnement sera de nouveau disponible dans l'onglet 'Approvisionnement' et sera supprimé de l'onglet 'Historique'.
+            </p>
+            <div class="mt-4 flex justify-end space-x-4">
+                <button onclick="toggleModalDesarchiver({{$currentApprovisionnementId}})" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="desarchiver()" id="confirm-desarchiver" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Désarchiver</button>
+            </div>
+        </div>
+    </div>
+
 </x-app-layout>
 
 
 <script>
+    let currentApprovisionnementId = null;
 
+    function toggleModalDesarchiver(id) {
+        var modal = document.getElementById('modal-desarchiver-approvisionnement');
+        currentApprovisionnementId = id;
+        modal.classList.toggle('hidden');
+    }
+
+    function desarchiver() {
+        console.log('Desarchiver clicked pour ID ' + currentApprovisionnementId);
+
+        fetch(`/approvisionnement/${currentApprovisionnementId}/desarchiver`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({
+                id: currentApprovisionnementId,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.log('Erreur:', error);
+            });
+
+        toggleModalDesarchiver();
+    }
 </script>
 
 <style>

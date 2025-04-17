@@ -64,9 +64,33 @@ class ApprovisionnementController extends Controller
         return response()->json(['message' => 'Statut mis à jour avec succès!']);
     }
 
+    public function desarchiver(Request $request){
+
+        $request->validate([
+            'id' => 'required|integer|exists:approvisionnements,id',
+        ]);
+
+        $approvisionnement = Approvisionnement::findOrFail($request->id);
+        $approvisionnement->archived = false;
+        $approvisionnement->save();
+
+        return response()->json(['message' => 'Approvisionnement désarchivé avec succès!']);
+    }
+
+    public function archiver(Request $request){
+        $request->validate([
+            'id' => 'required|integer|exists:approvisionnements,id',
+        ]);
+
+        $approvisionnement = Approvisionnement::findOrFail($request->id);
+        $approvisionnement->archived = true;
+        $approvisionnement->save();
+
+        return response()->json(['message' => 'Approvisionnement archivé avec succès!']);
+    }
+
     public function destroy($id)
     {
-        // Suppression de l'approvisionnement
         $approvisionnement = Approvisionnement::findOrFail($id);
         $approvisionnement->delete();
 

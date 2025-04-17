@@ -75,7 +75,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/approvisionnement/{id}/update-status', [ApprovisionnementController::class, 'updateStatus'])->name('approvisionnement.updateStatus');
     Route::post('approvisionnement/del/{id}', [ApprovisionnementController::class, 'destroy'])->name('approvisionnement.del');
     Route::post('/approvisionnement/store', [ApprovisionnementController::class, 'store'])->name('approvisionnement.store');
-
+    Route::post('/approvisionnement/{id}/desarchiver', [ApprovisionnementController::class, 'desarchiver'])->name('approvisionnement.desarchiver');
+    Route::post('approvisionnement/{id}/archiver', [ApprovisionnementController::class, 'archiver'])->name('approvisionnement.archiver');
     //Piece
     Route::post('/approvisionnement/{id}/add-pieces', [PieceController::class, 'addPieces'])->name('pieces.add');
     Route::post('pieces/del/{id}', [PieceController::class, 'destroy'])->name('pieces.del');

@@ -81,7 +81,7 @@
                             @else
                             @php
                                 $bgColor = 'bg-white';
-                            @endphp;
+                            @endphp
                         @endif
                     @foreach($facturations as $facturation)
                         <tr class="hover:bg-gray-200 {{$bgColor}}">
