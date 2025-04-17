@@ -75,7 +75,7 @@
                                 $bgColor = 'bg-white';
                             @endphp
                         @endif
-                        <tr class="hover:bg-gray-200 {{$bgColor}}">
+                        <tr class="hover:bg-gray-200 {{$bgColor}}" id="row-{{$approvisionnement->id}}">
                             @php
                                 $count++;
                             @endphp
@@ -314,6 +314,10 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data.message);
+                if (archive) {
+                    const row = document.getElementById(`row-${approvisionnementId}`);
+                    if (row) row.remove();
+                }
             })
             .catch(error => {
                 console.error('Erreur:', error);
