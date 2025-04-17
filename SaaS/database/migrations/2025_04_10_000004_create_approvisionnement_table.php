@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->foreignId('depannage_id')->constrained()->onDelete('cascade');
             $table->string('statut')->default('À planifier');
             $table->date('date_validation')->nullable();
+            $table->boolean('archived')->default(false);
             $table->timestamps();
         });
     }

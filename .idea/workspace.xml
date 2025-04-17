@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000004_create_approvisionnement_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000004_create_approvisionnement_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/approvisionnement.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/approvisionnement.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/facturation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/facturation.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +199,7 @@
       <workItem from="1744716938852" duration="7263000" />
       <workItem from="1744783484308" duration="10868000" />
       <workItem from="1744803250333" duration="6840000" />
-      <workItem from="1744869821873" duration="3747000" />
+      <workItem from="1744869821873" duration="5155000" />
     </task>
     <servers />
   </component>
