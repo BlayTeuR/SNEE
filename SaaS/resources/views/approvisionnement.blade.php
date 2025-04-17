@@ -164,9 +164,9 @@
                                     {{ $approvisionnement->statut }}
                                 </button>
                                 <ul id="status-{{ $approvisionnement->id }}" class="hidden absolute left-3 top-full bg-gray-100 p-2 mt-2 rounded shadow-md z-10 w-48">
-                                    <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'À planifier', 'bg-red-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">À planifier</li>
-                                    <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'En attente', 'bg-yellow-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">En attente</li>
-                                    <li onclick="updateStatus('status-{{ $approvisionnement->id }}', 'Fait', 'bg-green-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">Fait</li>
+                                    <li onclick="handleStatutChange('status-{{ $approvisionnement->id }}', 'À planifier', 'bg-red-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">À planifier</li>
+                                    <li onclick="handleStatutChange('status-{{ $approvisionnement->id }}', 'En attente', 'bg-yellow-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">En attente</li>
+                                    <li onclick="handleStatutChange('status-{{ $approvisionnement->id }}', 'Fait', 'bg-green-500', 'status-{{ $approvisionnement->id }}-btn', {{ $approvisionnement->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">Fait</li>
                                 </ul>
                             </td>
                             <td class="p-3 text-sm text-gray-700 relative">
@@ -190,6 +190,19 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de confirmation d'archivage -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3">
+            <h2 class="text-xl font-bold mb-4">Archivage de l'approvisionnement</h2>
+            <p class="mb-6">Souhaitez-vous que cet approvisionnement reste visible ou qu’il soit seulement dans l’historique ?</p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="confirmArchive(false)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Rester visible</button>
+                <button onclick="confirmArchive(true)" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Historique uniquement</button>
+            </div>
+        </div>
+    </div>
+
 
 </x-app-layout>
 
@@ -236,7 +249,30 @@
         confirmDel.classList.toggle('hidden');
     }
 
-    function updateStatus(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId) {
+    function confirmArchive(archive) {
+        document.getElementById('confirmation-modal').classList.add('hidden');
+        updateStatus(window.selectedDropdownId,
+            window.selectedStatus,
+            window.selectedBgClass,
+            window.selectedButtonId,
+            window.selectedApproId,
+            archive);
+    }
+
+    function handleStatutChange(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId){
+        if(newStatus === 'Fait'){
+            window.selectedApproId = approvisionnementId;
+            window.selectedStatus = newStatus;
+            window.selectedDropdownId = dropdownId;
+            window.selectedBgClass = newBgClass;
+            window.selectedButtonId = buttonId;
+            document.getElementById('confirmation-modal').classList.remove('hidden');
+        } else {
+            updateStatus(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId);
+        }
+    }
+
+    function updateStatus(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId, archive = false) {
         const button = document.getElementById(buttonId);
         const dropdown = document.getElementById(dropdownId);
 
@@ -257,6 +293,7 @@
             },
             body: JSON.stringify({
                 statut: newStatus,
+                archive: archive,
             })
         })
             .then(response => response.json())
