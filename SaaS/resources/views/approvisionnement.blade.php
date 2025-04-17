@@ -62,8 +62,23 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @php
+                    $count = 1;
+                    @endphp
                     @foreach($approvisionnements as $approvisionnement)
-                        <tr class="hover:bg-gray-200">
+                        @if($count % 2 == 0)
+                            @php
+                                $bgColor = 'bg-gray-100';
+                            @endphp
+                        @else
+                            @php
+                                $bgColor = 'bg-white';
+                            @endphp
+                        @endif
+                        <tr class="hover:bg-gray-200 {{$bgColor}}">
+                            @php
+                                $count++;
+                            @endphp
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->depannage_id }}</td>
                             <td class="p-3 text-sm text-gray-700">{{$approvisionnement->depannage->nom}}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->created_at->format('d/m/Y') }}</td>

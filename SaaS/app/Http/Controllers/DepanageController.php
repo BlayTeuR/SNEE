@@ -20,8 +20,12 @@ class DepanageController extends Controller
         }
 
         // Filtrer par date (ex: date de création)
-        if ($request->filled('date')) {
-            $query->whereDate('created_at', $request->date);
+        if ($request->filled('date_min')) {
+            $query->whereDate('created_at', '>=', $request->date_min);
+        }
+
+        if ($request->filled('date_max')) {
+            $query->whereDate('created_at', '<=', $request->date_max);
         }
 
         // Filtrer par nom

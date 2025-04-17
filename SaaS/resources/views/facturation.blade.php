@@ -71,8 +71,23 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @php
+                        $count = 1;
+                    @endphp
+                        @if($count % 2 == 0)
+                            @php
+                                $bgColor = 'bg-gray-100';
+                            @endphp
+                            @else
+                            @php
+                                $bgColor = 'bg-white';
+                            @endphp;
+                        @endif
                     @foreach($facturations as $facturation)
-                        <tr class="hover:bg-gray-200">
+                        <tr class="hover:bg-gray-200 {{$bgColor}}">
+                            @php
+                                $count++;
+                            @endphp
                             <td class="p-3 text-sm text-gray-700">{{ $facturation->depannage_id }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $facturation->depannage->nom }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $facturation->created_at->format('d/m/Y') }}</td>

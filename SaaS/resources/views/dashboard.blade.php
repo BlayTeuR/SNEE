@@ -20,8 +20,14 @@
 
                 <!-- Filtrer par date -->
                 <div class="mb-4">
-                    <label for="date-filter" class="block text-sm font-medium text-gray-700">Filtrer par date</label>
-                    <input type="date" name="date" id="date-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date') }}">
+                    <label for="date-filter_min" class="block text-sm font-medium text-gray-700">Filtrer par date min</label>
+                    <input type="date" name="date_min" id="date-filter_min" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date_min') }}">
+                </div>
+
+            <!-- Filtrer par date max-->
+                 <div class="mb-4">
+                    <label for="date-filter_max" class="block text-sm font-medium text-gray-700">Filtrer par date max</label>
+                    <input type="date" name="date_max" id="date-filter_max" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date_max') }}">
                 </div>
 
                 <!-- Filtrer par nom -->
