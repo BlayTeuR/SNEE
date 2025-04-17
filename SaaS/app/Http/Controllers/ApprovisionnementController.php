@@ -48,9 +48,14 @@ class ApprovisionnementController extends Controller
 
         // Mettre à jour le statut
         $nouveauStatut = $request->input('statut');
+        $archived = $request->input('archive');
         if($nouveauStatut === 'Fait') {
             $approvisionnement->date_validation = now();
+            if(filter_var($archived, FILTER_VALIDATE_BOOLEAN)) {
+                $approvisionnement->archived = true;
+            }
         } else {
+            $approvisionnement->archived = false;
             $approvisionnement->date_validation = null;
         }
         $approvisionnement->statut = $nouveauStatut;

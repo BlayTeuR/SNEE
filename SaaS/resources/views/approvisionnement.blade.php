@@ -193,7 +193,10 @@
 
     <!-- Modal de confirmation d'archivage -->
     <div id="confirmation-modal" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden z-50 flex items-center justify-center">
-        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3 relative">
+            <!-- Croix de fermeture -->
+            <button onclick="cancelArchive()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl font-bold leading-none">&times;</button>
+
             <h2 class="text-xl font-bold mb-4">Archivage de l'approvisionnement</h2>
             <p class="mb-6">Souhaitez-vous que cet approvisionnement reste visible ou qu’il soit seulement dans l’historique ?</p>
             <div class="flex justify-end space-x-4">
@@ -202,7 +205,6 @@
             </div>
         </div>
     </div>
-
 
 </x-app-layout>
 
@@ -254,18 +256,31 @@
         updateStatus(window.selectedDropdownId,
             window.selectedStatus,
             window.selectedBgClass,
-            window.selectedButtonId,
+            window.selectedBtnId,
             window.selectedApproId,
             archive);
     }
 
-    function handleStatutChange(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId){
-        if(newStatus === 'Fait'){
-            window.selectedApproId = approvisionnementId;
-            window.selectedStatus = newStatus;
+    function cancelArchive() {
+        document.getElementById('confirmation-modal').classList.add('hidden');
+
+        toggleDropdown(window.selectedDropdownId)
+        // Réinitialiser les variables
+        window.selectedDropdownId = null;
+        window.selectedStatus = null;
+        window.selectedBgClass = null;
+        window.selectedBtnId = null;
+        window.selectedApproId = null;
+    }
+
+    function handleStatutChange(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId) {
+        if (newStatus === 'Fait') {
             window.selectedDropdownId = dropdownId;
+            window.selectedStatus = newStatus;
             window.selectedBgClass = newBgClass;
-            window.selectedButtonId = buttonId;
+            window.selectedBtnId = buttonId;
+            window.selectedApproId = approvisionnementId;
+
             document.getElementById('confirmation-modal').classList.remove('hidden');
         } else {
             updateStatus(dropdownId, newStatus, newBgClass, buttonId, approvisionnementId);
