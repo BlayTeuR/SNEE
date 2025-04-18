@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->text('infos_supplementaires')->nullable();
             $table->date('date_depannage')->nullable();
             $table->string('provenance');
+            $table->boolean('archived')->default(false);
             $table->timestamps();
         });
     }
