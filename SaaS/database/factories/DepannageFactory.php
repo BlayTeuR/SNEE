@@ -23,6 +23,7 @@ class DepannageFactory extends Factory
             'infos_supplementaires' => $this->faker->text(),
             'date_depannage' => null, // Valeur par défaut
             'provenance' => $this->faker->randomElement(['ajout manuel', 'chargé d\'affaire', 'client']),
+            'archived' => false,
         ];
     }
 }

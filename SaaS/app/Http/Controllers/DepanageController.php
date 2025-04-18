@@ -127,6 +127,7 @@ class DepanageController extends Controller
             $depannage->facturations()->create([
                 'montant' => 0,
                 'statut' => 'Non envoyée',
+                'date_intervention' => $depannage->date_depannage,
             ]);
         }
 
@@ -220,6 +221,19 @@ class DepanageController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());
         }
+    }
+
+    public function archiver(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:depannages,id',
+        ]);
+
+        $depannage = Depannage::findOrFail($request->id);
+        $depannage->archived = true;
+        $depannage->save();
+
+        return response()->json(['message' => 'Dépannage archivé avec succès!']);
     }
 
     public function show($id)

@@ -85,6 +85,7 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Historique</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Statut</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6"></th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-16"></th>
                     </tr>
                     </thead>
@@ -207,6 +208,12 @@
                             <td class="p-3 text-sm text-gray-700">
                                 <a href="{{ route('depannage.show', $depannage->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                             </td>
+                                <td class="text-left p-3 text-sm text-gray-700">
+                                    @if($depannage->statut == 'À facturer')
+                                        <button class="text-blue-500 hover:underline text-blue-600" onclick="toggleModalArchiveBis()">Archiver</button>
+                                    @endif
+                                </td>
+
                             <!-- Colonne suppression -->
                             <td class="p-1 text-xs text-gray-700 w-10 text-center">
                                 <button onclick="toggleModal({{ $depannage->id }})" class="text-red-600 hover:text-red-800">❌</button>
@@ -245,6 +252,18 @@
             </div>
         </div>
     </div>
+
+    <div id="confirmation-modal-bis" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3 relative">
+            <!-- Croix de fermeture -->
+            <h2 class="text-xl font-bold mb-4">Archivage du dépannage</h2>
+            <p class="mb-6">Souhaitez-vous que ce dépannage reste visible ou qu’il soit seulement dans l’historique ?</p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="cancelArchiveBis()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Annuler</button>
+                <button onclick="archiver()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Archiver</button>
+            </div>
+        </div>
+    </div>
 </x-app-layout>
 
 
@@ -254,6 +273,38 @@
     let pendingStatut = null;
     let lastOpenedDropdown = null;
     let depannageIdToDelete = null;
+
+    function toggleModalArchiveBis(id) {
+        const modal = document.getElementById('confirmation-modal-bis');
+        modal.classList.remove('hidden');
+        window.currentDepannageId = id;
+    }
+
+    function cancelArchiveBis(){
+        const modal = document.getElementById('confirmation-modal-bis');
+        modal.classList.add('hidden');
+        window.currentDepannageId = null;
+    }
+
+    function archiver(){
+        fetch(`/depannage/${window.currentDepannageId}/archiver`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({ id: window.currentDepannageId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            }
+        );
+    }
 
     function toggleChoice(buttonId) {
         const buttons = document.querySelectorAll(`#${buttonId}, #${buttonId}-2`); // Sélectionner les deux boutons correspondants

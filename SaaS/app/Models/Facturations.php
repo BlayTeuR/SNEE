@@ -10,6 +10,7 @@ class Facturations extends Model
         'depannage_id',
         'montant',
         'statut',
+        'date_intervention',
     ];
 
     public function depannage()

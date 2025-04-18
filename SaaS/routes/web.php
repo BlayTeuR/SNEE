@@ -70,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/depannage/store', [DepanageController::class, 'store'])->name('depannage.store');
     Route::post('depannage/del/{id}', [DepanageController::class, 'destroy'])->name('depannage.del');
     Route::post('/depannage/{id}/update-date', [DepanageController::class, 'updateDate'])->name('depannage.update.date');
+    Route::post('depannage/{id}/archiver', [DepanageController::class, 'archiver'])->name('depannage.archiver');
 
     // Approvisionnement
     Route::patch('/approvisionnement/{id}/update-status', [ApprovisionnementController::class, 'updateStatus'])->name('approvisionnement.updateStatus');

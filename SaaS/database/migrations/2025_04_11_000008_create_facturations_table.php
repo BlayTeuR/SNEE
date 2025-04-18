@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('depannage_id')->constrained()->onDelete('cascade');
             $table->integer('montant')->comment('Montant de la facturation');
             $table->string('statut')->default('Non payé')->comment('Statut de la facturation');
-            $table->date('date_intervention')->nullable();
+            $table->date('date_intervention');
             $table->timestamps();
         });
     }

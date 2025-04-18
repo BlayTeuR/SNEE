@@ -23,6 +23,7 @@ class Depannage extends Model
         'statut',
         'date_depannage',
         'provenance',
+        'archived',
     ];
 
     public function historiques()
