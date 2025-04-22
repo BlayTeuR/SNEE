@@ -78,7 +78,7 @@
                 <table class="w-full table-fixed">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-32">ID</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">ID</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Adresse</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Type de client</th>
@@ -106,23 +106,12 @@
                         <tr class="hover:bg-gray-200 {{$bgColor}}">
                             <td class="p-3 text-sm text-gray-700 w-32 relative z-10">
                                 @php
-                                    $icons = [
-                                        'chargé d\'affaire' => ['icon' => '💼', 'label' => 'Chargé d\'affaire'],
-                                        'client' => ['icon' => '👤', 'label' => 'Client'],
-                                        'ajout manuel' => ['icon' => '🛠️', 'label' => 'Ajout manuel'],
-                                    ];
-
-                                    $provenance = strtolower($depannage->provenance);
-                                    $iconData = $icons[$provenance] ?? ['icon' => '❓', 'label' => 'Inconnu'];
                                     $count++;
                                 @endphp
                                 <div class="flex items-center space-x-2">
                                     <span class="text-gray-800 font-medium">{{ $depannage->id }}</span>
                                     <div class="relative group">
-                                        <span class="text-lg">{{ $iconData['icon'] }}</span>
-                                        <span class="absolute left-1/2 transform -translate-x-1/2 top-full mt-1 px-2 py-1 text-[10px] rounded bg-gray-700 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50 shadow">
-                                        {{ $iconData['label'] }}
-                                        </span>
+                                        <span class="text-xs font-bold">({{$depannage->provenance}})</span>
                                     </div>
                                 </div>
                             </td>
@@ -298,7 +287,10 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data.message);
-                location.reload();
+                setTimeout(() => {
+                    location.reload();
+                }, 100);
+
             })
             .catch(error => {
                 console.error('Erreur:', error);
@@ -375,6 +367,7 @@
         const button = document.getElementById(buttonId);
         const depannageId = buttonId.split('-')[1].trim();
 
+        console.log(depannageId)
         if(statusText === 'Affecter'){
             currentDeppangeId = depannageId;
             pendingStatut = {
@@ -389,7 +382,10 @@
 
         performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button);
         toggleDropdown(dropdownId);
-        location.reload();
+        setTimeout(() => {
+            location.reload();
+        }, 150);
+
     }
 
     function performStatusUpdate(ropdownId, statusText, statusColor, depannageId, button){

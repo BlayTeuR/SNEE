@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Depannage;
 use App\Models\Type;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Termwind\Components\Element;
 
 class DepanageController extends Controller
@@ -87,51 +89,62 @@ class DepanageController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        // Validation des données envoyées
-        $request->validate([
-            'statut' => 'required|string|in:À planifier,Affecter,Approvisionnement,À facturer',
-        ]);
+        try {
+            // Validation des données envoyées
+            $request->validate([
+                'statut' => 'required|string|in:À planifier,Affecter,Approvisionnement,À facturer',
+            ]);
 
-        // Récupérer le dépannage
-        $depannage = Depannage::findOrFail($id);
-        $ancienStatut = $depannage->statut;
+            // Récupérer le dépannage
+            $depannage = Depannage::findOrFail($id);
+            $ancienStatut = $depannage->statut;
 
-        // Mettre à jour le statut
-        $nouveauStatut = $request->input('statut');
-        $depannage->statut = $nouveauStatut;
-        $depannage->save();
+            // Mettre à jour le statut
+            $nouveauStatut = $request->input('statut');
+            $depannage->statut = $nouveauStatut;
+            $depannage->save();
 
-        // Si le statut est "Affecter"
-        if ($nouveauStatut == 'Affecter') {
-            // Vérifier si la date est déjà renseignée
-            if ($depannage->depannage_date == null) {
-                // Si la date est null, demander à l'utilisateur de renseigner une date
-                return response()->json(['action' => 'request_date']);
-            } else {
-                // Si la date est déjà renseignée, demander à l'utilisateur s'il souhaite la modifier
-                return response()->json(['action' => 'modify_date', 'date' => $depannage->depannage_date]);
+            // Si le statut est "Affecter"
+            if ($nouveauStatut == 'Affecter') {
+                // Vérifier si la date est déjà renseignée
+                if ($depannage->depannage_date == null) {
+                    // Si la date est null, demander à l'utilisateur de renseigner une date
+                    return response()->json(['action' => 'request_date']);
+                } else {
+                    // Si la date est déjà renseignée, demander à l'utilisateur s'il souhaite la modifier
+                    return response()->json(['action' => 'modify_date', 'date' => $depannage->depannage_date]);
+                }
             }
-        }
 
-        // Si le statut passe de "Approvisionnement" à un autre statut
-        if($ancienStatut != 'Approvisionnement' && $nouveauStatut == 'Approvisionnement') {
-            // Créer un nouvel enregistrement dans la table 'approvisionnement'
-            $depannage->approvisionnements()->create([
-                'statut' => 'À planifier',
-            ]);
-        }
+            // Si le statut passe de "Approvisionnement" à un autre statut
+            if ($ancienStatut != 'Approvisionnement' && $nouveauStatut == 'Approvisionnement') {
+                // Créer un nouvel enregistrement dans la table 'approvisionnement'
+                $depannage->approvisionnements()->create([
+                    'statut' => 'À planifier',
+                ]);
+            }
 
-        // Si le statut passe de "À facturer" à un autre statut
-        if($ancienStatut != 'À facturer' && $nouveauStatut == 'À facturer') {
-            // Créer un nouvel enregistrement dans la table 'facturation'
-            $depannage->facturations()->create([
-                'montant' => 0,
-                'statut' => 'Non envoyée',
-                'date_intervention' => $depannage->date_depannage,
-            ]);
-        }
+            // Si le statut passe de "À facturer" à un autre statut
+            if ($ancienStatut != 'À facturer' && $nouveauStatut == 'À facturer') {
+                // Créer un nouvel enregistrement dans la table 'facturation'
+                if($depannage->depannage_date == null){
+                    return response()->json(['message' => 'Aucune date d\'intervenion']);
+                }
+                $depannage->facturations()->create([
+                    'montant' => 0,
+                    'statut' => 'Non envoyée',
+                    'date_intervention' => $depannage->date_depannage,
+                ]);
+            }
 
-        return response()->json(['message' => 'Statut mis à jour avec succès!']);
+            return response()->json(['message' => 'Statut mis à jour avec succès!']);
+        } catch (QueryException $e) {
+            Log::error("Erreur SQL dans updateStatus : " . $e->getMessage());
+            return response()->json(['message' => 'Erreur de base de données.'], 500);
+        } catch (\Throwable $e) {
+            Log::error("Erreur générale dans updateStatus : " . $e->getMessage());
+            return response()->json(['message' => 'Erreur interne du serveur.'], 500);
+        }
     }
 
     public function updateDate(Request $request, $id)
