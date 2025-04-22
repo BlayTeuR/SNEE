@@ -210,7 +210,7 @@
                             </td>
                                 <td class="text-left p-3 text-sm text-gray-700">
                                     @if($depannage->statut == 'À facturer')
-                                        <button class="text-blue-500 hover:underline text-blue-600" onclick="toggleModalArchiveBis()">Archiver</button>
+                                        <button class="text-blue-500 hover:underline text-blue-600" onclick="toggleModalArchiveBis({{$depannage->id}})">Archiver</button>
                                     @endif
                                 </td>
 
@@ -389,6 +389,7 @@
 
         performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button);
         toggleDropdown(dropdownId);
+        location.reload();
     }
 
     function performStatusUpdate(ropdownId, statusText, statusColor, depannageId, button){

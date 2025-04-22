@@ -44,6 +44,11 @@
         </div>
 
         <div class="mb-4">
+            <label for="date_intervention" class="block text-gray-700">Date d'intervention <span class="text-red-500">*</span></label>
+            <input type="date" id="date_intervention" name="date_intervention" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
+        </div>
+
+        <div class="mb-4">
             <label class="block text-gray-700 mb-2">Type de matériel <span class="text-red-500">*</span></label>
             <div class="flex space-x-4">
                 <label class="flex items-center space-x-2">

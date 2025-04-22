@@ -65,7 +65,7 @@ class DepanageController extends Controller
         }
 
         // Appliquer le tri avant de récupérer les résultats
-        $depannages = $query->orderBy('created_at', 'desc')->get();
+        $depannages = $query->where('archived', '=', false)->orderBy('created_at', 'desc')->get();
 
         return view('dashboard', compact('depannages'));
     }
@@ -166,6 +166,7 @@ class DepanageController extends Controller
                 'elec' => 'nullable|string',
                 'infos' => 'nullable|string',
                 'image' => 'nullable|image|max:2048',
+                'date_intervention' => 'date',
             ]);
 
             $provenance = 'ajout manuel';
@@ -187,6 +188,7 @@ class DepanageController extends Controller
                 'message_erreur' => $request->input('elec'),
                 'infos_supplementaires' => $request->input('infos'),
                 'provenance' => $provenance,
+                'date_depannage' => $request->input('date_intervention'),
             ]);
 
             // Création du Type associé au Depannage
