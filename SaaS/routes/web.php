@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApprovisionnementController;
 use App\Http\Controllers\DepanageController;
+use App\Http\Controllers\EntretienController;
 use App\Http\Controllers\FacturationsController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\PieceController;
@@ -62,6 +63,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Form
     Route::get('/adminform', function(){return view('adminform');})->name('adminform');
+    Route::get('/entretienform', function (){return view('entretienform');})->name('entretienform');
 
     //Depannage
     Route::get('/depannage', [DepanageController::class, 'index'])->name('depannage');
@@ -92,6 +94,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('facturation/{id}/update-date', [FacturationsController::class, 'updateDate'])->name('facturation.update.date');
     Route::put('facturation/{id}/update-montant', [FacturationsController::class, 'updateMontant'])->name('facturation.update.montant');
     Route::patch('facturation/{id}/update-status', [FacturationsController::class, 'updateStatus'])->name('facturation.update.status');
+
+    //Entretien
+    Route::get('/entretien', [EntretienController::class, 'index'])->name('entretien');
+    Route::post('entretien/store', [EntretienController::class, 'store'])->name('entretien.store');
 });
 
  require __DIR__.'/auth.php';

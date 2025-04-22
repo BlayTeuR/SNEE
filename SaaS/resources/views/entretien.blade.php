@@ -80,6 +80,10 @@
                 </table>
             </div>
         </div>
+        <a href="{{ route('entretienform') }}"
+           class="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-3xl w-16 h-16 flex items-center justify-center rounded-full shadow-lg transition duration-300 ease-in-out z-50">
+            +
+        </a>
     </div>
 
 </x-app-layout>
