@@ -7,8 +7,9 @@
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/caform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/caform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/HistoriqueController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/HistoriqueController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,7 +204,9 @@
       <workItem from="1744869821873" duration="10893000" />
       <workItem from="1744889722769" duration="13762000" />
       <workItem from="1744975951200" duration="4948000" />
-      <workItem from="1745302062560" duration="2238000" />
+      <workItem from="1745302062560" duration="4615000" />
+      <workItem from="1745312267279" duration="2043000" />
+      <workItem from="1745321583943" duration="325000" />
     </task>
     <servers />
   </component>

@@ -1,6 +1,7 @@
 <x-app-layout>
     @php
         $currentApprovisionnementId = null;
+        $currentDeppangeId = null;
     @endphp
     <div class="flex flex-col md:flex-row bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <div class="w-full md:w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
@@ -148,6 +149,7 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Historique</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Statut</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left  w-1/6"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -167,6 +169,7 @@
                             <tr class="hover:bg-gray-200 {{$bgColor}}">
                                 <td class="p-3 text-sm text-gray-700 w-32 relative z-10">
                                     @php
+                                        $currentDeppangeId = $m->id;
                                         $icons = [
                                             'chargé d\'affaire' => ['icon' => '💼', 'label' => 'Chargé d\'affaire'],
                                             'client' => ['icon' => '👤', 'label' => 'Client'],
@@ -212,6 +215,9 @@
                                 <td class="p-3 text-sm text-gray-700">
                                     <a href="{{ route('depannage.show', $m->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                                 </td>
+                                <td>
+                                    <button onclick="toggleModalDesarchiverDep('{{$m->id}}')" class="text-sm text-red-500 hover:underline hover:text-red-600">Désarchiver</button>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -226,7 +232,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmation -->
+    <!-- Modal de confirmation approvisionnement-->
     <div id="modal-desarchiver-approvisionnement" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
             <h2 class="text-xl font-semibold mb-4">Voulez-vous désarchiver cet approvisionnement ?</h2>
@@ -240,11 +246,25 @@
         </div>
     </div>
 
-</x-app-layout>
+    <!-- Modal de confirmation dépannage-->
+    <div id="modal-desarchiver-dep" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-semibold mb-4">Voulez-vous désarchiver ce dépannage ?</h2>
+            <p class="text-gray-800">
+                Si vous confirmez, ce dépannage sera de nouveau disponible dans l'onglet 'Dépannage' et sera supprimé de l'onglet 'Historique'.
+            </p>
+            <div class="mt-4 flex justify-end space-x-4">
+                <button onclick="toggleModalDesarchiverDep({{$currentDeppangeId}})" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="desarchiverDep()" id="confirm-desarchiver" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Désarchiver</button>
+            </div>
+        </div>
+    </div>
 
+</x-app-layout>
 
 <script>
     let currentApprovisionnementId = null;
+    let currentDepannageId = null;
 
     function toggleModalDesarchiver(id) {
         var modal = document.getElementById('modal-desarchiver-approvisionnement');
@@ -252,9 +272,14 @@
         modal.classList.toggle('hidden');
     }
 
-    function desarchiver() {
-        console.log('Desarchiver clicked pour ID ' + currentApprovisionnementId);
+    function toggleModalDesarchiverDep(id) {
+        var modal = document.getElementById('modal-desarchiver-dep');
+        currentDepannageId = id;
+        console.log(currentDepannageId)
+        modal.classList.toggle('hidden');
+    }
 
+    function desarchiver() {
         fetch(`/approvisionnement/${currentApprovisionnementId}/desarchiver`, {
             method: 'POST',
             headers: {
@@ -263,6 +288,30 @@
             },
             body: JSON.stringify({
                 id: currentApprovisionnementId,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.log('Erreur:', error);
+            });
+
+        toggleModalDesarchiver();
+    }
+
+    function desarchiverDep() {
+        console.log(currentDepannageId);
+        fetch(`/depannage/${currentDepannageId}/desarchiver`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({
+                id: currentDepannageId,
             })
         })
             .then(response => response.json())

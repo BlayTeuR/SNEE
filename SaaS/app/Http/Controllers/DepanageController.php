@@ -238,6 +238,19 @@ class DepanageController extends Controller
         return response()->json(['message' => 'Dépannage archivé avec succès!']);
     }
 
+    public function desarchiver(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:depannages,id',
+        ]);
+
+        $depannage = Depannage::findOrFail($request->id);
+        $depannage->archived = false;
+        $depannage->save();
+
+        return response()->json(['message' => 'Dépannage désarchivé avec succès!']);
+    }
+
     public function show($id)
     {
         $depannage = Depannage::findOrFail($id);
