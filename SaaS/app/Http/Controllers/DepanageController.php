@@ -102,7 +102,6 @@ class DepanageController extends Controller
             // Mettre à jour le statut
             $nouveauStatut = $request->input('statut');
             $depannage->statut = $nouveauStatut;
-            $depannage->save();
 
             // Si le statut est "Affecter"
             if ($nouveauStatut == 'Affecter') {
@@ -127,15 +126,17 @@ class DepanageController extends Controller
             // Si le statut passe de "À facturer" à un autre statut
             if ($ancienStatut != 'À facturer' && $nouveauStatut == 'À facturer') {
                 // Créer un nouvel enregistrement dans la table 'facturation'
-                if($depannage->depannage_date == null){
-                    return response()->json(['message' => 'Aucune date d\'intervenion']);
+                if ($depannage->depannage_date == null) {
+                    return response()->json(['message' => 'Aucune date d\'intervenion'], 500);
+                } else {
+                    $depannage->facturations()->create([
+                        'montant' => 0,
+                        'statut' => 'Non envoyée',
+                        'date_intervention' => $depannage->date_depannage,
+                    ]);
                 }
-                $depannage->facturations()->create([
-                    'montant' => 0,
-                    'statut' => 'Non envoyée',
-                    'date_intervention' => $depannage->date_depannage,
-                ]);
             }
+            $depannage->save();
 
             return response()->json(['message' => 'Statut mis à jour avec succès!']);
         } catch (QueryException $e) {
@@ -174,7 +175,7 @@ class DepanageController extends Controller
                 'email' => 'required|email',
                 'tel' => 'required|string|max:20',
                 'add' => 'required|string|max:255',
-                'demande_type' => 'required|string|in:portail,portillon,barrière',
+                'demande_type' => 'required|string|in:portail,portillon,barrière,tourniquet',
                 'panne' => 'required|string',
                 'elec' => 'nullable|string',
                 'infos' => 'nullable|string',

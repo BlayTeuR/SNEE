@@ -50,6 +50,10 @@
                     <span>Portail</span>
                 </label>
                 <label class="flex items-center space-x-2">
+                    <input type="radio" name="demande_type" value="tourniquet" class="text-green-500">
+                    <span>Tourniquet</span>
+                </label>
+                <label class="flex items-center space-x-2">
                     <input type="radio" name="demande_type" value="portillon" class="text-green-500">
                     <span>Portillon</span>
                 </label>

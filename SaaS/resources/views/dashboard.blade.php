@@ -384,8 +384,7 @@
         toggleDropdown(dropdownId);
         setTimeout(() => {
             location.reload();
-        }, 150);
-
+        }, 10000);
     }
 
     function performStatusUpdate(ropdownId, statusText, statusColor, depannageId, button){
