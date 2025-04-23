@@ -51,6 +51,10 @@
                     <span>Portail</span>
                 </label>
                 <label class="flex items-center space-x-2">
+                    <input type="radio" name="demande_type" value="tourniquet" class="text-green-500">
+                    <span>Tourniquet</span>
+                </label>
+                <label class="flex items-center space-x-2">
                     <input type="radio" name="demande_type" value="portillon" class="text-green-500">
                     <span>Portillon</span>
                 </label>
@@ -62,13 +66,8 @@
         </div>
 
         <div class="mb-4">
-            <label for="panne" class="block text-gray-700">Panne rencontrée <span class="text-red-500">*</span></label>
+            <label for="panne" class="block text-gray-700">Panne rencontrée / vigilance<span class="text-red-500">*</span></label>
             <textarea type="text" id="panne" name="panne" rows="4" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required></textarea>
-        </div>
-
-        <div class="mb-4">
-            <label for="elec" class="block text-gray-700">Message d'erreur sur la carte électronique</label>
-            <input type="text" id="elec" name="elec" class="mt-1 w-full border-gray-300 rounded-md shadow-sm">
         </div>
 
         <div class="mb-4">

@@ -384,10 +384,10 @@
         toggleDropdown(dropdownId);
         setTimeout(() => {
             location.reload();
-        }, 10000);
+        }, 300);
     }
 
-    function performStatusUpdate(ropdownId, statusText, statusColor, depannageId, button){
+    function performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button) {
         button.textContent = statusText;
         button.classList.remove('bg-gray-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500');
         button.classList.add(statusColor);
@@ -400,11 +400,26 @@
             },
             body: JSON.stringify({ statut: statusText }),
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Erreur serveur');
+                    });
+                }
+                return response.json();
             })
-            .catch(error => console.error('Erreur:', error));
+            .then(data => {
+                showNotification(data.message || 'Statut mis à jour avec succès', 'success');
+
+                if (data.action === 'request_date') {
+                    showNotification("Merci de renseigner une date d'intervention.", 'warning');
+                } else if (data.action === 'modify_date') {
+                    showNotification("Date déjà renseignée : " + data.date, 'info');
+                }
+            })
+            .catch(error => {
+                showNotification(error.message || 'Une erreur est survenue', 'error');
+            });
     }
 
     function updateDate() {

@@ -105,6 +105,7 @@ class DepanageController extends Controller
 
             // Si le statut est "Affecter"
             if ($nouveauStatut == 'Affecter') {
+                $depannage->save();
                 // Vérifier si la date est déjà renseignée
                 if ($depannage->depannage_date == null) {
                     // Si la date est null, demander à l'utilisateur de renseigner une date
@@ -117,6 +118,7 @@ class DepanageController extends Controller
 
             // Si le statut passe de "Approvisionnement" à un autre statut
             if ($ancienStatut != 'Approvisionnement' && $nouveauStatut == 'Approvisionnement') {
+                $depannage->save();
                 // Créer un nouvel enregistrement dans la table 'approvisionnement'
                 $depannage->approvisionnements()->create([
                     'statut' => 'À planifier',
@@ -126,9 +128,10 @@ class DepanageController extends Controller
             // Si le statut passe de "À facturer" à un autre statut
             if ($ancienStatut != 'À facturer' && $nouveauStatut == 'À facturer') {
                 // Créer un nouvel enregistrement dans la table 'facturation'
-                if ($depannage->depannage_date == null) {
+                if ($depannage->date_depannage == null) {
                     return response()->json(['message' => 'Aucune date d\'intervenion'], 500);
                 } else {
+                    $depannage->save();
                     $depannage->facturations()->create([
                         'montant' => 0,
                         'statut' => 'Non envoyée',
@@ -136,8 +139,8 @@ class DepanageController extends Controller
                     ]);
                 }
             }
-            $depannage->save();
 
+            $depannage->save();
             return response()->json(['message' => 'Statut mis à jour avec succès!']);
         } catch (QueryException $e) {
             Log::error("Erreur SQL dans updateStatus : " . $e->getMessage());
