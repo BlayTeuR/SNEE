@@ -52,45 +52,43 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Historique</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6"></th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-16"></th>
                     </tr>
                     </thead>
                     <tbody>
+                    @foreach($entretiens as $entretien)
                     <tr class="hover:bg-gray-200">
+                        <td class="p-3 text-sm text-gray-700">{{$entretien->nom}}</td>
+                        <td class="p-3 text-sm text-gray-700">{{$entretien->adresse}}</td>
+                        <td class="p-3 text-sm text-gray-700">visite</td>
                         <td class="p-3 text-sm text-gray-700">
-                            Bastien Jallais
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            14/11/2024
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            150€
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button onclick="toggleDropdown('status-1')" class="bg-gray-300 bg-opacity-50 rounded-lg">Statut</button>
-                            <ul id="status-1" class="hidden absolute bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                <li>Non payé</li>
-                                <li>Payé</li>
-                                <li>En attente</li>
-                            </ul>
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            bastjals@gmail.com
+                            <button onclick="toggleDropdown('historique-dropdown')"
+                                    class="text-blue-500 hover:text-blue-700 focus:outline-none">
+                                Historique
+                            </button>
+                            <div id="historique-dropdown" class="hidden bg-white shadow-lg rounded-lg mt-2 p-4">
+                                <!-- Contenu du dropdown -->
+                                <ul>
+                                    <li>Visite 1 - 01/01/2023</li>
+                                    <li>Visite 2 - 01/02/2023</li>
+                                    <li>Visite 3 - 01/03/2023</li>
+                                </ul>
+                            </div>
                         </td>
                         <td class="p-3 text-sm text-gray-700">
-                            <a href="{{ route('depannage.show', $depannage->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
+                            <a href="{{ route('entretien.show', $entretien->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                         </td>
-                        <td class="text-left p-3 text-sm text-gray-700">
-                            @if($depannage->statut == 'À facturer')
-                                <button class="text-blue-500 hover:underline text-blue-600" onclick="toggleModalArchiveBis({{$depannage->id}})">Archiver</button>
-                            @endif
+                        <td class="p-3 text-sm text-gray-700">
+                            <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Payer</button>
                         </td>
-
+                        <td class="p-3 text-sm text-gray-700">
+                            <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Supprimer</button>
+                        </td>
                         <!-- Colonne suppression -->
                         <td class="p-1 text-xs text-gray-700 w-10 text-center">
                             <button onclick="toggleModal({{ $depannage->id }})" class="text-red-600 hover:text-red-800">❌</button>
                         </td>
                     </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -100,12 +98,54 @@
             +
         </a>
     </div>
-
+    <!-- Modal de confirmation -->
+    <div id="confirm-delete-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-semibold mb-4">Confirmer la suppression</h2>
+            <p>Êtes-vous sûr de vouloir supprimer cet entretien ? Cette action est irréversible.</p>
+            <div class="mt-4 flex justify-end space-x-4">
+                <button onclick="toggleModal()" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="delEntretien()" class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">Supprimer</button>
+            </div>
+        </div>
+    </div>
 </x-app-layout>
 
 <script>
+    let entretienIdToDelete = null;
+
     function toggleDropdown(id) {
         const dropdown = document.getElementById(id);
         dropdown.classList.toggle('hidden');
     }
+
+    function toggleModal(depannageID = null) {
+        const modal = document.getElementById('confirm-delete-modal');
+        if (depannageID) {
+            entretienIdToDelete = depannageID;
+        }
+        modal.classList.toggle('hidden');
+    }
+
+    function delDepannage() {
+        if (entretienIdToDelete !== null) {
+            fetch(`/entretien/del/${entretienIdToDelete}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                });
+        }
+        toggleModal();
+    }
+
 </script>

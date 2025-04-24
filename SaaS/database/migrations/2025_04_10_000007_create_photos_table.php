@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('photos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('depannage_id')->constrained('depannages')->onDelete('cascade');
+            $table->morphs('photoable'); // Ajoute `photoable_id` et `photoable_type`
             $table->string('chemin_photo');
             $table->timestamps();
         });

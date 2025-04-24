@@ -33,7 +33,7 @@ class Depannage extends Model
 
     public function photos()
     {
-        return $this->hasMany(Photo::class, 'depannage_id');
+        return $this->morphMany(Photo::class, 'photoable');
     }
 
     public function approvisionnements()

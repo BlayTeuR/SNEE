@@ -10,4 +10,10 @@ class Entretien extends Model
     {
         return $this->morphMany(Historique::class, 'historiqueable');
     }
+
+    public function photos()
+    {
+        return $this->morphMany(Photo::class, 'photoable');
+    }
+
 }
