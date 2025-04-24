@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Historique extends Model
 {
-    protected $fillable = ['depannage_id', 'date'];
+    protected $fillable = ['date'];
 
-    public function depannage()
+    public function historiqueable()
     {
-        return $this->belongsTo(Depannage::class, 'depannage_id');
+        return $this->morphTo();
     }
 }

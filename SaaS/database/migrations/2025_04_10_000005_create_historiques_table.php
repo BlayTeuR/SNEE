@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('historiques', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('depannage_id')->constrained('depannages')->onDelete('cascade');
+            $table->morphs('historiqueable');
             $table->date('date');
             $table->timestamps();
         });

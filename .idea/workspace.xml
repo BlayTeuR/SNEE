@@ -5,14 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/js/notifications.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/components/notification.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Historique.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Historique.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000005_create_historiques_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000005_create_historiques_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/seeders/DatabaseSeeder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretienform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/entretienform.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -210,7 +209,9 @@
       <workItem from="1744975951200" duration="4948000" />
       <workItem from="1745302062560" duration="4615000" />
       <workItem from="1745312267279" duration="2043000" />
-      <workItem from="1745321583943" duration="10049000" />
+      <workItem from="1745321583943" duration="13106000" />
+      <workItem from="1745408407262" duration="4622000" />
+      <workItem from="1745474618163" duration="1522000" />
     </task>
     <servers />
   </component>

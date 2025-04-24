@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <!-- Filtres -->
-        <div class="w-1/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
+        <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
             <h2 class="text-lg font-bold">Filtres</h2>
             <!-- Filtres ici -->
             <div class="mb-4">
@@ -39,18 +39,20 @@
         </div>
 
         <!-- Liste des factures -->
-        <div class="w-3/4 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
+        <div class="w-5/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
 
             <!-- Contenu scrollable -->
             <div class="flex-1 overflow-auto">
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr class="bg-gray-50">
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Nom</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Date d'émission</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Montant</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Contact</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Adresse</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Prochaine visite</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Historique</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6"></th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-16"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -74,6 +76,19 @@
                         </td>
                         <td class="p-3 text-sm text-gray-700">
                             bastjals@gmail.com
+                        </td>
+                        <td class="p-3 text-sm text-gray-700">
+                            <a href="{{ route('depannage.show', $depannage->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
+                        </td>
+                        <td class="text-left p-3 text-sm text-gray-700">
+                            @if($depannage->statut == 'À facturer')
+                                <button class="text-blue-500 hover:underline text-blue-600" onclick="toggleModalArchiveBis({{$depannage->id}})">Archiver</button>
+                            @endif
+                        </td>
+
+                        <!-- Colonne suppression -->
+                        <td class="p-1 text-xs text-gray-700 w-10 text-center">
+                            <button onclick="toggleModal({{ $depannage->id }})" class="text-red-600 hover:text-red-800">❌</button>
                         </td>
                     </tr>
                     </tbody>

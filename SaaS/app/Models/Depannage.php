@@ -28,7 +28,7 @@ class Depannage extends Model
 
     public function historiques()
     {
-        return $this->hasMany(Historique::class, 'depannage_id');
+        return $this->morphMany(Historique::class, 'historiqueable');
     }
 
     public function photos()
