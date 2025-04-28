@@ -64,7 +64,19 @@
                     </thead>
                     <tbody>
                     @foreach($model as $m)
-                        <tr class="hover:bg-gray-200">
+                        @php
+                            $count = 1;
+                        @endphp
+                        @if($count % 2 == 0)
+                            @php
+                                $bgColor = 'bg-gray-100';
+                            @endphp
+                        @else
+                            @php
+                                $bgColor = 'bg-white';
+                            @endphp
+                        @endif
+                        <tr class="hover:bg-gray-200 {{$bgColor}}">
                             <td class="p-3 text-sm text-gray-700">{{ $m->depannage_id }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $m->depannage->nom }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $m->created_at->format('d/m/Y') }}</td>
@@ -106,7 +118,18 @@
                         @foreach($model as $m)
                             @php
                                 $currentApprovisionnementId = $m->id;
+                                $count = 1;
                             @endphp
+                            @if($count % 2 == 0)
+                                @php
+                                    $bgColor = 'bg-gray-100';
+                                @endphp
+                            @else
+                                @php
+                                    $bgColor = 'bg-white';
+                                @endphp
+                            @endif
+                            <tr class="hover:bg-gray-200 {{$bgColor}}">
                             <tr class="hover:bg-gray-200">
                                 <td class="p-3 text-sm text-gray-700">{{ $m->depannage_id }}</td>
                                 <td class="p-3 text-sm text-gray-700">{{$m->depannage->nom}}</td>

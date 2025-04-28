@@ -56,8 +56,20 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @php
+                        $count = 1;
+                    @endphp
                     @foreach($entretiens as $entretien)
-                    <tr class="hover:bg-gray-200">
+                        @if($count % 2 == 0)
+                            @php
+                                $bgColor = 'bg-gray-100';
+                            @endphp
+                        @else
+                            @php
+                                $bgColor = 'bg-white';
+                            @endphp
+                        @endif
+                    <tr class="hover:bg-gray-200 {{$bgColor}}">
                         <td class="p-3 text-sm text-gray-700">{{$entretien->id}}</td>
                         <td class="p-3 text-sm text-gray-700">{{$entretien->nom}}</td>
                         <td class="p-3 text-sm text-gray-700">{{$entretien->adresse}}</td>
@@ -98,6 +110,9 @@
                             <button onclick="toggleModal({{ $entretien->id }})" class="text-red-600 hover:text-red-800">❌</button>
                         </td>
                     </tr>
+                    @php
+                        $count++;
+                    @endphp
                     @endforeach
                     </tbody>
                 </table>

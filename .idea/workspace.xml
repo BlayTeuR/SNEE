@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/database/factories/EntretienHistoriqueFactory.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SaaS/database/seeders/EntretienHistoriqueSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +208,7 @@
       <workItem from="1745474618163" duration="6774000" />
       <workItem from="1745494427471" duration="5806000" />
       <workItem from="1745822866560" duration="4266000" />
-      <workItem from="1745840005582" duration="2733000" />
+      <workItem from="1745840005582" duration="3676000" />
     </task>
     <servers />
   </component>
