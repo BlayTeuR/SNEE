@@ -81,4 +81,17 @@ class EntretienController extends Controller
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());
         }
     }
+
+    public function updateDate(Request $request, $id)
+    {
+        try {
+            $entretien = Entretien::findOrFail($id);
+            $entretien->derniere_date = $request->input('date');
+            $entretien->save();
+
+            return response()->json(['message' => 'Date mise à jour avec succès'], 200); // <--- ICI
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erreur lors de la mise à jour'], 500); // <--- et ici
+        }
+    }
 }

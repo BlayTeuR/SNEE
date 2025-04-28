@@ -67,8 +67,8 @@
                             @else
                                 {{ \Carbon\Carbon::parse($entretien->derniere_date)->format('d/m/Y') }}
                             @endif
-                            <button onclick="toggleDate('date-dropdown-{{$entretien->id}}')"
-                                    class="text-blue-500 hover:text-blue-700 hover:underline focus:outline-none p-2">Modifier</button>
+                                <button onclick="toggleModalDate(true, {{$entretien->id}})"
+                                        class="text-blue-500 hover:text-blue-700 hover:underline focus:outline-none p-2">Modifier</button>
                         </td>
                         <td class="p-3 text-sm text-gray-700">
                             <button onclick="toggleDropdown('historique-dropdown')"
@@ -114,8 +114,20 @@
             <h2 class="text-xl font-semibold mb-4">Confirmer la suppression</h2>
             <p>Êtes-vous sûr de vouloir supprimer cet entretien ? Cette action est irréversible.</p>
             <div class="mt-4 flex justify-end space-x-4">
-                <button onclick="toggleModal()" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="toggleModalDate(true)" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
                 <button onclick="delEntretien()" class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="create-date-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-semibold mb-4">Quelle sera la date du prochain entretien ?</h2>
+            <div class="mt-4 flex justify-end space-x-4">
+                <label for="date-create" class="block text-sm font-medium text-gray-700">Choisir une date</label>
+                <input type="date" name="date-create" id="date-create" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date-crate') }}">
+                <button onclick="toggleModalDate(false)" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="updateDate()" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
             </div>
         </div>
     </div>
@@ -123,6 +135,7 @@
 
 <script>
     let entretienIdToDelete = null;
+    let entretienIdToUpdate = null;
 
     function toggleDropdown(id) {
         const dropdown = document.getElementById(id);
@@ -157,5 +170,43 @@
         }
         toggleModal();
     }
+
+    function toggleModalDate(isOpen, id = null) {
+        const modal = document.getElementById('create-date-modal');
+        modal.classList.toggle('hidden', !isOpen);
+
+        if (isOpen && id !== null) {
+            entretienIdToUpdate = id;
+            document.getElementById('date-create').value = "";
+        }
+    }
+    function updateDate() {
+        const date = document.getElementById('date-create').value;
+        const id = document.getElementById('date-create').getAttribute('data-id');
+
+        fetch(`/entretien/${entretienIdToUpdate}/update-date`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({ date: date }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur serveur');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+        toggleModalDate(false);
+    }
+
 
 </script>

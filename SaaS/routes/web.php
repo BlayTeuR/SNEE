@@ -100,6 +100,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('entretien/store', [EntretienController::class, 'store'])->name('entretien.store');
     Route::get('/entretien/{id}', [DepanageController::class, 'show'])->name('entretien.show')->middleware(['auth', 'verified']);
     Route::post('entretien/del/{id}', [EntretienController::class, 'destroy'])->name('entretien.del');
+    Route::post('/entretien/{id}/update-date', [EntretienController::class, 'updateDate'])->name('entretien.update.date');
 });
 
  require __DIR__.'/auth.php';
