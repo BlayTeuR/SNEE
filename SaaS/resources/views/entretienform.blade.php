@@ -71,8 +71,8 @@
         </div>
 
         <div class="mb-4">
-            <label for="infos" class="block text-gray-700">Informations supplémentaires</label>
-            <textarea id="infos" name="infos" rows="4" class="mt-1 w-full border-gray-300 rounded-md shadow-sm"></textarea>
+            <label for="date" class="block text-gray-700">Date de la prochaine visite<span class="text-red-500">*</span></label>
+            <input type="date" id="date" name="date" class="mt-1 w-full border-gray-300 rounded-md shadow-sm"></input>
         </div>
 
         <div id="image-container" class="mb-4">
@@ -159,8 +159,7 @@
         toggleDeleteButton();  // Mettre à jour l'affichage
     });
 
-    // Initialisation du formulaire
-    toggleDeleteButton(); // Vérifier si un fichier est déjà sélectionné à l'initialisation
+    toggleDeleteButton();
 </script>
 
 </body>

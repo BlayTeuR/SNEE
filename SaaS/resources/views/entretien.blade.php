@@ -46,6 +46,7 @@
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr class="bg-gray-50">
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">ID</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Adresse</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Prochaine visite</th>
@@ -57,9 +58,18 @@
                     <tbody>
                     @foreach($entretiens as $entretien)
                     <tr class="hover:bg-gray-200">
+                        <td class="p-3 text-sm text-gray-700">{{$entretien->id}}</td>
                         <td class="p-3 text-sm text-gray-700">{{$entretien->nom}}</td>
                         <td class="p-3 text-sm text-gray-700">{{$entretien->adresse}}</td>
-                        <td class="p-3 text-sm text-gray-700">visite</td>
+                        <td class="p-3 text-sm text-gray-700">
+                            @if($entretien->derniere_date == null)
+                                <span class="text-red-500">Aucune date</span>
+                            @else
+                                {{ \Carbon\Carbon::parse($entretien->derniere_date)->format('d/m/Y') }}
+                            @endif
+                            <button onclick="toggleDate('date-dropdown-{{$entretien->id}}')"
+                                    class="text-blue-500 hover:text-blue-700 hover:underline focus:outline-none p-2">Modifier</button>
+                        </td>
                         <td class="p-3 text-sm text-gray-700">
                             <button onclick="toggleDropdown('historique-dropdown')"
                                     class="text-blue-500 hover:text-blue-700 focus:outline-none">
@@ -68,24 +78,24 @@
                             <div id="historique-dropdown" class="hidden bg-white shadow-lg rounded-lg mt-2 p-4">
                                 <!-- Contenu du dropdown -->
                                 <ul>
-                                    <li>Visite 1 - 01/01/2023</li>
-                                    <li>Visite 2 - 01/02/2023</li>
-                                    <li>Visite 3 - 01/03/2023</li>
+                                    @php
+                                        $numVisite = 1;
+                                    @endphp
+                                    @foreach($entretien->historiques as $historique)
+                                        <li>Visite {{$numVisite}} - {{$historique->date}}</li>
+                                        @php
+                                            $numVisite++;
+                                        @endphp
+                                    @endforeach
                                 </ul>
                             </div>
                         </td>
                         <td class="p-3 text-sm text-gray-700">
                             <a href="{{ route('entretien.show', $entretien->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                         </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Payer</button>
-                        </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Supprimer</button>
-                        </td>
                         <!-- Colonne suppression -->
                         <td class="p-1 text-xs text-gray-700 w-10 text-center">
-                            <button onclick="toggleModal({{ $depannage->id }})" class="text-red-600 hover:text-red-800">❌</button>
+                            <button onclick="toggleModal({{ $entretien->id }})" class="text-red-600 hover:text-red-800">❌</button>
                         </td>
                     </tr>
                     @endforeach
@@ -127,7 +137,7 @@
         modal.classList.toggle('hidden');
     }
 
-    function delDepannage() {
+    function delEntretien() {
         if (entretienIdToDelete !== null) {
             fetch(`/entretien/del/${entretienIdToDelete}`, {
                 method: 'POST',

@@ -93,7 +93,7 @@
                             <td class="p-3 text-sm text-gray-700">{{ $facturation->created_at->format('d/m/Y') }}</td>
                             <td class="p-3 text-sm text-gray-700">
                                 @if($facturation->date_intervention)
-                                    {{ $facturation->date_intervention}}
+                                    {{ \Carbon\Carbon::parse($facturation->date_intervention)->format('d/m/Y') }}
                                 @else
                                     Non définie
                                 @endif

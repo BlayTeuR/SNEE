@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/entretien/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Entretien.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Entretien.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Photo.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Photo.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000007_create_photos_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000007_create_photos_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretienform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/entretienform.blade.php" afterDir="false" />
@@ -216,7 +212,9 @@
       <workItem from="1745312267279" duration="2043000" />
       <workItem from="1745321583943" duration="13106000" />
       <workItem from="1745408407262" duration="4622000" />
-      <workItem from="1745474618163" duration="5510000" />
+      <workItem from="1745474618163" duration="6774000" />
+      <workItem from="1745494427471" duration="5806000" />
+      <workItem from="1745822866560" duration="3681000" />
     </task>
     <servers />
   </component>

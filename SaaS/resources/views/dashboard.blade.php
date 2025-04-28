@@ -82,7 +82,7 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Adresse</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Type de client</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Historique</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Date intervention</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Statut</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6"></th>
@@ -150,7 +150,6 @@
                                                 <option value="Sans contrat" {{ $depannage->types->contrat == 'Sans contrat' ? 'selected' : '' }}>Sans contrat</option>
                                             </select>
 
-
                                             <!-- Boutons Valider et Annuler -->
                                             <div class="mt-4 flex justify-end">
                                                 <button type="button" onclick="closeModal({{ $depannage->id }})" class="px-4 py-2 bg-red-500 text-white rounded-lg mr-2 hover:bg-red-600">Annuler</button>
@@ -163,18 +162,11 @@
                             </td>
 
                             <td class="p-3 text-sm text-gray-700 relative">
-                                <button onclick="toggleDropdown('historique-{{ $depannage->id }}')" class="bg-gray-300 bg-opacity-50 px-3 py-1 rounded-lg hover:bg-gray-400">
-                                    Afficher Historique
-                                </button>
-                                <ul id="historique-{{ $depannage->id }}" class="hidden absolute left-3 top-full bg-gray-100 p-2 mt-2 rounded shadow-md z-10">
-                                    @if($depannage->historiques->isNotEmpty())
-                                        @foreach ($depannage->historiques as $histo)
-                                            <li>{{ $histo->date }}</li>
-                                        @endforeach
-                                    @else
-                                        <li>Aucun historique</li>
-                                    @endif
-                                </ul>
+                                @if($depannage->date_depannage)
+                                    {{ \Carbon\Carbon::parse($depannage->date_depannage)->format('d/m/Y') }}
+                                @else
+                                    <span class="text-red-500">Non renseignée</span>
+                                @endif
                             </td>
                             <td class="p-3 text-sm text-gray-700 relative">
                                 <button id="status-{{ $depannage->id }}-btn"

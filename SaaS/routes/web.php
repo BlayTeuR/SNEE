@@ -98,6 +98,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Entretien
     Route::get('/entretien', [EntretienController::class, 'index'])->name('entretien');
     Route::post('entretien/store', [EntretienController::class, 'store'])->name('entretien.store');
+    Route::get('/entretien/{id}', [DepanageController::class, 'show'])->name('entretien.show')->middleware(['auth', 'verified']);
+    Route::post('entretien/del/{id}', [EntretienController::class, 'destroy'])->name('entretien.del');
 });
 
  require __DIR__.'/auth.php';
