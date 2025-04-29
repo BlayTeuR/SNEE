@@ -39,7 +39,7 @@ class EntretienController extends Controller
 
 
         // Récupérer les entretiens filtrés et trier par date de création
-        $entretiens = $query->where('archived', false)->orderBy('created_at', 'desc')->get();
+        $entretiens = $query->where('archived', false)->orderBy('created_at', 'asc')->get();
 
         // Retourner la vue avec les entretiens
         return view('entretien', compact('entretiens'));
@@ -130,6 +130,20 @@ class EntretienController extends Controller
             $entretien->save();
 
             return response()->json(['message' => 'Entretien archivé avec succès!']);
+        }
+
+        return response()->json(['message' => 'Entretien non trouvé'], 404);
+    }
+
+    public function desarchiver($id)
+    {
+        $entretien = Entretien::find($id);
+
+        if ($entretien) {
+            $entretien->archived = false;
+            $entretien->save();
+
+            return response()->json(['message' => 'Entretien désarchivé avec succès!']);
         }
 
         return response()->json(['message' => 'Entretien non trouvé'], 404);

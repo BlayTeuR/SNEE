@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Approvisionnement;
 use App\Models\Depannage;
+use App\Models\Entretien;
 use App\Models\Facturations;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class HistoriqueController extends Controller
     public function index(Request $request)
     {
         $type = $request->input('type', 'depannage');
-        $validatedTypes = ['depannage', 'approvisionnement', 'facturation'];
+        $validatedTypes = ['depannage', 'approvisionnement', 'facturation', 'entretiens'];
 
         if (!in_array($type, $validatedTypes)) {
             return redirect()->route('historique')->with('error', 'Type de données invalide.');
@@ -29,6 +30,9 @@ class HistoriqueController extends Controller
             case 'facturation':
                 $model = Facturations::with('depannage')->where('Statut', '=', 'Envoyée')->get();
                 break;
+                case 'entretiens':
+                    $model = Entretien::with('historiques')->where('archived', '=', true)->get();
+                    break;
         }
 
         return view('historique', compact('type', 'model'))->with('success', 'Données récupérées avec succès.');

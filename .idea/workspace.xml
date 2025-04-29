@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/HistoriqueController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/HistoriqueController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,7 +210,7 @@
       <workItem from="1745474618163" duration="6774000" />
       <workItem from="1745494427471" duration="5806000" />
       <workItem from="1745822866560" duration="4266000" />
-      <workItem from="1745840005582" duration="9318000" />
+      <workItem from="1745840005582" duration="10184000" />
     </task>
     <servers />
   </component>

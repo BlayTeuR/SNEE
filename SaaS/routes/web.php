@@ -102,6 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('entretien/del/{id}', [EntretienController::class, 'destroy'])->name('entretien.del');
     Route::post('/entretien/{id}/update-date', [EntretienController::class, 'updateDate'])->name('entretien.update.date');
     Route::post('/entretien/{id}/archiver', [EntretienController::class, 'archiver'])->name('entretien.archiver');
+    Route::post('/entretien/{id}/desarchiver', [EntretienController::class, 'desarchiver'])->name('entretien.desarchiver');
 });
 
  require __DIR__.'/auth.php';
