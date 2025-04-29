@@ -438,6 +438,9 @@
                     performStatusUpdate(dropdownId, statusText, statusColor, currentDeppangeId, button);
                     pendingStatut = null;
                 }
+                setTimeout(() => {
+                    location.reload();
+                }, 200);
             })
             .catch(err => {
                 console.error(err);

@@ -2,40 +2,53 @@
     <div class="flex bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <!-- Filtres -->
         <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
-            <h2 class="text-lg font-bold">Filtres</h2>
-            <!-- Filtres ici -->
-            <div class="mb-4">
-                <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
-                <select id="status-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-                    <option value="all">Tous</option>
-                    <option value="non-paye">Non payé</option>
-                    <option value="paye">Payé</option>
-                    <option value="en-attente">En attente</option>
-                </select>
-            </div>
 
-            <!-- Filtre par date -->
-            <div class="mb-4">
-                <label for="date-filter" class="block text-sm font-medium text-gray-700">Filtrer par date</label>
-                <input type="date" id="date-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
-            </div>
+            <form method="GET" action="{{ route('entretien') }}" class="flex flex-col">
+                <h2 class="text-lg font-bold mb-4">Filtres</h2>
 
-            <!-- Filtre par nom -->
-            <div class="mb-4">
-                <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
-                <input type="text" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom">
-            </div>
+                <!-- Filtrer par nom -->
+                <div class="mb-4">
+                    <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
+                    <input type="text" name="nom" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
+                </div>
 
-            <!-- Filtre par montant -->
-            <div class="mb-4">
-                <label for="amount-filter" class="block text-sm font-medium text-gray-700">Filtrer par montant</label>
-                <input type="number" id="amount-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Montant">
-            </div>
+                <!-- Filtre par date -->
+                <div class="mb-4">
+                    <label for="date-filter_min" class="block text-sm font-medium text-gray-700">Filtrer par date min</label>
+                    <input type="date" name="date_min" id="date-filter_min" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date_min') }}">
+                </div>
 
-            <!-- Bouton de réinitialisation des filtres -->
-            <div>
-                <button id="reset-filters" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Réinitialiser les filtres</button>
-            </div>
+                <!-- Filtrer par date max-->
+                <div class="mb-4">
+                    <label for="date-filter_max" class="block text-sm font-medium text-gray-700">Filtrer par date max</label>
+                    <input type="date" name="date_max" id="date-filter_max" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date_max') }}">
+                </div>
+
+                <!-- Toggle switch pour le mois courant -->
+                <div class="mb-4 flex items-center">
+                    <label for="mois_courant" class="block text-sm font-medium text-gray-700 mr-4">Entretien pour mois courant</label>
+                    <label for="mois_courant" class="inline-flex relative items-center cursor-pointer">
+                        <!-- Champ caché pour forcer la valeur "off" si décoché -->
+                        <input type="hidden" name="mois_courant" value="off">
+
+                        <input type="checkbox" id="mois_courant" name="mois_courant" value="on" class="sr-only peer"
+                               @if(request()->get('mois_courant', 'on') == 'on') checked @endif>
+                        <span class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 peer-checked:dark:bg-blue-600"></span>
+                        <span class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></span>
+                    </label>
+                </div>
+
+
+                <!-- Bouton de réinitialisation des filtres -->
+                <div>
+                    <a href="{{ route('entretien') }}" id="reset-filters" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
+                </div>
+
+                <!-- Bouton pour appliquer les filtres -->
+                <div>
+                    <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 mt-4">Appliquer les filtres</button>
+                </div>
+            </form>
         </div>
 
         <!-- Liste des factures -->
@@ -53,6 +66,7 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Historique</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6"></th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-16"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -82,29 +96,35 @@
                                 <button onclick="toggleModalDate(true, {{$entretien->id}})"
                                         class="text-blue-500 hover:text-blue-700 hover:underline focus:outline-none p-2">Modifier</button>
                         </td>
-                        <td class="p-3 text-sm text-gray-700">
-                            <button onclick="toggleDropdown('historique-dropdown')"
-                                    class="text-blue-500 hover:text-blue-700 focus:outline-none">
-                                Historique
+                        <td class="p-3 text-sm text-gray-700 relative">
+                            <button onclick="toggleDropdown(this)" class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
+                                <span>Historique</span>
+                                <svg class="ml-2 h-4 w-4 transform transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                     viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M9 5l7 7-7 7"/>
+                                </svg>
                             </button>
-                            <div id="historique-dropdown" class="hidden bg-white shadow-lg rounded-lg mt-2 p-4">
-                                <!-- Contenu du dropdown -->
+
+                            <div class="dropdown hidden absolute z-10 bg-white shadow-lg rounded-lg mt-2 p-4 w-48">
                                 <ul>
-                                    @php
-                                        $numVisite = 1;
-                                    @endphp
+                                    @php $numVisite = 1; @endphp
                                     @foreach($entretien->historiques as $historique)
-                                        <li>Visite {{$numVisite}} - {{$historique->date}}</li>
-                                        @php
-                                            $numVisite++;
-                                        @endphp
+                                        <li>Visite {{ $numVisite }} - {{ $historique->date }}</li>
+                                        @php $numVisite++; @endphp
                                     @endforeach
                                 </ul>
                             </div>
                         </td>
+
                         <td class="p-3 text-sm text-gray-700">
                             <a href="{{ route('entretien.show', $entretien->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                         </td>
+
+                        <td class="text-left p-3 text-sm text-gray-700">
+                            <button class="text-blue-500 hover:underline text-blue-600" onclick="toggleModalArchiveBis({{$entretien->id}})">Archiver</button>
+                        </td>
+
                         <!-- Colonne suppression -->
                         <td class="p-1 text-xs text-gray-700 w-10 text-center">
                             <button onclick="toggleModal({{ $entretien->id }})" class="text-red-600 hover:text-red-800">❌</button>
@@ -146,18 +166,66 @@
             </div>
         </div>
     </div>
+
+    <div id="confirmation-modal-bis" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3 relative">
+            <!-- Croix de fermeture -->
+            <h2 class="text-xl font-bold mb-4">Archivage de l'entretien</h2>
+            <p class="mb-6">Souhaitez-vous que cet entretien reste visible ou qu’il soit seulement dans l’historique ?</p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="cancelArchiveBis()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Annuler</button>
+                <button onclick="archiver()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Archiver</button>
+            </div>
+        </div>
+    </div>
 </x-app-layout>
 
 <script>
     let entretienIdToDelete = null;
     let entretienIdToUpdate = null;
 
-    function toggleDropdown(id) {
-        const dropdown = document.getElementById(id);
-        dropdown.classList.toggle('hidden');
+    function toggleModalArchiveBis(id) {
+        const modal = document.getElementById('confirmation-modal-bis');
+        modal.classList.remove('hidden');
+        window.currentEntretienId = id;
     }
 
-    function toggleModal(depannageID = null) {
+    function cancelArchiveBis(){
+        const modal = document.getElementById('confirmation-modal-bis');
+        modal.classList.add('hidden');
+        window.currentDepannageId = null;
+    }
+
+    function archiver() {
+        const id = window.currentEntretienId;
+        fetch(`/entretien/${id}/archiver`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+        cancelArchiveBis();
+    }
+    
+    function toggleDropdown(button) {
+        const dropdown = button.parentElement.querySelector('.dropdown');
+        const icon = button.querySelector('svg');
+
+        dropdown.classList.toggle('hidden');
+        icon.classList.toggle('rotate-90');
+    }
+
+
+function toggleModal(depannageID = null) {
         const modal = document.getElementById('confirm-delete-modal');
         if (depannageID) {
             entretienIdToDelete = depannageID;
@@ -223,5 +291,11 @@
         toggleModalDate(false);
     }
 
-
 </script>
+
+<style>
+    .rotate-90 {
+        transform: rotate(90deg);
+    }
+</style>
+

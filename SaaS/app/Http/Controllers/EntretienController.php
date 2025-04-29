@@ -5,18 +5,44 @@ namespace App\Http\Controllers;
 use App\Models\Entretien;
 use App\Models\Historique;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class EntretienController extends Controller
 {
-    public function index(){
-        $query = Entretien::with('historiques');
-        $entretiens = $query->where('archived', '=', false)->get();
-        return view('entretien', compact('entretiens'));
-    }
 
-    public function show($id){
-        $entretien = Entretien::findOrFail($id);
-        return view('entretien.show', compact('entretien'));
+    public function index(Request $request)
+    {
+        $query = Entretien::with('historiques');
+
+        // Filtrer par nom si l'utilisateur a saisi quelque chose
+        if ($request->filled('nom')) {
+            $query->where('nom', 'like', '%' . $request->input('nom') . '%');
+        }
+
+        // Filtrer par date minimale si spécifiée
+        if ($request->filled('date_min')) {
+            $query->whereDate('derniere_date', '>=', $request->input('date_min'));
+        }
+
+        // Filtrer par date maximale si spécifiée
+        if ($request->filled('date_max')) {
+            $query->whereDate('derniere_date', '<=', $request->input('date_max'));
+        }
+
+        // Vérifie si le bouton toggle pour le mois courant est activé
+        // Par défaut, on filtre par mois courant si le paramètre 'mois_courant' n'est pas précisé
+        // Si explicitement "on", on filtre mois courant
+        if ($request->input('mois_courant', 'on') === 'on') {
+            $query->whereMonth('derniere_date', Carbon::now()->month)
+                ->whereYear('derniere_date', Carbon::now()->year);
+        }
+
+
+        // Récupérer les entretiens filtrés et trier par date de création
+        $entretiens = $query->where('archived', false)->orderBy('created_at', 'desc')->get();
+
+        // Retourner la vue avec les entretiens
+        return view('entretien', compact('entretiens'));
     }
 
     public function destroy($id)
@@ -93,5 +119,19 @@ class EntretienController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Erreur lors de la mise à jour'], 500); // <--- et ici
         }
+    }
+
+    public function archiver($id)
+    {
+        $entretien = Entretien::find($id);
+
+        if ($entretien) {
+            $entretien->archived = true;
+            $entretien->save();
+
+            return response()->json(['message' => 'Entretien archivé avec succès!']);
+        }
+
+        return response()->json(['message' => 'Entretien non trouvé'], 404);
     }
 }
