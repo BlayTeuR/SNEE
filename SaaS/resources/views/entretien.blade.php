@@ -97,7 +97,7 @@
                                         class="text-blue-500 hover:text-blue-700 hover:underline focus:outline-none p-2">Modifier</button>
                         </td>
                         <td class="p-3 text-sm text-gray-700 relative">
-                            <button onclick="toggleDropdown(this)" class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
+                            <button onclick="toggleDropdown(this)" class="flex items-center bg-gray-300 bg-opacity-50 px-3 py-1 rounded-lg hover:bg-gray-400">
                                 <span>Historique</span>
                                 <svg class="ml-2 h-4 w-4 transform transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
                                      viewBox="0 0 24 24" stroke="currentColor">
@@ -109,8 +109,11 @@
                             <div class="dropdown hidden absolute z-10 bg-white shadow-lg rounded-lg mt-2 p-4 w-48">
                                 <ul>
                                     @php $numVisite = 1; @endphp
+                                    @if($entretien->historiques->isEmpty())
+                                        <li>Aucun historique</li>
+                                    @endif
                                     @foreach($entretien->historiques as $historique)
-                                        <li>Visite {{ $numVisite }} - {{ $historique->date }}</li>
+                                        <li>Visite {{ $numVisite }} - {{ \Carbon\Carbon::parse($historique->date)->format('d/m/Y') }}</li>
                                         @php $numVisite++; @endphp
                                     @endforeach
                                 </ul>
@@ -215,7 +218,7 @@
             });
         cancelArchiveBis();
     }
-    
+
     function toggleDropdown(button) {
         const dropdown = button.parentElement.querySelector('.dropdown');
         const icon = button.querySelector('svg');
