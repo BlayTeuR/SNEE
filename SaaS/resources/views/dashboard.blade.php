@@ -167,6 +167,13 @@
                                 @else
                                     <span class="text-red-500">Non renseignée</span>
                                 @endif
+                                    @if($depannage->statut == 'Affecter' || $depannage->date_depannage != null)
+                                        <button
+                                            onclick="toggleModalDate(true, {{ $depannage->id }})"
+                                            class="ml-2 text-blue-500 hover:text-blue-700 hover:underline">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                    @endif
                             </td>
                             <td class="p-3 text-sm text-gray-700 relative">
                                 <button id="status-{{ $depannage->id }}-btn"
@@ -228,7 +235,7 @@
             <div class="mt-4 flex justify-end space-x-4">
                 <label for="date-create" class="block text-sm font-medium text-gray-700">Choisir une date</label>
                 <input type="date" name="date-create" id="date-create" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date-crate') }}">
-                <button onclick="toggleModalDate(false)" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="toggleModalDate(false, null)" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
                 <button onclick="updateDate()" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
             </div>
         </div>
@@ -319,7 +326,7 @@
         }
     });
 
-    function toggleModalDate(show = true) {
+    function toggleModalDate(show = true, id) {
         console.log("appel de toggleModalDate avec show =", show);
         const modal = document.getElementById('create-date-modal');
         if (show) {
@@ -327,6 +334,7 @@
         } else {
             modal.classList.add('hidden');
         }
+        currentDeppangeId = id;
     }
 
     // Fonction pour afficher ou masquer le menu déroulant
@@ -368,7 +376,7 @@
                 statusColor,
                 buttonId,
             };
-            toggleModalDate(true);
+            toggleModalDate(true, depannageId);
             return;
         }
 
@@ -379,12 +387,12 @@
         }, 300);
     }
 
-    function performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button) {
+    async function performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button) {
         button.textContent = statusText;
         button.classList.remove('bg-gray-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500');
         button.classList.add(statusColor);
 
-        fetch(`/depannage/${depannageId}/update-status`, {
+        await fetch(`/depannage/${depannageId}/update-status`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -414,39 +422,41 @@
             });
     }
 
-    function updateDate() {
+    async function updateDate() {
         const date = document.getElementById('date-create').value;
 
-        fetch(`/depannage/${currentDeppangeId}/update-date`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({ date_depannage: date })
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log("date enregistrée avec succès", data);
-                toggleModalDate(false);
-
-                // On met à jour le statut seulement après que la date soit confirmée
-                if (pendingStatut) {
-                    console.log("pendingStatus", pendingStatut);
-                    const { dropdownId, statusText, statusColor, buttonId } = pendingStatut;
-                    const button = document.getElementById(buttonId);
-                    performStatusUpdate(dropdownId, statusText, statusColor, currentDeppangeId, button);
-                    pendingStatut = null;
-                }
-                setTimeout(() => {
-                    location.reload();
-                }, 200);
-            })
-            .catch(err => {
-                console.error(err);
-                console.log("erreur enregistrement de la date", err);
+        try {
+            const res = await fetch(`/depannage/${currentDeppangeId}/update-date`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ date_depannage: date })
             });
+
+            const data = await res.json();
+            console.log("date enregistrée avec succès", data);
+
+            if (pendingStatut) {
+                console.log("pendingStatus", pendingStatut);
+                const { dropdownId, statusText, statusColor, buttonId } = pendingStatut;
+                console.log("id = " + currentDeppangeId);
+                const button = document.getElementById(buttonId);
+
+                await performStatusUpdate(dropdownId, statusText, statusColor, currentDeppangeId, button);
+
+                pendingStatut = null;
+                toggleModalDate(false, null);
+            }
+
+            location.reload();
+
+        } catch (err) {
+            console.error("erreur enregistrement de la date", err);
+        }
     }
+
 
     function delDepannage() {
         if (depannageIdToDelete !== null) {

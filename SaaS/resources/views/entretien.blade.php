@@ -59,7 +59,7 @@
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr class="bg-gray-50">
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">ID</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/12">ID</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Adresse</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Prochaine visite</th>
@@ -152,7 +152,7 @@
             <h2 class="text-xl font-semibold mb-4">Confirmer la suppression</h2>
             <p>Êtes-vous sûr de vouloir supprimer cet entretien ? Cette action est irréversible.</p>
             <div class="mt-4 flex justify-end space-x-4">
-                <button onclick="toggleModalDate(true)" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="toggleModal(true)" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
                 <button onclick="delEntretien()" class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">Supprimer</button>
             </div>
         </div>

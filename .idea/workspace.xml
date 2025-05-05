@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="" />
+    <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretien/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/entretien/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -206,7 +213,9 @@
       <workItem from="1745474618163" duration="6774000" />
       <workItem from="1745494427471" duration="5806000" />
       <workItem from="1745822866560" duration="4266000" />
-      <workItem from="1745840005582" duration="10493000" />
+      <workItem from="1745840005582" duration="14344000" />
+      <workItem from="1745993688674" duration="2883000" />
+      <workItem from="1746424956985" duration="765000" />
     </task>
     <servers />
   </component>

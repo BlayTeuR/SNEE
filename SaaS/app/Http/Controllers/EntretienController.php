@@ -121,6 +121,17 @@ class EntretienController extends Controller
         }
     }
 
+    public function show($entretienId)
+    {
+        $entretien = Entretien::with('historiques')->findOrFail($entretienId);
+
+        if ($entretien) {
+            return view('entretien.show', compact('entretien'));
+        }
+
+        return redirect()->back()->with('error', 'Entretien non trouvé.');
+    }
+
     public function archiver($id)
     {
         $entretien = Entretien::find($id);
