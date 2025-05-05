@@ -3,7 +3,9 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 
 import './loading.js';
-import './notifications';
+import '../css/notifications.css';
+import { saveNotificationBeforeReload } from './notifications';
+window.saveNotificationBeforeReload = saveNotificationBeforeReload;
 
 window.Alpine = Alpine;
 

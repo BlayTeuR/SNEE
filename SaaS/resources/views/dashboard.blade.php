@@ -1,4 +1,9 @@
 <x-app-layout>
+
+    <div id="notification" class="hidden fixed top-5 right-5 p-4 text-white rounded shadow-lg transition-opacity duration-1000">
+        <span id="notification-message"></span>
+    </div>
+
     <div class="flex flex-col md:flex-row bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <div class="w-full md:w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
 
@@ -287,11 +292,13 @@
             .then(data => {
                 console.log(data.message);
                 setTimeout(() => {
+                    saveNotificationBeforeReload("Dépannage archivé avec succès.", 'success');
                     location.reload();
                 }, 100);
 
             })
             .catch(error => {
+                saveNotificationBeforeReload("Erreur lors de l'archivage du dépannage", 'error');
                 console.error('Erreur:', error);
             }
         );
@@ -409,16 +416,16 @@
                 return response.json();
             })
             .then(data => {
-                showNotification(data.message || 'Statut mis à jour avec succès', 'success');
+                saveNotificationBeforeReload(data.message || 'Statut mis à jour avec succès', 'success');
 
                 if (data.action === 'request_date') {
-                    showNotification("Merci de renseigner une date d'intervention.", 'warning');
+                    saveNotificationBeforeReload("Merci de renseigner une date d'intervention.", 'warning');
                 } else if (data.action === 'modify_date') {
-                    showNotification("Date déjà renseignée : " + data.date, 'info');
+                    saveNotificationBeforeReload("Date déjà renseignée : " + data.date, 'info');
                 }
             })
             .catch(error => {
-                showNotification(error.message || 'Une erreur est survenue', 'error');
+                saveNotificationBeforeReload(error.message || 'Une erreur est survenue', 'error');
             });
     }
 
@@ -446,14 +453,22 @@
 
                 await performStatusUpdate(dropdownId, statusText, statusColor, currentDeppangeId, button);
 
+                console.log("toujours pas d'erreur", pendingStatut);
                 pendingStatut = null;
                 toggleModalDate(false, null);
+                saveNotificationBeforeReload("Date et statut enregistrée avec succès", 'success');
+            }
+            else {
+                saveNotificationBeforeReload("Date mise à jour avec succès", 'success');
             }
 
             location.reload();
 
         } catch (err) {
             console.error("erreur enregistrement de la date", err);
+
+            saveNotificationBeforeReload("Erreur lors de l'enregistrement de la date", 'error');
+            location.reload();
         }
     }
 
@@ -470,10 +485,12 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log(data.message);
+                    saveNotificationBeforeReload("L'opération de suppression a été réalisée avec succès.", 'success');
                     location.reload();
                 })
                 .catch(error => {
-                    console.error('Erreur:', error);
+                    console.err('Erreur:', error);
+                    saveNotificationBeforeReload("Erreur lors de l'opération du suppression", 'error');
                 });
         }
         toggleModal();
