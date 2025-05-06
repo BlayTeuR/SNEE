@@ -7,7 +7,7 @@
     <div class="flex flex-col md:flex-row bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <div class="w-full md:w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
 
-            <form method="GET" action="{{ route('historique') }}">
+            <form method="GET" action="{{ route('admin.historique') }}">
                 <!-- Filtres -->
                 <h2 class="text-lg font-bold">Filtres</h2>
 
@@ -37,7 +37,7 @@
                 <!-- Bouton de réinitialisation -->
                 <div>
                     <br>
-                    <a href="{{ route('historique') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
+                    <a href="{{ route('admin.historique') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
                 </div>
 
                 <!-- Bouton pour appliquer les filtres -->
@@ -237,7 +237,7 @@
                                         {{ $m->statut }}
                                 </td>
                                 <td class="p-3 text-sm text-gray-700">
-                                    <a href="{{ route('depannage.show', $m->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
+                                    <a href="{{ route('admin.depannage.show', $m->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                                 </td>
                                 <td>
                                     <button onclick="toggleModalDesarchiverDep('{{$m->id}}')" class="text-sm text-red-500 hover:underline hover:text-red-600">Désarchiver</button>
@@ -311,7 +311,7 @@
                                         </div>
                                     </td>
                                     <td class="p-3 text-sm text-gray-700">
-                                        <a href="{{ route('entretien.show', $m->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
+                                        <a href="{{ route('admin.entretien.show', $m->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                                     </td>
                                     <td>
                                         <button onclick="toggleModalDesarchiverEnt('{{$m->id}}')" class="text-sm text-red-500 hover:underline hover:text-red-600">Désarchiver</button>
@@ -409,7 +409,7 @@
     }
 
     function desarchiver() {
-        fetch(`/approvisionnement/${currentApprovisionnementId}/desarchiver`, {
+        fetch(`/admin/approvisionnement/${currentApprovisionnementId}/desarchiver`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -434,7 +434,7 @@
 
     function desarchiverDep() {
         console.log(currentDepannageId);
-        fetch(`/depannage/${currentDepannageId}/desarchiver`, {
+        fetch(`/admin/depannage/${currentDepannageId}/desarchiver`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -459,7 +459,7 @@
 
     function desarchiverEnt(){
         console.log(currentEntretienId);
-        fetch(`/entretien/${currentEntretienId}/desarchiver`, {
+        fetch(`/admin/entretien/${currentEntretienId}/desarchiver`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -7,7 +7,7 @@
     <div class="flex flex-col md:flex-row bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <div class="w-full md:w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
 
-        <form method="GET" action="{{ route('dashboard') }}">
+        <form method="GET" action="{{ route('admin.dashboard') }}">
             <!-- Filtres -->
                 <h2 class="text-lg font-bold">Filtres</h2>
 
@@ -67,7 +67,7 @@
             <!-- Bouton de réinitialisation -->
                 <div>
                     <br>
-                    <a href="{{ route('dashboard') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
+                    <a href="{{ route('admin.dashboard') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
                 </div>
 
                 <!-- Bouton pour appliquer les filtres -->
@@ -137,7 +137,7 @@
                                     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
                                         <h2 class="text-lg font-semibold">Modifier le type de contrat et de garantie</h2>
 
-                                        <form id="form-{{ $depannage->id }}" action="{{ route('update.type', $depannage->id) }}" method="POST">
+                                        <form id="form-{{ $depannage->id }}" action="{{ route('admin.update.type', $depannage->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
 
@@ -199,7 +199,7 @@
                                 </ul>
                             </td>
                             <td class="p-3 text-sm text-gray-700">
-                                <a href="{{ route('depannage.show', $depannage->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
+                                <a href="{{ route('admin.depannage.show', $depannage->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                             </td>
                                 <td class="text-left p-3 text-sm text-gray-700">
                                     @if($depannage->statut == 'À facturer')
@@ -217,7 +217,7 @@
                 </table>
             </div>
         </div>
-        <a href="{{ route('adminform') }}"
+        <a href="{{ route('admin.adminform') }}"
            class="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-3xl w-16 h-16 flex items-center justify-center rounded-full shadow-lg transition duration-300 ease-in-out z-50">
             +
         </a>
@@ -280,7 +280,7 @@
     }
 
     function archiver(){
-        fetch(`/depannage/${window.currentDepannageId}/archiver`, {
+        fetch(`/admin/depannage/${window.currentDepannageId}/archiver`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -399,7 +399,7 @@
         button.classList.remove('bg-gray-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500');
         button.classList.add(statusColor);
 
-        await fetch(`/depannage/${depannageId}/update-status`, {
+        await fetch(`/admin/depannage/${depannageId}/update-status`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -427,7 +427,7 @@
         const date = document.getElementById('date-create').value;
 
         try {
-            const res = await fetch(`/depannage/${currentDeppangeId}/update-date`, {
+            const res = await fetch(`/admin/depannage/${currentDeppangeId}/update-date`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -465,7 +465,7 @@
 
     function delDepannage() {
         if (depannageIdToDelete !== null) {
-            fetch(`/depannage/del/${depannageIdToDelete}`, {
+            fetch(`/admin/depannage/del/${depannageIdToDelete}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -3,7 +3,7 @@
         <!-- Filtres -->
         <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
 
-            <form method="GET" action="{{ route('entretien') }}" class="flex flex-col">
+            <form method="GET" action="{{ route('admin.entretien') }}" class="flex flex-col">
                 <h2 class="text-lg font-bold mb-4">Filtres</h2>
 
                 <!-- Filtrer par nom -->
@@ -41,7 +41,7 @@
 
                 <!-- Bouton de réinitialisation des filtres -->
                 <div>
-                    <a href="{{ route('entretien') }}" id="reset-filters" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
+                    <a href="{{ route('admin.entretien') }}" id="reset-filters" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
                 </div>
 
                 <!-- Bouton pour appliquer les filtres -->
@@ -121,7 +121,7 @@
                         </td>
 
                         <td class="p-3 text-sm text-gray-700">
-                            <a href="{{ route('entretien.show', $entretien->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
+                            <a href="{{ route('admin.entretien.show', $entretien->id) }}" class="text-blue-500 hover:underline">Voir plus</a>
                         </td>
 
                         <td class="text-left p-3 text-sm text-gray-700">
@@ -141,7 +141,7 @@
                 </table>
             </div>
         </div>
-        <a href="{{ route('entretienform') }}"
+        <a href="{{ route('admin.entretienform') }}"
            class="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-3xl w-16 h-16 flex items-center justify-center rounded-full shadow-lg transition duration-300 ease-in-out z-50">
             +
         </a>
@@ -201,7 +201,7 @@
 
     function archiver() {
         const id = window.currentEntretienId;
-        fetch(`/entretien/${id}/archiver`, {
+        fetch(`/admin/entretien/${id}/archiver`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -238,7 +238,7 @@ function toggleModal(depannageID = null) {
 
     function delEntretien() {
         if (entretienIdToDelete !== null) {
-            fetch(`/entretien/del/${entretienIdToDelete}`, {
+            fetch(`/admin/entretien/del/${entretienIdToDelete}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -270,7 +270,7 @@ function toggleModal(depannageID = null) {
         const date = document.getElementById('date-create').value;
         const id = document.getElementById('date-create').getAttribute('data-id');
 
-        fetch(`/entretien/${entretienIdToUpdate}/update-date`, {
+        fetch(`/admin/entretien/${entretienIdToUpdate}/update-date`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

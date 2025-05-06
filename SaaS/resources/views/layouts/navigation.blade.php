@@ -5,32 +5,32 @@
             <div class="flex w-full">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('admin.dashboard') }}">
                         <img src="{{ asset('images/logo.png') }}" alt="Logo de l'application" class="h-24 w-auto">
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                         {{ __('Dépannage') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('entretien')" :active="request()->routeIs('entretien')">
+                    <x-nav-link :href="route('admin.entretien')" :active="request()->routeIs('admin.entretien')">
                         {{ __('Entretien') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('facturation')" :active="request()->routeIs('facturation')">
+                    <x-nav-link :href="route('admin.facturation')" :active="request()->routeIs('admin.facturation')">
                         {{ __('Facturation') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('approvisionnement')" :active="request()->routeIs('approvisionnement')">
+                    <x-nav-link :href="route('admin.approvisionnement')" :active="request()->routeIs('admin.approvisionnement')">
                         {{ __('Approvisionnement') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('stat')" :active="request()->routeIs('stat')">
+                    <x-nav-link :href="route('admin.stat')" :active="request()->routeIs('admin.stat')">
                         {{ __('Statistique') }}
                     </x-nav-link>
                     <x-nav-link :href="route('carte')" :active="request()->routeIs('carte')">
                         {{ __('Carte') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('historique', ['type' => 'Dépannage'])" :active="request()->routeIs('historique')">
+                    <x-nav-link :href="route('admin.historique', ['type' => 'Dépannage'])" :active="request()->routeIs('admin.historique')">
                         {{ __('Historique') }}
                     </x-nav-link>
                 </div>
@@ -82,13 +82,13 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden w-full">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('facturation')" :active="request()->routeIs('facturation')">
+            <x-responsive-nav-link :href="route('admin.facturation')" :active="request()->routeIs('admin.facturation')">
                 {{ __('Facturations') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('stat')" :active="request()->routeIs('stat')">
+            <x-responsive-nav-link :href="route('admin.stat')" :active="request()->routeIs('admin.stat')">
                 {{ __('Statistique') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('carte')" :active="request()->routeIs('carte')">

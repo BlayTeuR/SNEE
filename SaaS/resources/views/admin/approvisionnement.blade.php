@@ -6,7 +6,7 @@
         <!-- Filtres -->
         <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
 
-            <form method="GET" action="{{ route('approvisionnement') }}">
+            <form method="GET" action="{{ route('admin.approvisionnement') }}">
                 <h2 class="text-lg font-bold">Filtres</h2>
 
                 <!-- Filtrer par statut -->
@@ -40,7 +40,7 @@
 
                 <!-- Bouton de réinitialisation -->
                 <div>
-                    <a href="{{ route('approvisionnement') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
+                    <a href="{{ route('admin.approvisionnement') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
                 </div>
 
                 <!-- Bouton pour appliquer les filtres -->
@@ -102,7 +102,7 @@
                                         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
                                             <h2 class="text-lg font-semibold">Nom de la pièce</h2>
 
-                                            <form id="form-{{ $approvisionnement->id }}" action="{{ route('pieces.update', $approvisionnement->id) }}" method="POST">
+                                            <form id="form-{{ $approvisionnement->id }}" action="{{ route('admin.pieces.update', $approvisionnement->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
 
@@ -140,7 +140,7 @@
                                         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
                                             <h2 class="text-lg font-semibold">Nom de la pièce</h2>
 
-                                            <form id="form-{{ $approvisionnement->id }}" action="{{ route('pieces.update', $approvisionnement->id) }}" method="POST">
+                                            <form id="form-{{ $approvisionnement->id }}" action="{{ route('admin.pieces.update', $approvisionnement->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
 
@@ -333,7 +333,7 @@
         // Cacher le dropdown
         dropdown.classList.add('hidden');
 
-        fetch(`/approvisionnement/${approvisionnementId}/update-status`, {
+        fetch(`/admin/approvisionnement/${approvisionnementId}/update-status`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -363,7 +363,7 @@
             return;
         }
 
-        fetch(`/approvisionnement/${approvisionnementId}/add-pieces`, {
+        fetch(`/admin/approvisionnement/${approvisionnementId}/add-pieces`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -386,7 +386,7 @@
 
     function archiver(){
         console.log("ID DEP = " + window.selectedApproId);
-        fetch(`approvisionnement/${window.selectedApproId}/archiver`, {
+        fetch(`/admin/approvisionnement/${window.selectedApproId}/archiver`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -406,7 +406,7 @@
     }
 
     function delPieces(pieceId){
-        fetch(`/pieces/del/${pieceId}`, {
+        fetch(`/admin/pieces/del/${pieceId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -425,7 +425,7 @@
 
     function delApprovisionnementConfirm() {
         if (approvisionnementIdToDelete !== null) {
-            fetch(`/approvisionnement/del/${approvisionnementIdToDelete}`, {
+            fetch(`/admin/approvisionnement/del/${approvisionnementIdToDelete}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

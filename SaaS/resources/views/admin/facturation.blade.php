@@ -3,7 +3,7 @@
         <!-- Filtres -->
         <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
 
-            <form method="GET" action="{{ route('facturation') }}">
+            <form method="GET" action="{{ route('admin.facturation') }}">
                 <h2 class="text-lg font-bold">Filtres</h2>
 
                 <!-- Statut -->
@@ -45,7 +45,7 @@
 
                 <!-- Boutons -->
                 <div>
-                    <a href="{{ route('facturation') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
+                    <a href="{{ route('admin.facturation') }}" class="w-full bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 text-center block">Réinitialiser les filtres</a>
                 </div>
                 <div>
                     <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 mt-4">Appliquer les filtres</button>
@@ -109,7 +109,7 @@
                                     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
                                         <h2 class="text-lg font-semibold">Modifier la date d'intervention</h2>
 
-                                        <form id="form-{{ $facturation->id }}" action="{{ route('facturation.update.date', $facturation->id) }}" method="POST">
+                                        <form id="form-{{ $facturation->id }}" action="{{ route('admin.facturation.update.date', $facturation->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
 
@@ -141,7 +141,7 @@
                                 <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
                                     <h2 class="text-lg font-semibold">Modifier le montant du dépannage</h2>
 
-                                    <form id="form-{{ $facturation->id }}" action="{{ route('facturation.update.montant', $facturation->id) }}" method="POST">
+                                    <form id="form-{{ $facturation->id }}" action="{{ route('admin.facturation.update.montant', $facturation->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')
 
@@ -225,7 +225,7 @@
 
     function delFacturation() {
         if (facturationToDelete !== null) {
-            fetch(`/facturation/del/${facturationToDelete}`, {
+            fetch(`/admin/facturation/del/${facturationToDelete}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -258,7 +258,7 @@
         // Cacher le dropdown
         dropdown.classList.add('hidden');
 
-        fetch(`/facturation/${facturationId}/update-status`, {
+        fetch(`/admin/facturation/${facturationId}/update-status`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

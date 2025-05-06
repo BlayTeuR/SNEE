@@ -16,7 +16,7 @@
 <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
     <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">Formulaire de contact</h1>
 
-    <form action="{{route('depannage.store')}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('admin.depannage.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="form_source" value="formulaire_ca">
         <div class="mb-4">

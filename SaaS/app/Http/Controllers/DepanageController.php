@@ -69,7 +69,7 @@ class DepanageController extends Controller
         // Appliquer le tri avant de récupérer les résultats
         $depannages = $query->where('archived', '=', false)->orderBy('created_at', 'desc')->get();
 
-        return view('dashboard', compact('depannages'));
+        return view('admin/dashboard', compact('depannages'));
     }
 
     public function destroy($id)
@@ -271,6 +271,6 @@ class DepanageController extends Controller
     public function show($id)
     {
         $depannage = Depannage::findOrFail($id);
-        return view('depannage.show', compact('depannage'));
+        return view('admin.depannage.show', compact('depannage'));
     }
 }

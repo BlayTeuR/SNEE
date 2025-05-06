@@ -16,7 +16,7 @@
 <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
     <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">Formulaire de création d'un dépannage</h1>
 
-    <form action="{{route('depannage.store')}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('admin.depannage.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-4">
             <label for="name" class="block text-gray-700">Nom client<span class="text-red-500">*</span></label>

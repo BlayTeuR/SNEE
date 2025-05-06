@@ -23,10 +23,6 @@ Route::get('/caconfirmation', function () {
     return view('caconfirmation');
 })->name('caconfirmation.page');
 
-// Passe les données de la table approvionnement à la vue 'approvisionnement'
-Route::get('/approvisionnement', [ApprovisionnementController::class, 'index'])->middleware(['auth', 'verified'])->name('approvisionnement');
-// Passe les données de la table facturation à la vue 'facturation'
-Route::get('/facturation', [FacturationsController::class, 'index'])->middleware(['auth', 'verified'])->name('facturation');
 
 Route::get('/form', function() {
     return view('form');
@@ -53,12 +49,13 @@ Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->group(functi
 });
 
 // Admin
-Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [DepanageController::class, 'index'])->name('dashboard');
     Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique');
     Route::get('/stat', [StatistiqueController::class, 'index'])->name('stat');
-
+    Route::get('/facturation', [FacturationsController::class, 'index'])->name('facturation');
     Route::get('/entretien', [EntretienController::class, 'index'])->name('entretien');
+    Route::get('/approvisionnement', [ApprovisionnementController::class, 'index'])->name('approvisionnement');
 
     //Form
     Route::get('/adminform', function(){return view('adminform');})->name('adminform');
@@ -66,7 +63,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
 
     //Depannage
     Route::get('/depannage', [DepanageController::class, 'index'])->name('depannage');
-    Route::get('/depannage/{id}', [DepanageController::class, 'show'])->name('depannage.show')->middleware(['auth', 'verified']);
+    Route::get('/depannage/{id}', [DepanageController::class, 'show'])->name('depannage.show');
     Route::patch('/depannage/{id}/update-status', [DepanageController::class, 'updateStatus'])->name('depannage.updateStatus');
     Route::post('/depannage/store', [DepanageController::class, 'store'])->name('depannage.store');
     Route::post('depannage/del/{id}', [DepanageController::class, 'destroy'])->name('depannage.del');
