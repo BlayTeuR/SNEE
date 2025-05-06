@@ -416,13 +416,7 @@
                 return response.json();
             })
             .then(data => {
-                saveNotificationBeforeReload(data.message || 'Statut mis à jour avec succès', 'success');
-
-                if (data.action === 'request_date') {
-                    saveNotificationBeforeReload("Merci de renseigner une date d'intervention.", 'warning');
-                } else if (data.action === 'modify_date') {
-                    saveNotificationBeforeReload("Date déjà renseignée : " + data.date, 'info');
-                }
+                console.log('Statut mis à jour avec succès:', data);
             })
             .catch(error => {
                 saveNotificationBeforeReload(error.message || 'Une erreur est survenue', 'error');
@@ -456,10 +450,6 @@
                 console.log("toujours pas d'erreur", pendingStatut);
                 pendingStatut = null;
                 toggleModalDate(false, null);
-                saveNotificationBeforeReload("Date et statut enregistrée avec succès", 'success');
-            }
-            else {
-                saveNotificationBeforeReload("Date mise à jour avec succès", 'success');
             }
 
             location.reload();
@@ -514,6 +504,6 @@
 
 <style>
     button:focus {
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Ajout d'une bordure lumineuse autour du bouton */
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
     }
 </style>

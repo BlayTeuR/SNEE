@@ -5,13 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/css/notifications.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/app/Enums/Role.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/errors/403.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/bootstrap/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/bootstrap/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/css/notifications.css" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/css/notifications.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/js/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/js/notifications.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/depannage/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,6 +174,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views\errors" />
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views\components" />
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views" />
     </key>
@@ -216,7 +220,8 @@
       <workItem from="1745822866560" duration="4266000" />
       <workItem from="1745840005582" duration="14344000" />
       <workItem from="1745993688674" duration="2883000" />
-      <workItem from="1746424956985" duration="4649000" />
+      <workItem from="1746424956985" duration="13627000" />
+      <workItem from="1746511540095" duration="8996000" />
     </task>
     <servers />
   </component>

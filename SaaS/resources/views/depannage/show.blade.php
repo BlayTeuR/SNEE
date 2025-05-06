@@ -20,14 +20,14 @@
                     @if($depannage->date_depannage == null)
                         : pas encore planifiée
                         @else
-                        {{ $depannage->date_depannage }}
+                            {{ \Carbon\Carbon::parse($depannage->date_depannage)->format('d/m/Y') }}
                         @endif
                     </p>
                     <p class="text-xs"><strong>Historique:</strong></p>
                     <ul>
                         @if($depannage->historiques->isNotEmpty())
                             @foreach($depannage->historiques as $histo)
-                                <li> - {{ $histo->date }}</li>
+                                <li> - {{ \Carbon\Carbon::parse($histo->date)->format('d/m/Y') }}</li>
                             @endforeach
                         @else
                             <li class="text-xs">Aucun historique disponible.</li>

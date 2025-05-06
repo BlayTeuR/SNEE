@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
             'name' => "admin",
             'email' => 'admin@example.com',
             'password' => bcrypt('motdepasseadmin'),
+            'role' => Role::ADMIN,
         ]);
     }
 }

@@ -10,6 +10,7 @@ function showNotification(message, type = 'success') {
 
     // Appliquer la couleur en fonction du type
     switch(type) {
+        case 'info':
         case 'success':
             notification.classList.add('bg-green-500');
             break;
@@ -60,6 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (notificationData) {
         const { message, type } = JSON.parse(notificationData);
         showNotification(message, type);
-        sessionStorage.removeItem('notification'); // Enlève la notification après l'affichage
+        sessionStorage.removeItem('notification');
     }
 });

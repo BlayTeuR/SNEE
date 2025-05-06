@@ -23,8 +23,6 @@ Route::get('/caconfirmation', function () {
     return view('caconfirmation');
 })->name('caconfirmation.page');
 
-// Passe les données de la table 'depannage' à la vue 'dashboard'
-Route::get('/dashboard', [DepanageController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 // Passe les données de la table approvionnement à la vue 'approvisionnement'
 Route::get('/approvisionnement', [ApprovisionnementController::class, 'index'])->middleware(['auth', 'verified'])->name('approvisionnement');
 // Passe les données de la table facturation à la vue 'facturation'
@@ -38,28 +36,29 @@ Route::get('/caform', function() {
     return view('caform');
 })->name('caform');
 
-Route::get('/carte', function () {
-    return view('carte');
-})->name('carte');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/carte', function () {
+        return view('carte');
+    })->name('carte');
 });
 
-// Route transfert spécial de données depuis BD
+Route::middleware(['auth', 'verified', 'is_technicien'])->prefix('technicien')->group(function () {
 
-// Depannage
-Route::middleware(['auth', 'verified'])->group(function () {
-    //Accès au vue
+});
+
+Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->group(function () {
+});
+
+// Admin
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [DepanageController::class, 'index'])->name('dashboard');
     Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique');
-
     Route::get('/stat', [StatistiqueController::class, 'index'])->name('stat');
 
-    Route::get('/entretien', function() {
-        return view('entretien');
-    })->name('entretien');
+    Route::get('/entretien', [EntretienController::class, 'index'])->name('entretien');
 
     //Form
     Route::get('/adminform', function(){return view('adminform');})->name('adminform');
