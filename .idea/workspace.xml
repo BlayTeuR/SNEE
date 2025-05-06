@@ -4,23 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/adminform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/adminform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/approvisionnement.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/approvisionnement.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/caform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/caform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretien/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/entretienform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretienform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/facturation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/facturation.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/historique.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/historique.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/navigation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/navigation.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/stat.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/stat.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
-    </list>
+    <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -227,7 +211,7 @@
       <workItem from="1745840005582" duration="14344000" />
       <workItem from="1745993688674" duration="2883000" />
       <workItem from="1746424956985" duration="13627000" />
-      <workItem from="1746511540095" duration="11761000" />
+      <workItem from="1746511540095" duration="12076000" />
     </task>
     <servers />
   </component>

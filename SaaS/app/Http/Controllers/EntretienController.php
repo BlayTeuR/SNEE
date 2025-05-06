@@ -42,7 +42,7 @@ class EntretienController extends Controller
         $entretiens = $query->where('archived', false)->orderBy('derniere_date', 'desc')->get();
 
         // Retourner la vue avec les entretiens
-        return view('entretien', compact('entretiens'));
+        return view('admin.entretien', compact('entretiens'));
     }
 
     public function destroy($id)

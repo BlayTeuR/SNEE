@@ -43,7 +43,7 @@ class FacturationsController extends Controller
 
         $facturations = $query->get();
 
-        return view('facturation', compact('facturations'));
+        return view('admin.facturation', compact('facturations'));
     }
 
     public function destroy($id)

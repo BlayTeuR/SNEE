@@ -35,7 +35,7 @@ class ApprovisionnementController extends Controller
         $approvisionnements = $query->where('archived', false)->get();
 
         // Retourner la vue avec les approvisionnements filtrés
-        return view('approvisionnement', compact('approvisionnements'));
+        return view('admin.approvisionnement', compact('approvisionnements'));
     }
 
     public function updateStatus(Request $request, $id){

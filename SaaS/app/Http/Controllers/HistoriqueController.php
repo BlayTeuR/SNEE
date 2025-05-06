@@ -16,7 +16,7 @@ class HistoriqueController extends Controller
         $validatedTypes = ['depannage', 'approvisionnement', 'facturation', 'entretiens'];
 
         if (!in_array($type, $validatedTypes)) {
-            return redirect()->route('historique')->with('error', 'Type de données invalide.');
+            return redirect()->route('admin.historique')->with('error', 'Type de données invalide.');
         }
 
         $model = null;
@@ -35,7 +35,7 @@ class HistoriqueController extends Controller
                     break;
         }
 
-        return view('historique', compact('type', 'model'))->with('success', 'Données récupérées avec succès.');
+        return view('admin.historique', compact('type', 'model'))->with('success', 'Données récupérées avec succès.');
     }
 
 }
