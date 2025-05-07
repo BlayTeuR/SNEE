@@ -58,18 +58,14 @@ class User extends Authenticatable
         $this->attributes['role'] = $value instanceof Role ? $value->value : $value;
     }
 
-    // Méthode pour vérifier si l'utilisateur est un admin
     public function isAdmin(): bool
     {
         return $this->role === Role::ADMIN;
     }
 
-    // Méthode pour vérifier si l'utilisateur est un technicien
     public function isTechnicien(): bool
     {
         return $this->role === Role::TECHNICIEN;
     }
-
-    // Méthode pour vérifier si l'utilisateur est un client
 
 }

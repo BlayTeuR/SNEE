@@ -8,11 +8,28 @@ use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\PieceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatistiqueController;
+use App\Http\Controllers\TechnicienDashboardController;
 use App\Http\Controllers\TypeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    $user = Auth::user();
+
+    if ($user->isAdmin()) {
+        return redirect()->route('admin.dashboard');
+    }
+
+    if ($user->isTechnicien()) {
+        return redirect()->route('technicien.dashboard');
+    }
+
+    // Sinon, une route par défaut pour les autres rôles ou utilisateurs
+    return redirect()->route('profile.edit');
 });
 
 Route::get('/confirmation', function () {
@@ -41,15 +58,13 @@ Route::middleware('auth')->group(function () {
     })->name('carte');
 });
 
-Route::middleware(['auth', 'verified', 'is_technicien'])->prefix('technicien')->group(function () {
-
-});
-
-Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->group(function () {
+Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technicien.')->group(function () {
+    Route::get('/dashboard', [TechnicienDashboardController::class, 'index'])->name('dashboard');
 });
 
 // Admin
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(function () {
+    Route::get('/admin', [DepanageController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [DepanageController::class, 'index'])->name('dashboard');
     Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique');
     Route::get('/stat', [StatistiqueController::class, 'index'])->name('stat');
@@ -58,8 +73,8 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     Route::get('/approvisionnement', [ApprovisionnementController::class, 'index'])->name('approvisionnement');
 
     //Form
-    Route::get('/adminform', function(){return view('adminform');})->name('adminform');
-    Route::get('/entretienform', function (){return view('entretienform');})->name('entretienform');
+    Route::get('/adminform', function(){return view('admin.adminform');})->name('adminform');
+    Route::get('/entretienform', function (){return view('admin.entretienform');})->name('entretienform');
 
     //Depannage
     Route::get('/depannage', [DepanageController::class, 'index'])->name('depannage');
