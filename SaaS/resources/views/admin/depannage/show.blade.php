@@ -56,9 +56,7 @@
             </div>
         </div>
     </div>
-
-    <button id="download-pdf" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">Télécharger en PDF</button>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 
