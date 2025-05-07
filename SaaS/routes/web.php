@@ -17,18 +17,13 @@ Route::get('/', function () {
     if (!Auth::check()) {
         return redirect()->route('login');
     }
-
     $user = Auth::user();
-
     if ($user->isAdmin()) {
         return redirect()->route('admin.dashboard');
     }
-
     if ($user->isTechnicien()) {
         return redirect()->route('technicien.dashboard');
     }
-
-    // Sinon, une route par défaut pour les autres rôles ou utilisateurs
     return redirect()->route('profile.edit');
 });
 
@@ -60,6 +55,9 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technicien.')->group(function () {
     Route::get('/dashboard', [TechnicienDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/entretien', [TechnicienDashboardController::class, 'index'])->name('entretien');
+    Route::get('/carte', [TechnicienDashboardController::class, 'index'])->name('carte');
+
 });
 
 // Admin
