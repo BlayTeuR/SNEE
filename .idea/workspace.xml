@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/technicien/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/FacturationsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/FacturationsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_11_000008_create_facturations_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_11_000008_create_facturations_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/seeders/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/facturation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/facturation.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/historique.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/historique.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +220,8 @@
       <workItem from="1745840005582" duration="14344000" />
       <workItem from="1745993688674" duration="2883000" />
       <workItem from="1746424956985" duration="13627000" />
-      <workItem from="1746511540095" duration="22215000" />
+      <workItem from="1746511540095" duration="23723000" />
+      <workItem from="1746617494640" duration="4014000" />
     </task>
     <servers />
   </component>

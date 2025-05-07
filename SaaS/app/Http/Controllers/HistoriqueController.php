@@ -28,7 +28,7 @@ class HistoriqueController extends Controller
                 $model = Approvisionnement::with('depannage', 'pieces')->where('statut', '=', 'Fait')->where('archived', '=', true)->get();
                 break;
             case 'facturation':
-                $model = Facturations::with('depannage')->where('Statut', '=', 'Envoyée')->get();
+                $model = Facturations::with('depannage')->where('Statut', '=', 'Envoyée')->where('archived', '=', true)->get();
                 break;
                 case 'entretiens':
                     $model = Entretien::with('historiques')->where('archived', '=', true)->get();

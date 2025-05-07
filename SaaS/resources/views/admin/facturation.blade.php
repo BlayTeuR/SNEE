@@ -173,6 +173,11 @@
                                 </ul>
                             </td>
                             <td class="p-3 text-sm text-gray-700">{{ $facturation->contact }}</td>
+                            <td class="p-3 text-sm text-gray-700">
+                                @if($facturation->statut == 'Envoyée')
+                                    <button onclick="toggleModalArchived({{ $facturation->id }})" class="text-blue-500 hover:text-blue-700 hover:underline">Archiver</button>
+                                @endif
+                            </td>
                             <td class="p-3 text-sm text-gray-700 relative">
                                 <button onclick="toggleModal({{ $facturation->id }})">❌</button>
                             </td>
@@ -188,10 +193,22 @@
     <div id="confirm-delete-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
             <h2 class="text-xl font-semibold mb-4">Confirmer la suppression</h2>
-            <p>Êtes-vous sûr de vouloir supprimer ce dépannage ? Cette action est irréversible.</p>
+            <p>Êtes-vous sûr de vouloir supprimer cette facturation ? Cette action est irréversible.</p>
             <div class="mt-4 flex justify-end space-x-4">
                 <button onclick="toggleModal()" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
                 <button onclick="delFacturation()" class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmation-modal-bis" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3 relative">
+            <!-- Croix de fermeture -->
+            <h2 class="text-xl font-bold mb-4">Archivage de la facturation</h2>
+            <p class="mb-6">Souhaitez-vous que cette facturation reste visible ou qu’il soit seulement dans l’historique ?</p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="cancelArchiveBis()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Annuler</button>
+                <button onclick="archiver()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Archiver</button>
             </div>
         </div>
     </div>
@@ -201,6 +218,18 @@
     let facturationToDelete = null;
     let lastOpenedDropdown = null;
     let openedModals = new Set();
+
+    function toggleModalArchived(id) {
+        const modal = document.getElementById('confirmation-modal-bis');
+        modal.classList.remove('hidden');
+        window.currentFacturationId = id;
+    }
+
+    function cancelArchiveBis() {
+        const modal = document.getElementById('confirmation-modal-bis');
+        modal.classList.add('hidden');
+        window.currentDepannageId = null;
+    }
 
     function toggleDropdown(id) {
         const dropdown = document.getElementById(id);
@@ -271,12 +300,40 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 100);
             })
             .catch(error => {
                 console.error('Erreur:', error);
             });
 
         toggleDropdown(dropdownId);
+    }
+
+    function archiver() {
+        const facturationId = window.currentFacturationId;
+
+        fetch(`/admin/facturation/archiver/${facturationId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                setTimeout(() => {
+                    saveNotificationBeforeReload("Dépannage archivé avec succès.", 'success');
+                    location.reload();
+                }, 100);
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+
+        cancelArchiveBis();
     }
 
     function openModalDate(facturationId) {

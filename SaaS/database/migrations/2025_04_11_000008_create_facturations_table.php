@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('montant')->comment('Montant de la facturation');
             $table->string('statut')->default('Non payé')->comment('Statut de la facturation');
             $table->date('date_intervention');
+            $table->boolean('archived')->default(false);
             $table->timestamps();
         });
     }

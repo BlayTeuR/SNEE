@@ -41,7 +41,7 @@ class FacturationsController extends Controller
             $query->where('montant', '<=', $request->montant_max);
         }
 
-        $facturations = $query->get();
+        $facturations = $query->where('archived', '=', false)->get();
 
         return view('admin.facturation', compact('facturations'));
     }
@@ -103,5 +103,31 @@ class FacturationsController extends Controller
         $facturation->save();
 
         return response()->json(['message' => 'Statut mis à jour avec succès!']);
+    }
+
+    public function archiver(Request $request, $id)
+    {
+        // Récupérer la facturation
+        $facturation = Facturations::findOrFail($id);
+
+        // Mettre à jour le statut d'archivage
+        $facturation->archived = true;
+        $facturation->save();
+
+        return response()->json(['message' => 'Facturation archivée avec succès!']);
+
+    }
+
+    public function desarchiver(Request $request, $id)
+    {
+        // Récupérer la facturation
+        $facturation = Facturations::findOrFail($id);
+
+        // Mettre à jour le statut d'archivage
+        $facturation->archived = false;
+        $facturation->save();
+
+        return response()->json(['message' => 'Facturation désarchivée avec succès!']);
+
     }
 }

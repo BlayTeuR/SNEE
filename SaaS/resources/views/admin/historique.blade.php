@@ -3,6 +3,7 @@
         $currentApprovisionnementId = null;
         $currentDeppangeId = null;
         $currentEntretienId = null;
+        $currentFacturationId = null;
     @endphp
     <div class="flex flex-col md:flex-row bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <div class="w-full md:w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
@@ -61,12 +62,14 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Date d'intervention</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Montant</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Statut</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6"></th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($model as $m)
                         @php
                             $count = 1;
+                            $currentFacturationId = $m->id;
                         @endphp
                         @if($count % 2 == 0)
                             @php
@@ -94,7 +97,9 @@
                             <td class="p-3 text-sm text-gray-700">
                                     {{ $m->statut }}
                             </td>
-                            <td class="p-3 text-sm text-gray-700">{{ $m->contact }}</td>
+                            <td>
+                                <button onclick="toggleModalDesarchiverFac('{{$m->id}}')" class="text-sm text-red-500 hover:underline hover:text-red-600">Désarchiver</button>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -330,6 +335,20 @@
         </div>
     </div>
 
+    <!-- Modal de confirmation facturation-->
+    <div id="modal-desarchiver-facturation" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-semibold mb-4">Voulez-vous désarchiver cette facturation ?</h2>
+            <p class="text-gray-800">
+                Si vous confirmez, cette facturation sera de nouveau disponible dans l'onglet 'Facturation' et sera supprimé de l'onglet 'Historique'.
+            </p>
+            <div class="mt-4 flex justify-end space-x-4">
+                <button onclick="toggleModalDesarchiverFac({{$currentFacturationId}})" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="desarchiverFac()" id="confirm-desarchiver" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Désarchiver</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de confirmation approvisionnement-->
     <div id="modal-desarchiver-approvisionnement" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
@@ -379,10 +398,18 @@
     let currentApprovisionnementId = null;
     let currentDepannageId = null;
     let currentEntretienId = null;
+    let currentFacturationId = null;
 
     function toggleModalDesarchiver(id) {
         var modal = document.getElementById('modal-desarchiver-approvisionnement');
         currentApprovisionnementId = id;
+        modal.classList.toggle('hidden');
+    }
+
+    function toggleModalDesarchiverFac(id){
+        var modal = document.getElementById('modal-desarchiver-facturation');
+        currentFacturationId = id;
+        console.log(currentFacturationId +"currentFacturationId");
         modal.classList.toggle('hidden');
     }
 
@@ -422,10 +449,19 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data.message);
-                location.reload();
+                setTimeout(() => {
+                        saveNotificationBeforeReload("Approvisionnement désarchivé avec succès", 'succes');
+                        location.reload();
+                    }
+                    , 100)
             })
             .catch(error => {
                 console.log('Erreur:', error);
+                setTimeout(() => {
+                        saveNotificationBeforeReload("Erreur lors de la tentative de désarchivage", 'error');
+                        location.reload();
+                    }
+                    , 100)
             });
 
         toggleModalDesarchiver();
@@ -447,10 +483,19 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data.message);
-                location.reload();
+                setTimeout(() => {
+                        saveNotificationBeforeReload("Dépannage désarchivé avec succès", 'succes');
+                        location.reload();
+                    }
+                    , 100)
             })
             .catch(error => {
                 console.log('Erreur:', error);
+                setTimeout(() => {
+                        saveNotificationBeforeReload("Erreur lors de la tentative de désarchivage", 'error');
+                        location.reload();
+                    }
+                    , 100)
             });
 
         toggleModalDesarchiver();
@@ -471,15 +516,57 @@
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data.message);
-                location.reload();
+                setTimeout(() => {
+                        saveNotificationBeforeReload("Entretien désarchivé avec succès", 'succes');
+                        location.reload();
+                    }
+                    , 100)
             })
             .catch(error => {
                 console.log('Erreur:', error);
+                setTimeout(() => {
+                        saveNotificationBeforeReload("Erreur lors de la tentative de désarchivage", 'error');
+                        location.reload();
+                    }
+                    , 100)
             });
 
         toggleModalDesarchiverEnt();
         currentEntretienId = null;
+    }
+
+    function desarchiverFac(){
+        console.log(currentFacturationId);
+        fetch(`/admin/facturation/desarchiver/${currentFacturationId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({
+                id: currentFacturationId,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                setTimeout(() => {
+                        saveNotificationBeforeReload("Facturation désarchivée avec succès", 'succes');
+                        location.reload();
+                    }
+                , 100)
+            })
+            .catch(error => {
+                console.log('Erreur:', error);
+                setTimeout(() => {
+                        saveNotificationBeforeReload("Erreur lors de la tentative de désarchivage", 'error');
+                        location.reload();
+                    }
+                    , 100)
+            });
+
+        toggleModalDesarchiverFac();
+        currentFacturationId = null;
     }
 
 

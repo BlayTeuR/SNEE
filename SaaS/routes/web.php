@@ -103,6 +103,8 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     Route::put('facturation/{id}/update-date', [FacturationsController::class, 'updateDate'])->name('facturation.update.date');
     Route::put('facturation/{id}/update-montant', [FacturationsController::class, 'updateMontant'])->name('facturation.update.montant');
     Route::patch('facturation/{id}/update-status', [FacturationsController::class, 'updateStatus'])->name('facturation.update.status');
+    Route::post('facturation/archiver/{id}', [FacturationsController::class, 'archiver'])->name('facturation.archiver');
+    Route::post('facturation/desarchiver/{id}', [FacturationsController::class, 'desarchiver'])->name('facturation.desarchiver');
 
     //Entretien
     Route::get('/entretien', [EntretienController::class, 'index'])->name('entretien');
