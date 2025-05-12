@@ -69,21 +69,22 @@
                 </div>
 
                 <!-- Liste des techniciens avec scroll -->
-                <form>
+                <form method="POST" action="{{ route('admin.show.store', ['depannage' => $depannage->id]) }}">
+                    @csrf
                     <ul class="space-y-3 max-h-96 overflow-y-auto pr-2" id="tech-list">
-                       @foreach($users as $user)
+                        @foreach($users as $user)
                             <li class="flex items-center">
-                                <input type="checkbox" id="tech3" class="mr-2">
-                                <label for="tech3" class="text-sm">{{$user->name}}</label>
+                                <input type="checkbox" name="techniciens[]" value="{{ $user->id }}" id="tech{{ $user->id }}" class="mr-2">
+                                <label for="tech{{ $user->id }}" class="text-sm">{{ $user->name }}</label>
                             </li>
                         @endforeach
                     </ul>
 
-                    <button type="submit"
-                            class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded">
+                    <button type="submit" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded">
                         Envoyer
                     </button>
                 </form>
+
             </div>
         </div>
     </div>

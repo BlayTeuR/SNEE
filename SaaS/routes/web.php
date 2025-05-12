@@ -4,6 +4,7 @@ use App\Http\Controllers\ApprovisionnementController;
 use App\Http\Controllers\DepanageController;
 use App\Http\Controllers\EntretienController;
 use App\Http\Controllers\FacturationsController;
+use App\Http\Controllers\FicheController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\PieceController;
 use App\Http\Controllers\ProfileController;
@@ -114,6 +115,9 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     Route::post('/entretien/{id}/update-date', [EntretienController::class, 'updateDate'])->name('entretien.update.date');
     Route::post('/entretien/{id}/archiver', [EntretienController::class, 'archiver'])->name('entretien.archiver');
     Route::post('/entretien/{id}/desarchiver', [EntretienController::class, 'desarchiver'])->name('entretien.desarchiver');
+
+    //Fiche
+    Route::post('/depannage/{depannage}/fiches', [FicheController::class, 'storeForDepannage'])->name('show.store');
 });
 
  require __DIR__.'/auth.php';

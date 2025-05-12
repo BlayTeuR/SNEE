@@ -50,7 +50,7 @@ class Depannage extends Model
         return $this->hasMany(Facturations::class, 'depannage_id');
     }
 
-    public function fiche(){
+    public function fiches(){
         return $this->morphMany(Fiche::class, 'ficheable');
     }
 }
