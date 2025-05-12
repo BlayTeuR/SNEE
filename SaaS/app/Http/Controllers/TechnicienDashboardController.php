@@ -10,10 +10,14 @@ class TechnicienDashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $technicienId = auth()->user()->id();
+        $technicienId = auth()->user()->id;
 
         $fiches = Fiche::where('user_id', '=', $technicienId)->get();
 
         return view('technicien.dashboard', compact('fiches'));
+    }
+
+    public function show(Request $request){
+        //
     }
 }

@@ -11,7 +11,7 @@
             <!-- Navigation Links -->
             <div class="hidden md:flex space-x-6 items-center">
                 <x-nav-link :href="route('technicien.dashboard')" :active="request()->routeIs('technicien.dashboard')">
-                    {{ __('Dashboard') }}
+                    {{ __('Dépannage') }}
                 </x-nav-link>
                 <x-nav-link :href="route('technicien.entretien')" :active="request()->routeIs('technicien.entretien')">
                     {{ __('Entretiens') }}
@@ -75,7 +75,7 @@
     <!-- Responsive Navigation -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden px-4 pt-2 pb-3 space-y-1">
         <x-responsive-nav-link :href="route('technicien.dashboard')" :active="request()->routeIs('technicien.dashboard')">
-            {{ __('Dashboard') }}
+            {{ __('Dépannage') }}
         </x-responsive-nav-link>
         <x-responsive-nav-link :href="route('technicien.entretien')" :active="request()->routeIs('technicien.entretien')">
             {{ __('Entretiens') }}

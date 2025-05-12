@@ -7,10 +7,8 @@
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/TechnicienDashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/TechnicienDashboardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Fiche.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Fiche.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/components/technicien-nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/components/technicien-nav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,7 +218,7 @@
       <workItem from="1746424956985" duration="13627000" />
       <workItem from="1746511540095" duration="23723000" />
       <workItem from="1746617494640" duration="5424000" />
-      <workItem from="1747029875800" duration="4845000" />
+      <workItem from="1747029875800" duration="7729000" />
     </task>
     <servers />
   </component>
