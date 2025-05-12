@@ -49,4 +49,8 @@ class Depannage extends Model
     {
         return $this->hasMany(Facturations::class, 'depannage_id');
     }
+
+    public function fiche(){
+        return $this->morphMany(Fiche::class, 'ficheable');
+    }
 }

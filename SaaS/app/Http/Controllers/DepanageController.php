@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Depannage;
 use App\Models\Type;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -271,6 +272,7 @@ class DepanageController extends Controller
     public function show($id)
     {
         $depannage = Depannage::findOrFail($id);
-        return view('admin.depannage.show', compact('depannage'));
+        $users = User::all()->where('role', '=', 'technicien');
+        return view('admin.depannage.show', compact('depannage', 'users'));
     }
 }

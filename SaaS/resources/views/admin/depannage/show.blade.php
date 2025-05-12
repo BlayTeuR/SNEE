@@ -1,6 +1,7 @@
 <x-app-layout>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8">
+            <!-- Fiche dépannage -->
             <div class="container-a4 bg-white overflow-hidden shadow-sm p-5 relative">
                 <br>
                 <img src="{{ asset('images/logo.png') }}" alt="Logo de l'application" class="absolute top-5 right-5 max-h-20 max-w-20">
@@ -53,6 +54,36 @@
                 @else
                     <p class="text-xs">Aucune photo disponible.</p>
                 @endif
+            </div>
+
+            <!-- Liste des techniciens -->
+            <div class="bg-white shadow-sm p-5 rounded w-full lg:w-1/3">
+                <h3 class="text-xl font-semibold mb-4 text-center">Assigner un technicien</h3>
+
+                <!-- Barre de recherche -->
+                <div class="mb-4">
+                    <input type="text"
+                           placeholder="Rechercher un technicien..."
+                           class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           id="search-tech" />
+                </div>
+
+                <!-- Liste des techniciens avec scroll -->
+                <form>
+                    <ul class="space-y-3 max-h-96 overflow-y-auto pr-2" id="tech-list">
+                       @foreach($users as $user)
+                            <li class="flex items-center">
+                                <input type="checkbox" id="tech3" class="mr-2">
+                                <label for="tech3" class="text-sm">{{$user->name}}</label>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <button type="submit"
+                            class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded">
+                        Envoyer
+                    </button>
+                </form>
             </div>
         </div>
     </div>
