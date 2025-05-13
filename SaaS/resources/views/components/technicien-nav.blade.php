@@ -38,9 +38,6 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profil') }}
-                            </x-dropdown-link>
 
                             <!-- Logout -->
                             <form method="POST" action="{{ route('logout') }}">
@@ -82,9 +79,6 @@
         </x-responsive-nav-link>
         <x-responsive-nav-link :href="route('technicien.carte')" :active="request()->routeIs('technicien.carte')">
             {{ __('Carte') }}
-        </x-responsive-nav-link>
-        <x-responsive-nav-link :href="route('profile.edit')">
-            {{ __('Profil') }}
         </x-responsive-nav-link>
         <form method="POST" action="{{ route('logout') }}">
             @csrf

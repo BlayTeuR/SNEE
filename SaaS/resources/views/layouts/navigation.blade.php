@@ -27,12 +27,16 @@
                     <x-nav-link :href="route('admin.stat')" :active="request()->routeIs('admin.stat')">
                         {{ __('Statistique') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.validation')" :active="request()->routeIs('admin.validation')">
+                        {{ 'Validation' }}
+                    </x-nav-link>
                     <x-nav-link :href="route('carte')" :active="request()->routeIs('carte')">
                         {{ __('Carte') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.historique', ['type' => 'Dépannage'])" :active="request()->routeIs('admin.historique')">
                         {{ __('Historique') }}
                     </x-nav-link>
+
                 </div>
             </div>
 
@@ -104,9 +108,6 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
@@ -120,6 +121,3 @@
         </div>
     </div>
 </nav>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-

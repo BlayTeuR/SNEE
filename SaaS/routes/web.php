@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\TechnicienDashboardController;
 use App\Http\Controllers\TypeController;
+use App\Http\Controllers\ValidationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -67,13 +68,14 @@ Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technici
 
 // Admin
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(function () {
-    Route::get('/admin', [DepanageController::class, 'index'])->name('dashboard');
+    Route::get('/', [DepanageController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [DepanageController::class, 'index'])->name('dashboard');
     Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique');
     Route::get('/stat', [StatistiqueController::class, 'index'])->name('stat');
     Route::get('/facturation', [FacturationsController::class, 'index'])->name('facturation');
     Route::get('/entretien', [EntretienController::class, 'index'])->name('entretien');
     Route::get('/approvisionnement', [ApprovisionnementController::class, 'index'])->name('approvisionnement');
+    Route::get('/validation', [ValidationController::class, 'index'])->name('validation');
 
     //Form
     Route::get('/adminform', function(){return view('admin.adminform');})->name('adminform');
@@ -112,7 +114,6 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     Route::post('facturation/desarchiver/{id}', [FacturationsController::class, 'desarchiver'])->name('facturation.desarchiver');
 
     //Entretien
-    Route::get('/entretien', [EntretienController::class, 'index'])->name('entretien');
     Route::post('entretien/store', [EntretienController::class, 'store'])->name('entretien.store');
     Route::get('/entretien/{id}', [EntretienController::class, 'show'])->name('entretien.show')->middleware(['auth', 'verified']);
     Route::post('entretien/del/{id}', [EntretienController::class, 'destroy'])->name('entretien.del');
@@ -123,5 +124,11 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     //Fiche
     Route::post('/depannage/{depannage}/fiches', [FicheController::class, 'storeForDepannage'])->name('show.store');
 });
+
+// routes/web.php
+Route::get('admin/test-nav', function () {
+    return view('admin.test-nav');
+})->name('admin.testnav');
+
 
  require __DIR__.'/auth.php';
