@@ -26,6 +26,15 @@ class Depannage extends Model
         'archived',
     ];
 
+    protected static function booted()
+    {
+        static::deleting(function ($depannage) {
+            $depannage->photos()->delete();
+            $depannage->historiques()->delete();
+            $depannage->fiches()->delete();
+        });
+    }
+
     public function historiques()
     {
         return $this->morphMany(Historique::class, 'historiqueable');

@@ -5,7 +5,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-8">
             <!-- Fiche dépannage -->
             <div class="bg-white shadow-md rounded-lg p-6 relative w-full">
-         
+
                 <h2 class="text-xl sm:text-2xl font-bold mb-6 text-center">
                     Détails du dépannage de {{ $depannage->nom }} : #ID{{ $depannage->id }}
                 </h2>

@@ -236,9 +236,10 @@ class DepanageController extends Controller
             } else if ($formSource == 'formulaire_classique'){
                 return redirect()->route('confirmation.page')->with('success', 'Votre demande a été enregistrée !');
             } else {
-                return redirect()->route('dashboard')->with('success', 'ajout du dépannage effectué avec succès !');
+                return redirect()->route('admin.dashboard')->with('success', 'ajout du dépannage effectué avec succès !');
             }
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());
         }
     }

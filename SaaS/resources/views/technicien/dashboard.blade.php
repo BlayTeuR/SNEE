@@ -22,8 +22,10 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 transition-transform duration-300 ease-in-out group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
-                            <h2 class="text-lg font-semibold text-gray-800">{{ $fiche->ficheable->nom }}</h2>
-                            <p class="text-sm text-gray-500">{{ $fiche->ficheable->adresse }}</p>
+                            <p class="text-sm font-semibold text-gray-800">{{ $fiche->ficheable->nom }}</p>
+                            <p class="text-xs text-gray-500">
+                                Reçu le {{ \Carbon\Carbon::parse($fiche->created_at)->translatedFormat('l j F Y \à H\hi') }}
+                            </p>
                         </div>
                         <div class="flex items-center space-x-4">
                             <!-- Croix de suppression -->
@@ -36,11 +38,16 @@
                     </div>
                 </summary>
                 <div class="px-6 pb-4 pt-2 text-sm text-gray-700 bg-gray-50">
+                    <p><strong>Adresse:</strong> {{ $fiche->ficheable->adresse }}</p>
                     <p><strong>Téléphone:</strong> {{ $fiche->ficheable->telephone }}</p>
                     <p><strong>Email:</strong> {{ $fiche->ficheable->contact_email }}</p>
                     <p><strong>Matériel:</strong> {{ $fiche->ficheable->type_materiel }}</p>
                     <p><strong>Problème:</strong> {{ $fiche->ficheable->description_probleme }}</p>
-                    <p><strong>Date prévue:</strong> {{ $fiche->ficheable->date_depannage }}</p>
+                    @if($fiche->ficheable->date_depannage == null)
+                        <p><strong>Date prévue:</strong> Pas encore planifiée</p>
+                    @else
+                        <p><strong>Date prévue:</strong> {{ \Carbon\Carbon::parse($fiche->ficheable->date_depannage)->format('d/m/Y') }}</p>
+                    @endif
 
                     <!-- Lien pour voir la fiche complète -->
                     <a href="{{route('technicien.depannage.show', $fiche->ficheable->id) }}" class="mt-3 inline-block bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
