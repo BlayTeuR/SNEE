@@ -11,4 +11,9 @@ class Fiche extends Model
     public function ficheable(){
         return $this->morphTo();
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

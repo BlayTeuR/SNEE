@@ -71,9 +71,11 @@
                 <!-- Liste des techniciens avec scroll -->
                 <form method="POST" action="{{ route('admin.show.store', ['depannage' => $depannage->id]) }}">
                     @csrf
+
                     <ul class="space-y-3 max-h-96 overflow-y-auto pr-2" id="tech-list">
                         @foreach($users as $user)
                             <li class="flex items-center">
+                                <!-- Case à cocher pour chaque technicien -->
                                 <input type="checkbox" name="techniciens[]" value="{{ $user->id }}" id="tech{{ $user->id }}" class="mr-2">
                                 <label for="tech{{ $user->id }}" class="text-sm">{{ $user->name }}</label>
                             </li>
@@ -89,32 +91,7 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const { jsPDF } = window.jspdf;
-
-            document.getElementById('download-pdf').addEventListener('click', function() {
-                const content = document.querySelector('.container-a4'); // Contenu à capturer
-
-                // Capture avec html2canvas
-                html2canvas(content, {
-                    scale: 2,
-                    useCORS: true,
-                    logging: true,
-                }).then(function(canvas) {
-                    // Créer un PDF avec jsPDF
-                    const doc = new jsPDF();
-                    const imgData = canvas.toDataURL('image/png');
-                    doc.addImage(imgData, 'PNG', 10, 10); // Ajouter l'image au PDF
-                    doc.save('depannage_details.pdf'); // Sauvegarder le PDF
-                }).catch(function(error) {
-                    console.error('Erreur lors de la génération du PDF :', error);
-                });
-            });
-        });
 
     </script>
 

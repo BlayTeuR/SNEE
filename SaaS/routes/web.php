@@ -59,6 +59,10 @@ Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technici
     Route::get('/entretien', [TechnicienDashboardController::class, 'index'])->name('entretien');
     Route::get('/carte', [TechnicienDashboardController::class, 'index'])->name('carte');
 
+    //Fiche
+    Route::post('/fiche/{id}/del', [FicheController::class, 'delete'])->name('fiche.del');
+    Route::get('/depannage/{id}', [TechnicienDashboardController::class, 'show'])->name('depannage.show');
+
 });
 
 // Admin

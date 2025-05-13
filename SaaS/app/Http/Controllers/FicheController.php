@@ -5,28 +5,49 @@ namespace App\Http\Controllers;
 use App\Models\Depannage;
 use App\Models\Fiche;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FicheController extends Controller
 {
+
     public function storeForDepannage(Request $request, $depannageId)
     {
-        // Validation de la requête
         $request->validate([
-            'techniciens' => 'required|array',
-            'techniciens.*' => 'exists:users,id',
+            'techniciens' => 'required|array',  // Assurez-vous que le tableau de techniciens est envoyé
+            'techniciens.*' => 'exists:users,id', // Valider que tous les IDs sont valides
         ]);
 
-        // Récupérer le dépannage
         $depannage = Depannage::findOrFail($depannageId);
+        $techniciens = $request->techniciens;
 
-        // Créer une fiche pour chaque technicien sélectionné
-        foreach ($request->techniciens as $userId) {
-            $depannage->fiches()->create([
-                'user_id' => $userId,
-            ]);
+        foreach ($techniciens as $userId) {
+            $existingFiche = Fiche::where('ficheable_id', $depannage->id)
+                ->where('ficheable_type', Depannage::class)
+                ->where('user_id', $userId)
+                ->first();
+            if(!$existingFiche){
+                $fiche = new Fiche([
+                    'user_id' => $userId,
+                    'ficheable_type' => Depannage::class,
+                    'ficheable_id' => $depannage->id,
+                ]);
+
+                $depannage->fiches()->save($fiche);
+            }
+
         }
 
-        // Retourner une réponse après l'association des fiches
-        return redirect()->back()->with('success', 'Fiches assignées avec succès au dépannage.');
+        return redirect()->back()->with('message', 'Fiches assignées avec succès');
     }
+        public function delete($id)
+        {
+            try {
+                $fiche = Fiche::findOrFail($id);
+                $fiche->delete();
+
+                return response()->json(['message' => 'Fiche supprimée avec succès.']);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Erreur lors de la suppression de la fiche: ' . $e->getMessage()], 500);
+            }
+        }
 }
