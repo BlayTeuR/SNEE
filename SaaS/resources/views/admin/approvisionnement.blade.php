@@ -1,4 +1,9 @@
 <x-app-layout>
+
+    <div id="notification" class="hidden fixed top-5 right-5 p-4 text-white rounded shadow-lg transition-opacity duration-1000">
+        <span id="notification-message"></span>
+    </div>
+
     @php
         $currentApprovisionnementId = null;
     @endphp

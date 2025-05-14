@@ -239,7 +239,6 @@ class DepanageController extends Controller
                 return redirect()->route('admin.dashboard')->with('success', 'ajout du dépannage effectué avec succès !');
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());
         }
     }

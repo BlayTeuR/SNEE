@@ -1,4 +1,9 @@
 <x-app-layout>
+
+    <div id="notification" class="hidden fixed top-5 right-5 p-4 text-white rounded shadow-lg transition-opacity duration-1000">
+        <span id="notification-message"></span>
+    </div>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8">
             <!-- Fiche dépannage -->
@@ -69,7 +74,7 @@
                 </div>
 
                 <!-- Liste des techniciens avec scroll -->
-                <form method="POST" action="{{ route('admin.show.store', ['depannage' => $depannage->id]) }}">
+                <form id="assignForm" method="POST" action="{{ route('admin.show.store', ['depannage' => $depannage->id]) }}">
                     @csrf
 
                     <ul class="space-y-3 max-h-96 overflow-y-auto pr-2" id="tech-list">
@@ -92,7 +97,34 @@
     </div>
 
     <script>
+        document.getElementById('assignForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Empêche la soumission par défaut
 
+            const form = e.target;
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Erreur réseau');
+                    return response.json();
+                })
+                .then(data => {
+                    saveNotificationBeforeReload(data.message || "Fiche envoyée avec succès aux techniciens.", 'success');
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Erreur :', error);
+                    saveNotificationBeforeReload("Erreur lors de l'envoi de la fiche.", 'error');
+                    location.reload();
+                });
+
+        });
     </script>
 
     <style>

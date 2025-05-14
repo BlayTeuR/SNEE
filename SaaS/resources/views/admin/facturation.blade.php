@@ -1,4 +1,9 @@
 <x-app-layout>
+
+    <div id="notification" class="hidden fixed top-5 right-5 p-4 text-white rounded shadow-lg transition-opacity duration-1000">
+        <span id="notification-message"></span>
+    </div>
+
     <div class="flex bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <!-- Filtres -->
         <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">

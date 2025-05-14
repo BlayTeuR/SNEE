@@ -13,8 +13,8 @@ class FicheController extends Controller
     public function storeForDepannage(Request $request, $depannageId)
     {
         $request->validate([
-            'techniciens' => 'required|array',  // Assurez-vous que le tableau de techniciens est envoyé
-            'techniciens.*' => 'exists:users,id', // Valider que tous les IDs sont valides
+            'techniciens' => 'required|array',
+            'techniciens.*' => 'exists:users,id',
         ]);
 
         $depannage = Depannage::findOrFail($depannageId);
@@ -33,11 +33,11 @@ class FicheController extends Controller
                 ]);
 
                 $depannage->fiches()->save($fiche);
+            } else {
+                // retourner une réponse json indiquant que la fiche existe déjà pour un technicien donné
             }
-
         }
-
-        return redirect()->back()->with('message', 'Fiches assignées avec succès');
+        return response()->json(['message' => 'Fiches assignées avec succès'], 200);
     }
         public function delete($id)
         {

@@ -1,6 +1,11 @@
 @extends('layouts.technicien')
 
 @section('content')
+
+    <div id="notification" class="hidden fixed top-5 right-5 p-4 text-white rounded shadow-lg transition-opacity duration-1000">
+        <span id="notification-message"></span>
+    </div>
+
     @php
         $ficheId = null;
         $count = 0;
@@ -132,7 +137,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.count > previousFicheCount) {
-                        location.reload(); // recharge uniquement si une nouvelle fiche lui est assignée
+                        location.reload();
                     }
                 })
                 .catch(error => {
