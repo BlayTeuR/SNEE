@@ -64,6 +64,10 @@ Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technici
     Route::post('/fiche/{id}/del', [FicheController::class, 'delete'])->name('fiche.del');
     Route::get('/depannage/{id}', [TechnicienDashboardController::class, 'show'])->name('depannage.show');
 
+    Route::get('/{id}/fiches/count', function ($id) {
+        $count = \App\Models\Fiche::where('user_id', $id)->count();
+        return response()->json(['count' => $count]);
+    });
 });
 
 // Admin
@@ -114,6 +118,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     Route::post('facturation/desarchiver/{id}', [FacturationsController::class, 'desarchiver'])->name('facturation.desarchiver');
 
     //Entretien
+    Route::get('/entretien', [EntretienController::class, 'index'])->name('entretien');
     Route::post('entretien/store', [EntretienController::class, 'store'])->name('entretien.store');
     Route::get('/entretien/{id}', [EntretienController::class, 'show'])->name('entretien.show')->middleware(['auth', 'verified']);
     Route::post('entretien/del/{id}', [EntretienController::class, 'destroy'])->name('entretien.del');
@@ -125,10 +130,8 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     Route::post('/depannage/{depannage}/fiches', [FicheController::class, 'storeForDepannage'])->name('show.store');
 });
 
-// routes/web.php
 Route::get('admin/test-nav', function () {
     return view('admin.test-nav');
 })->name('admin.testnav');
-
 
  require __DIR__.'/auth.php';

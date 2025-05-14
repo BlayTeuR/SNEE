@@ -81,13 +81,16 @@
 
     <script>
 
+        let modalOpen = false;
         let ficheId = null;
+        let previousFicheCount = {{ $fiches->count() }};
+        const currentUserId = {{ auth()->id() }};
 
         function toggleModal(id = null) {
             const modal = document.getElementById('confirm-delete-modal');
             ficheId = id;
-
             modal.classList.toggle('hidden');
+            modalOpen = !modal.classList.contains('hidden');
         }
 
         function delFicheConfirm() {
@@ -121,6 +124,21 @@
                      toggleModal();
                     });
         }
+
+        setInterval(() => {
+            if (modalOpen) return;
+
+            fetch(`/technicien/${currentUserId}/fiches/count`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.count > previousFicheCount) {
+                        location.reload(); // recharge uniquement si une nouvelle fiche lui est assignée
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la vérification des fiches :", error);
+                });
+        }, 3000);
 
     </script>
 @endsection
