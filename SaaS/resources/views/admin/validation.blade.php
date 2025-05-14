@@ -62,8 +62,8 @@
 
                             <!-- Boutons à droite -->
                             <div class="flex space-x-2">
-                                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valide</button>
-                                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Non valide</button>
+                                <button onclick="openValideModal({{ $depannage->id }})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valide</button>
+                                <button onclick="openNonValideModal({{ $depannage->id }})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Non valide</button>
                             </div>
                         </div>
 
@@ -90,8 +90,127 @@
         </div>
     </div>
 
+    <!-- Modal VALIDE -->
+    <div id="valideModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-lg">
+            <h2 class="text-xl font-bold mb-4">Validation du dépannage</h2>
+            <p class="mb-4 text-gray-700">Vous êtes sur le point de valider l'intervention et d'enregistrer celle-ci. Que souhaitez-vous faire ?</p>
+
+            <form>
+                <label class="block mb-2">
+                    <input type="radio" name="valide_option" value="nouvelle_date" class="mr-2"
+                           onclick="toggleModalDate(true, 'valide')"> Affecter une nouvelle date
+                </label>
+                <label class="block mb-2">
+                    <input type="radio" name="valide_option" value="approvisionnement" class="mr-2"> Créer un approvisionnement
+                </label>
+                <label class="block mb-4">
+                    <input type="radio" name="valide_option" value="facturer" class="mr-2"> Passer ce dépannage dans l’état « à facturer »
+                </label>
+
+                <div class="flex justify-end space-x-2">
+                    <button type="button" onclick="closeValideModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Annuler</button>
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="create-date-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[9999]">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 relative z-[10000]">
+            <h2 class="text-xl font-semibold mb-4">À quelle date voulez-vous associer ce dépannage ?</h2>
+            <label for="date-create" class="block text-sm font-medium text-gray-700 mb-2">Choisir une date</label>
+            <input type="date" name="date-create" id="date-create" class="block w-full mb-4 p-2 border border-gray-300 rounded-lg" value="{{ request('date-crate') }}">
+
+            <div class="flex justify-end space-x-4">
+                <button onclick="toggleModalDate(false, currentContext)" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="updateDate()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Valider</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal NON VALIDE -->
+    <div id="nonValideModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-lg">
+            <h2 class="text-xl font-bold mb-4">Replanification du dépannage</h2>
+            <p class="mb-4 text-gray-700">Que souhaitez-vous faire ?</p>
+
+            <form>
+                <label class="block mb-2">
+                    <input type="radio" name="non_valide_option" value="nouvelle_date" class="mr-2"
+                           onclick="toggleModalDate(true, 'nonValide')"> Affecter une nouvelle date
+                </label>
+                <label class="block mb-4">
+                    <input type="radio" name="non_valide_option" value="ultérieurement" class="mr-2"> Affecter ultérieurement une date
+                </label>
+
+                <div class="flex justify-end space-x-2">
+                    <button type="button" onclick="closeNonValideModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Annuler</button>
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentContext = null;
+
+        function openValideModal() {
+            document.getElementById('valideModal').classList.remove('hidden');
+            currentContext = 'valide';
+        }
+
+        function openNonValideModal() {
+            document.getElementById('nonValideModal').classList.remove('hidden');
+            currentContext = 'nonValide';
+        }
+
+        function closeValideModal() {
+            document.getElementById('valideModal').classList.add('hidden');
+        }
+
+        function closeNonValideModal() {
+            document.getElementById('nonValideModal').classList.add('hidden');
+        }
+
+        function toggleModalDate(show, sourceModal) {
+            const dateModal = document.getElementById('create-date-modal');
+
+            if (show) {
+                // Masquer le modal source
+                if (sourceModal === 'valide') {
+                    closeValideModal();
+                } else if (sourceModal === 'nonValide') {
+                    closeNonValideModal();
+                }
+
+                dateModal.classList.remove('hidden');
+            } else {
+                dateModal.classList.add('hidden');
+                resetRadioButtons();
+
+                // Réafficher le modal parent
+                if (sourceModal === 'valide') {
+                    document.getElementById('valideModal').classList.remove('hidden');
+                } else if (sourceModal === 'nonValide') {
+                    document.getElementById('nonValideModal').classList.remove('hidden');
+                }
+            }
+        }
+
+        function resetRadioButtons() {
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => {
+                radio.checked = false;
+            });
+        }
+
+        function updateDate() {
+            const selectedDate = document.getElementById('date-create').value;
+            console.log("Nouvelle date sélectionnée :", selectedDate);
+
+            document.getElementById('create-date-modal').classList.add('hidden');
+        }
+    </script>
+
 </x-app-layout>
-
-<script>
-
-</script>

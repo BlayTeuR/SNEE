@@ -110,15 +110,16 @@
                 })
                 .then(data => {
                     console.log(data.message);
-                    saveNotificationBeforeReload("L'opération de suppression a été réalisée avec succès.", 'success');
-                    location.reload();
+                    console.log("Tentative de rechargement");
+                    window.location.href = window.location.href;
                 })
                 .catch(error => {
                     console.err('Erreur:', error);
                     saveNotificationBeforeReload(error.message || 'Une erreur est survenue', 'error');
-                });
-
-            toggleModal();
+                })
+                .finally(() => {
+                     toggleModal();
+                    });
         }
 
     </script>

@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/test-nav.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/validation.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/components/technicien-nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/components/technicien-nav.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/navigation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/navigation.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/validation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/validation.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/technicien/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/dashboard.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -222,7 +219,7 @@
       <workItem from="1746617494640" duration="5424000" />
       <workItem from="1747029875800" duration="17207000" />
       <workItem from="1747116368339" duration="4863000" />
-      <workItem from="1747136223527" duration="8663000" />
+      <workItem from="1747136223527" duration="13419000" />
     </task>
     <servers />
   </component>
