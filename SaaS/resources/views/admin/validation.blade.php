@@ -26,6 +26,11 @@
                     <input type="text" id="name-filter" name="nom" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
                 </div>
 
+                <div class="mb-4">
+                    <label for="date-filter" class="block text-sm font-medium text-gray-700">Filtrer par date</label>
+                    <input type="date" name="date" id="date-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date') }}">
+                </div>
+
                 <!-- Jour courant -->
                 <div class="mb-4 flex items-center">
                     <label for="jour_courant" class="block text-sm font-medium text-gray-700 mr-4">Intervention du {{ \Carbon\Carbon::parse(today())->format('d/m/Y') }} uniquement</label>

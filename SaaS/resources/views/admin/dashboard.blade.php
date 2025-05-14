@@ -115,8 +115,9 @@
                                 @endphp
                                 <div class="flex items-center space-x-2">
                                     <span class="text-gray-800 font-medium">{{ $depannage->id }}</span>
-                                    <div class="relative group">
-                                        <span class="text-xs font-bold">({{$depannage->provenance}})</span>
+                                    <div class="ml-1 relative group flex flex-col space-y-1">
+                                        <span class="text-xs font-bold">({{ $depannage->provenance }})</span>
+                                        <span class="text-xs font-bold">crée le : {{ \Carbon\Carbon::parse($depannage->created_at)->format('d/m/Y') }}</span>
                                     </div>
                                 </div>
                             </td>

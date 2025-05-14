@@ -38,9 +38,10 @@
             <input type="tel" id="tel" name="tel" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
         </div>
 
-        <div class="mb-4">
+        <div class="mb-4 relative">
             <label for="add" class="block text-gray-700">Adresse d'intervention <span class="text-red-500">*</span></label>
-            <input type="text" id="add" name="add" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
+            <input type="text" id="add" name="add" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" autocomplete="off" required>
+            <ul id="suggestions" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto hidden"></ul>
         </div>
 
         <div class="mb-4">
@@ -101,6 +102,56 @@
 @vite('resources/js/app.js')
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('add');
+        const suggestionsBox = document.getElementById('suggestions');
+
+        let debounceTimeout;
+
+        input.addEventListener('input', function () {
+            const query = input.value.trim();
+
+            clearTimeout(debounceTimeout);
+            if (query.length < 3) {
+                suggestionsBox.classList.add('hidden');
+                return;
+            }
+
+            debounceTimeout = setTimeout(() => {
+                fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=15`)
+                    .then(response => response.json())
+                    .then(data => {
+                        suggestionsBox.innerHTML = '';
+                        data.features.forEach(feature => {
+                            const li = document.createElement('li');
+                            li.classList.add('px-4', 'py-2', 'cursor-pointer', 'hover:bg-gray-100');
+                            li.textContent = feature.properties.label;
+
+                            li.addEventListener('click', () => {
+                                input.value = feature.properties.label;
+                                suggestionsBox.classList.add('hidden');
+                            });
+
+                            suggestionsBox.appendChild(li);
+                        });
+
+                        if (data.features.length > 0) {
+                            suggestionsBox.classList.remove('hidden');
+                        } else {
+                            suggestionsBox.classList.add('hidden');
+                        }
+                    });
+            }, 300); // délai pour éviter trop d'appels à l'API
+        });
+
+        // Cacher les suggestions si on clique en dehors
+        document.addEventListener('click', function (e) {
+            if (!suggestionsBox.contains(e.target) && e.target !== input) {
+                suggestionsBox.classList.add('hidden');
+            }
+        });
+    });
+
     let addImageBtn = document.getElementById('add-image-btn');
     let imageContainer = document.getElementById('image-container');
     let deleteImgBtn = document.getElementById('delete-img-btn');
@@ -166,6 +217,8 @@
 
     // Initialisation du formulaire
     toggleDeleteButton(); // Vérifier si un fichier est déjà sélectionné à l'initialisation
+
+
 </script>
 
 </body>

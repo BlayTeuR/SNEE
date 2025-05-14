@@ -24,6 +24,10 @@ class ValidationController extends Controller
                 $query->where('nom', 'like', '%' . $request->input('nom') . '%');
             }
 
+            if($request->filled('date')) {
+                $query->whereDate('date_depannage', '=', $request->input('date'));
+            }
+
             if($request->input('jour_courant', 'on') === 'on') {
                 $query->whereDate('date_depannage', '=', now()->format('Y-m-d'));
             }
@@ -36,6 +40,10 @@ class ValidationController extends Controller
 
             if($request->filled('nom')) {
                 $query->where('nom', 'like', '%' . $request->input('nom') . '%');
+            }
+
+            if($request->filled('date')) {
+                $query->whereDate('derniere_date', '=', $request->input('date'));
             }
 
             if($request->input('jour_courant', 'on') === 'on') {
