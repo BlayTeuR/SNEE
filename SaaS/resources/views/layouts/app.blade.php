@@ -4,6 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Nom de ton app" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="manifest" href="/manifest.json" />
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -13,10 +18,9 @@
 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
-        <!-- Autres liens CSS (par exemple, Tailwind CSS) -->
-        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @include('vendor.laravelpwa.meta')
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -41,7 +45,6 @@
         <div id="progress-bar" class="fixed top-0 left-0 h-1 bg-blue-500 z-50 transition-width duration-600 ease-out w-0"></div>
 
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-        <script src="../../js/notifications.js"></script>
         <script>
                 window.addEventListener("pageshow", function (event) {
                 if (event.persisted || window.performance.getEntriesByType("navigation")[0].type === "back_forward") {

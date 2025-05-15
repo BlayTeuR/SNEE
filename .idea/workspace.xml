@@ -5,13 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/public/manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/public/service-worker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/vendor/laravelpwa/meta.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/phpspec.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/phpspec.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/ValidationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/ValidationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/validation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/validation.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/caform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/caform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Providers/AppServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/bootstrap/cache/packages.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/bootstrap/cache/packages.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/bootstrap/cache/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/bootstrap/cache/services.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/adminform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/adminform.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/guest.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/guest.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,6 +152,7 @@
       <path value="$PROJECT_DIR$/SaaS/vendor/sebastian/environment" />
       <path value="$PROJECT_DIR$/SaaS/vendor/sebastian/exporter" />
       <path value="$PROJECT_DIR$/SaaS/vendor/laravel/breeze" />
+      <path value="$PROJECT_DIR$/SaaS/vendor/ladumor/laravel-pwa" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -171,6 +182,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\public\icons" />
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views\admin" />
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views\errors" />
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views\components" />
@@ -226,7 +238,8 @@
       <workItem from="1747136223527" duration="17938000" />
       <workItem from="1747222562917" duration="3504000" />
       <workItem from="1747229496107" duration="1352000" />
-      <workItem from="1747231745776" duration="3034000" />
+      <workItem from="1747231745776" duration="3324000" />
+      <workItem from="1747289769174" duration="6293000" />
     </task>
     <servers />
   </component>

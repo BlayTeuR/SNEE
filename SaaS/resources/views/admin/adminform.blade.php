@@ -150,7 +150,7 @@
             }
         });
     });
-    
+
     let addImageBtn = document.getElementById('add-image-btn');
     let imageContainer = document.getElementById('image-container');
     let deleteImgBtn = document.getElementById('delete-img-btn');

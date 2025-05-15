@@ -14,6 +14,7 @@ use App\Http\Controllers\TypeController;
 use App\Http\Controllers\ValidationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File;
 
 Route::get('/', function () {
     if (!Auth::check()) {
@@ -133,5 +134,16 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
 Route::get('admin/test-nav', function () {
     return view('admin.test-nav');
 })->name('admin.testnav');
+
+Route::get('/manifest.json', function () {
+    $path = public_path('manifest.json');
+    if (!File::exists($path)) {
+        abort(404);
+    }
+    return response()->file($path, [
+        'Content-Type' => 'application/json',
+    ]);
+});
+
 
  require __DIR__.'/auth.php';

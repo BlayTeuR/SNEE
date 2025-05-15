@@ -13,9 +13,7 @@
 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
-        <!-- Autres liens CSS (par exemple, Tailwind CSS) -->
-        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-        <!-- Scripts -->
+       <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>

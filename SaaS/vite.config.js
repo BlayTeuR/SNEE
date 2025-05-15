@@ -6,7 +6,7 @@ export default defineConfig({
         host: '0.0.0.0', // écouter toutes les interfaces réseau
         port: 5173,       // ou tout autre port si nécessaire
         hmr: {
-            host: '172.21.88.88', // <-- IP de ton PC --- changer lorsque l'adresse IP local du pc change
+            host: '467b-212-234-17-153.ngrok-free.app', // <-- IP de ton PC --- changer lorsque l'adresse IP local du pc change
         }
     },
     plugins: [
