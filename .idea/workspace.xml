@@ -5,19 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/AffectationController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/app/Models/Affectation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/database/factories/DepannageFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/factories/DepannageFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/database/factories/EntretienFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/factories/EntretienFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000003_create_depannages_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000003_create_depannages_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_23_000010_create_entretiens_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_23_000010_create_entretiens_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/adminform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/adminform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/entretienform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretienform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/caform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/caform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,7 +227,7 @@
       <workItem from="1747231745776" duration="3324000" />
       <workItem from="1747289769174" duration="6927000" />
       <workItem from="1747308853419" duration="7066000" />
-      <workItem from="1747375851118" duration="2872000" />
+      <workItem from="1747375851118" duration="4672000" />
     </task>
     <servers />
   </component>
