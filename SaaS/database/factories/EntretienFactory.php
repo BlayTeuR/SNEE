@@ -11,15 +11,19 @@ class EntretienFactory extends Factory
 
     public function definition()
     {
+        // Faker avec locale française
+        $faker = \Faker\Factory::create('fr_FR');
+
         return [
-            'nom' => $this->faker->company,
-            'adresse' => $this->faker->address,
-            'contact_email' => $this->faker->unique()->safeEmail,
-            'panne_vigilance' => $this->faker->sentence(3),
-            'telephone' => $this->faker->phoneNumber,
-            'type_materiel' => $this->faker->randomElement(['Chaudière', 'Climatiseur', 'Pompe à chaleur', 'Chauffe-eau']),
-            'derniere_date' => $this->faker->dateTimeBetween('-2 years', 'now'),
-            'archived' => $this->faker->boolean(20),
+            'nom' => $faker->company(),
+            'adresse' => $faker->address(),
+            'code_postal' => $faker->postcode(),
+            'contact_email' => $faker->unique()->safeEmail(),
+            'panne_vigilance' => $faker->sentence(3),
+            'telephone' => $faker->phoneNumber(),
+            'type_materiel' => $faker->randomElement(['Chaudière', 'Climatiseur', 'Pompe à chaleur', 'Chauffe-eau']),
+            'derniere_date' => $faker->dateTimeBetween('-2 years', 'now'),
+            'archived' => $faker->boolean(20),
         ];
     }
 }

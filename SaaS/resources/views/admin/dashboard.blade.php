@@ -5,12 +5,9 @@
     </div>
 
     <div class="flex flex-col md:flex-row bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
-        <div class="w-full md:w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden mb-4 md:mb-0">
+        <div class="w-full md:w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-auto mb-4 md:mb-0 ">
 
         <form method="GET" action="{{ route('admin.dashboard') }}">
-            <!-- Filtres -->
-                <h2 class="text-lg font-bold">Filtres</h2>
-
                 <!-- Filtrer par statut -->
                 <div class="mb-4">
                     <label for="status-filter" class="block text-sm font-medium text-gray-700">Filtrer par statut</label>
@@ -20,6 +17,16 @@
                         <option value="Affecter">Affecter</option>
                         <option value="Approvisionnement">Approvisionnement</option>
                         <option value="À facturer">À facturer</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="technicien-filter" class="block text-sm font-medium text-gray-700">Filtrer par technicien</label>
+                    <select name="technicien" id="technicien-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+                        <option value="">Tous</option>
+                        @foreach($techniciens as $technicien)
+                            <option value="{{ $technicien->id }}" {{ request('technicien') == $technicien->id ? 'selected' : '' }}>{{ $technicien->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -39,6 +46,12 @@
                 <div class="mb-4">
                     <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
                     <input type="text" name="nom" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
+                </div>
+
+            <!-- Filtrer par lieu -->
+                <div class="mb-4">
+                    <label for="cp-filter" class="block text-sm font-medium text-gray-700">Filtrer par code postal</label>
+                    <input type="text" name="code_postal" id="cp-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Lieu" value="{{ request('code_postal') }}">
                 </div>
 
                 <!-- Filtrer par lieu -->
@@ -122,7 +135,7 @@
                                 </div>
                             </td>
                             <td class="p-3 text-sm text-gray-700">{{ $depannage->nom }}</td>
-                            <td class="p-3 text-sm text-gray-700">{{ $depannage->adresse }}</td>
+                            <td class="p-3 text-sm text-gray-700"><p class="font-bold">CP : {{$depannage->code_postal}}</p>{{ $depannage->adresse }}</td>
                             <td class="p-3 text-sm text-gray-700">
                                 {{$depannage->types->contrat}}, {{$depannage->types->garantie}}
 

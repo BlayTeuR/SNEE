@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom');
             $table->string('adresse');
+            $table->string('code_postal', 10);
             $table->string('contact_email');
             $table->text('panne_vigilance');
             $table->string('telephone');

@@ -14,6 +14,7 @@ class Depannage extends Model
     protected $fillable = [
         'nom',
         'adresse',
+        'code_postal',
         'contact_email',
         'telephone',
         'type_materiel',

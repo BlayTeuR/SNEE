@@ -40,8 +40,13 @@
 
         <div class="mb-4 relative">
             <label for="add" class="block text-gray-700">Adresse d'intervention <span class="text-red-500">*</span></label>
-            <input type="text" id="add" name="add" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" autocomplete="off" required>
+            <input type="number" id="add" name="add" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" autocomplete="off" required>
             <ul id="suggestions" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto hidden"></ul>
+        </div>
+
+        <div class="mb-4 relative">
+            <label for="add-code-postal" class="block text-gray-700">Code postal <span class="text-red-500">*</span></label>
+            <input type="text" id="add-code-postal" name="add-code-postal" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" autocomplete="off" required>
         </div>
 
         <div class="mb-4">

@@ -43,6 +43,11 @@
             <input type="text" id="add" name="add" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
         </div>
 
+        <div class="mb-4 relative">
+            <label for="add-code-postal" class="block text-gray-700">Code postal <span class="text-red-500">*</span></label>
+            <input type="number" id="add-code-postal" name="add-code-postal" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" autocomplete="off" required>
+        </div>
+
         <div class="mb-4">
             <label class="block text-gray-700 mb-2">Type de matériel <span class="text-red-500">*</span></label>
             <div class="flex space-x-4">

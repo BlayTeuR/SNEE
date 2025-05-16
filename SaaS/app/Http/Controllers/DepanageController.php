@@ -36,6 +36,20 @@ class DepanageController extends Controller
             $query->where('nom', 'like', '%' . $request->nom . '%');
         }
 
+        // Filtre par code postal
+        if ($request->filled('code_postal')) {
+            $cp = $request->code_postal;
+
+            if (preg_match('/^(\d{2})0+$/', $cp, $matches)) {
+                $prefix = $matches[1];
+                $query->where('code_postal', 'like', $prefix . '%');
+            } elseif (strlen($cp) === 2) {
+                $query->where('code_postal', 'like', $cp . '%');
+            } else {
+                $query->where('code_postal', $cp);
+            }
+        }
+
         // Filtrer par lieu (adresse ici ?)
         if ($request->filled('lieu')) {
             $query->where('adresse', 'like', '%' . $request->lieu . '%');
@@ -69,8 +83,9 @@ class DepanageController extends Controller
 
         // Appliquer le tri avant de récupérer les résultats
         $depannages = $query->where('archived', '=', false)->orderBy('created_at', 'desc')->get();
+        $techniciens = User::where('role', 'technicien')->get();
 
-        return view('admin/dashboard', compact('depannages'));
+        return view('admin/dashboard', compact('depannages', 'techniciens'));
     }
 
     public function destroy($id)
@@ -179,6 +194,7 @@ class DepanageController extends Controller
                 'email' => 'required|email',
                 'tel' => 'required|string|max:20',
                 'add' => 'required|string|max:255',
+                'add-code-postal' => 'required|string|max:10',
                 'demande_type' => 'required|string|in:portail,portillon,barrière,tourniquet',
                 'panne' => 'required|string',
                 'elec' => 'nullable|string',
@@ -198,6 +214,7 @@ class DepanageController extends Controller
             $depannage = Depannage::create([
                 'nom' => $request->input('name'),
                 'adresse' => $request->input('add'),
+                'code_postal' => $request->input('add-code-postal'),
                 'contact_email' => $request->input('email'),
                 'description_probleme' => $request->input('panne'),
                 'statut' => 'À planifier',
