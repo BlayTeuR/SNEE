@@ -29,6 +29,18 @@
                     <input type="date" name="date_max" id="date-filter_max" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date_max') }}">
                 </div>
 
+                <!-- Filtrer par lieu -->
+                <div class="mb-4">
+                    <label for="cp-filter" class="block text-sm font-medium text-gray-700">Filtrer par code postal</label>
+                    <input type="text" name="code_postal" id="cp-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Code postal" value="{{ request('code_postal') }}">
+                </div>
+
+                <!-- Filtrer par lieu -->
+                <div class="mb-4">
+                    <label for="lieu-filter" class="block text-sm font-medium text-gray-700">Filtrer par lieu</label>
+                    <input type="text" name="lieu" id="lieu-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Lieu" value="{{ request('lieu') }}">
+                </div
+
                 <!-- Toggle switch pour le mois courant -->
                 <div class="mb-4 flex items-center">
                     <label for="mois_courant" class="block text-sm font-medium text-gray-700 mr-4">Entretien pour mois courant</label>
@@ -91,7 +103,7 @@
                     <tr class="hover:bg-gray-200 {{$bgColor}}">
                         <td class="p-3 text-sm text-gray-700">{{$entretien->id}}</td>
                         <td class="p-3 text-sm text-gray-700">{{$entretien->nom}}</td>
-                        <td class="p-3 text-sm text-gray-700">{{$entretien->adresse}}</td>
+                        <td class="p-3 text-sm text-gray-700"><p class="font-bold">CP : {{$entretien->code_postal}}</p>{{$entretien->adresse}}</td>
                         <td class="p-3 text-sm text-gray-700">
                             @if($entretien->derniere_date == null)
                                 <span class="text-red-500">Aucune date</span>

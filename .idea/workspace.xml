@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/AffectationController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SaaS/app/Models/Affectation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/technicien/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/technicien/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/depannage/show.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,7 +231,7 @@
       <workItem from="1747231745776" duration="3324000" />
       <workItem from="1747289769174" duration="6927000" />
       <workItem from="1747308853419" duration="7066000" />
-      <workItem from="1747375851118" duration="4672000" />
+      <workItem from="1747375851118" duration="7459000" />
     </task>
     <servers />
   </component>
@@ -239,7 +243,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/SaaS/resources/views/admin/entretien.blade.php</url>
-          <line>266</line>
+          <line>278</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

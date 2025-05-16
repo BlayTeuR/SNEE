@@ -37,6 +37,22 @@ class EntretienController extends Controller
                 ->whereYear('derniere_date', Carbon::now()->year);
         }
 
+        if($request->filled('lieu')){
+            $query->where('adresse', 'like', '%' . $request->input('lieu') . '%');
+        }
+
+        if ($request->filled('code_postal')) {
+            $cp = $request->code_postal;
+
+            if (preg_match('/^(\d{2})0+$/', $cp, $matches)) {
+                $prefix = $matches[1];
+                $query->where('code_postal', 'like', $prefix . '%');
+            } elseif (strlen($cp) === 2) {
+                $query->where('code_postal', 'like', $cp . '%');
+            } else {
+                $query->where('code_postal', $cp);
+            }
+        }
 
         // Récupérer les entretiens filtrés et trier par date de création
         $entretiens = $query->where('archived', false)->orderBy('derniere_date', 'desc')->get();

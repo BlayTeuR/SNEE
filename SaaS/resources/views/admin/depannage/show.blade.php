@@ -64,7 +64,7 @@
 
             <!-- Liste des techniciens -->
             <div class="bg-white shadow-sm p-5 rounded w-full lg:w-1/3">
-                <h3 class="text-xl font-semibold mb-4 text-center">Assigner un technicien</h3>
+                <h3 class="text-xl font-semibold mb-4 text-center">Envoyer la fiche à un technicien</h3>
 
                 <!-- Barre de recherche -->
                 <div class="mb-4">

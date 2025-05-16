@@ -15,6 +15,7 @@
                     <h3 class="font-semibold mb-4">Informations sur le client</h3>
                     <p class="text-sm"><strong>Nom:</strong> {{ $depannage->nom }}</p>
                     <p class="text-sm"><strong>Adresse:</strong> {{ $depannage->adresse }}</p>
+                    <p class="text-sm"><strong>Code postal:</strong> {{ $depannage->code_postal }}</p>
                     <p class="text-sm"><strong>Contact:</strong> {{ $depannage->contact_email }}</p>
                     <p class="text-sm"><strong>Téléphone:</strong> {{ $depannage->telephone }}</p>
                     <p class="text-sm"><strong>Type de client:</strong> {{ $depannage->types->contrat }}, {{ $depannage->types->garantie }}</p>

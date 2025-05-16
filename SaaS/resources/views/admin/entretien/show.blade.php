@@ -8,6 +8,7 @@
                 <div class="border border-black p-4 mb-4">
                     <h3 class="font-semibold mb-4">Information sur le client</h3>
                     <p class="text-xs"><strong>Nom:</strong> {{ $entretien->nom }}</p>
+                    <p class="text-xs"><strong>Code postal:</strong> {{ $entretien->code_postal }}</p>
                     <p class="text-xs"><strong>Adresse:</strong> {{ $entretien->adresse }}</p>
                     <p class="text-xs"><strong>Contact:</strong> {{ $entretien->contact_email }}</p>
                     <p class="text-xs"><strong>Téléphone</strong> {{ $entretien->telephone  }}</p>

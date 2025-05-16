@@ -48,10 +48,10 @@
                     <input type="text" name="nom" id="name-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Nom" value="{{ request('nom') }}">
                 </div>
 
-            <!-- Filtrer par lieu -->
+                <!-- Filtrer par lieu -->
                 <div class="mb-4">
                     <label for="cp-filter" class="block text-sm font-medium text-gray-700">Filtrer par code postal</label>
-                    <input type="text" name="code_postal" id="cp-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Lieu" value="{{ request('code_postal') }}">
+                    <input type="text" name="code_postal" id="cp-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Code postal" value="{{ request('code_postal') }}">
                 </div>
 
                 <!-- Filtrer par lieu -->

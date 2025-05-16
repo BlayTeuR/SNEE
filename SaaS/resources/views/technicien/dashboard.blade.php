@@ -44,6 +44,7 @@
                 </summary>
                 <div class="px-6 pb-4 pt-2 text-sm text-gray-700 bg-gray-50">
                     <p><strong>Adresse:</strong> {{ $fiche->ficheable->adresse }}</p>
+                    <p><strong>Code postal:</strong> {{ $fiche->ficheable->code_postal }}</p>
                     <p><strong>Téléphone:</strong> {{ $fiche->ficheable->telephone }}</p>
                     <p><strong>Email:</strong> {{ $fiche->ficheable->contact_email }}</p>
                     <p><strong>Matériel:</strong> {{ $fiche->ficheable->type_materiel }}</p>
