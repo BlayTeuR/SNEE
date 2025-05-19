@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Entretien;
 use App\Models\Historique;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -56,6 +57,7 @@ class EntretienController extends Controller
 
         // Récupérer les entretiens filtrés et trier par date de création
         $entretiens = $query->where('archived', false)->orderBy('derniere_date', 'desc')->get();
+        $techniciens = User::where('role', 'technicien')->get();
 
         // Retourner la vue avec les entretiens
         return view('admin.entretien', compact('entretiens'));
@@ -140,9 +142,10 @@ class EntretienController extends Controller
     public function show($entretienId)
     {
         $entretien = Entretien::with('historiques')->findOrFail($entretienId);
+        $users = User::all()->where('role', '=', 'technicien');
 
         if ($entretien) {
-            return view('admin.entretien.show', compact('entretien'));
+            return view('admin.entretien.show', compact('entretien', 'users'));
         }
 
         return redirect()->back()->with('error', 'Entretien non trouvé.');

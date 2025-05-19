@@ -10,6 +10,7 @@ use App\Http\Controllers\PieceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\TechnicienDashboardController;
+use App\Http\Controllers\TechnicienEntretienController;
 use App\Http\Controllers\TypeController;
 use App\Http\Controllers\ValidationController;
 use Illuminate\Support\Facades\Auth;
@@ -58,13 +59,13 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technicien.')->group(function () {
     Route::get('/dashboard', [TechnicienDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/entretien', [TechnicienDashboardController::class, 'index'])->name('entretien');
+    Route::get('/entretien', [TechnicienEntretienController::class, 'index'])->name('entretien');
     Route::get('/carte', [TechnicienDashboardController::class, 'index'])->name('carte');
 
     //Fiche
     Route::post('/fiche/{id}/del', [FicheController::class, 'delete'])->name('fiche.del');
-    Route::get('/depannage/{id}', [TechnicienDashboardController::class, 'show'])->name('depannage.show');
 
+    Route::get('/depannage/{id}', [TechnicienDashboardController::class, 'show'])->name('depannage.show');
     Route::get('/{id}/fiches/count', function ($id) {
         $count = \App\Models\Fiche::where('user_id', $id)->count();
         return response()->json(['count' => $count]);
@@ -129,6 +130,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
 
     //Fiche
     Route::post('/depannage/{depannage}/fiches', [FicheController::class, 'storeForDepannage'])->name('show.store');
+    Route::post('entretien/{entretien}/fiches', [FicheController::class, 'storeForEntretien'])->name('entretien.show.store');
 });
 
 Route::get('admin/test-nav', function () {

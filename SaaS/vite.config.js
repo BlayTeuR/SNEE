@@ -3,10 +3,10 @@ import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     server: {
-        host: '0.0.0.0', // écouter toutes les interfaces réseau
-        port: 5173,       // ou tout autre port si nécessaire
+        host: '0.0.0.0',
+        port: 5173,
         hmr: {
-            host: 'https://9f7c-212-234-17-153.ngrok-free.app -> ', // <-- IP de ton PC --- changer lorsque l'adresse IP local du pc change
+            host: 'https://639a-212-234-17-153.ngrok-free.app', // <-- IP de ton PC --- changer lorsque l'adresse IP local du pc change
         }
     },
     plugins: [

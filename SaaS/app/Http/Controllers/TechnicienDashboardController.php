@@ -13,7 +13,9 @@ class TechnicienDashboardController extends Controller
     {
         $technicienId = auth()->user()->id;
 
-        $fiches = Fiche::where('user_id', '=', $technicienId)->get();
+        $fiches = Fiche::where('user_id', $technicienId)
+            ->where('ficheable_type', Depannage::class)
+            ->get();
 
         return view('technicien.dashboard', compact('fiches'));
     }

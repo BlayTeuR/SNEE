@@ -31,4 +31,8 @@ class Entretien extends Model
         return $this->morphMany(Photo::class, 'photoable');
     }
 
+    public function fiches(){
+        return $this->morphMany(Fiche::class, 'ficheable');
+    }
+
 }

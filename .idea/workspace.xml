@@ -5,13 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/TechnicienEntretienController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/entretien.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/entretien/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/EntretienController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/technicien/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/technicien/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/depannage/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/FicheController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/FicheController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/TechnicienDashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/TechnicienDashboardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Entretien.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Entretien.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,11 +176,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views\technicien" />
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\public\icons" />
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views\admin" />
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views\errors" />
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views\components" />
-      <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS\resources\views" />
     </key>
   </component>
   <component name="RunManager">
@@ -231,7 +235,8 @@
       <workItem from="1747231745776" duration="3324000" />
       <workItem from="1747289769174" duration="6927000" />
       <workItem from="1747308853419" duration="7066000" />
-      <workItem from="1747375851118" duration="7459000" />
+      <workItem from="1747375851118" duration="10886000" />
+      <workItem from="1747634614211" duration="4941000" />
     </task>
     <servers />
   </component>
@@ -245,6 +250,11 @@
           <url>file://$PROJECT_DIR$/SaaS/resources/views/admin/entretien.blade.php</url>
           <line>278</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/SaaS/routes/web.php</url>
+          <line>75</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
