@@ -32,6 +32,13 @@
                             {{ \Carbon\Carbon::parse($depannage->date_depannage)->format('d/m/Y') }}
                         @endif
                     </p>
+                    <p class="text-sm"><strong>Nécessite un plan de prévention :</strong>
+                        @if($depannage->prevention == 1)
+                            Oui
+                        @else
+                            Non
+                    @endif
+                    </p>
                     <p class="text-sm font-semibold mt-2">Historique :</p>
                     <ul class="list-disc list-inside">
                         @forelse($depannage->historiques as $histo)

@@ -24,10 +24,18 @@
                 <div class="border border-black p-4 mb-4">
                     <h3 class="font-semibold mb-4">Description du problème</h3>
                     <p class="text-xs"><strong>Date d'intervention</strong>
+
                     @if($depannage->date_depannage == null)
                         : pas encore planifiée
                         @else
                             {{ \Carbon\Carbon::parse($depannage->date_depannage)->format('d/m/Y') }}
+                        @endif
+                    </p>
+                    <p class="text-xs"><strong>Nécessite un plan de prévention :</strong>
+                        @if($depannage->prevention == 1)
+                            Oui
+                        @else
+                            Non
                         @endif
                     </p>
                     <p class="text-xs"><strong>Historique:</strong></p>

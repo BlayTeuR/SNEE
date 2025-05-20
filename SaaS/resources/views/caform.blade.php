@@ -77,6 +77,20 @@
         </div>
 
         <div class="mb-4">
+            <label class="block text-gray-700 mb-2">Nécessite un plan de prévention ? <span class="text-red-500">*</span></label>
+            <div class="flex space-x-4">
+                <label class="flex items-center space-x-2">
+                    <input type="radio" name="prevention" value="1" class="text-green-500" required>
+                    <span>Oui</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                    <input type="radio" name="prevention" value="0" class="text-green-500">
+                    <span>Non</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="mb-4">
             <label for="elec" class="block text-gray-700">Message d'erreur sur la carte électronique</label>
             <input type="text" id="elec" name="elec" class="mt-1 w-full border-gray-300 rounded-md shadow-sm">
         </div>

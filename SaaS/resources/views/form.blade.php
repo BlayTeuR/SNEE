@@ -40,7 +40,7 @@
 
         <div class="mb-4 relative">
             <label for="add" class="block text-gray-700">Adresse d'intervention <span class="text-red-500">*</span></label>
-            <input type="number" id="add" name="add" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" autocomplete="off" required>
+            <input type="text" id="add" name="add" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" autocomplete="off" required>
             <ul id="suggestions" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto hidden"></ul>
         </div>
 
@@ -74,6 +74,20 @@
         <div class="mb-4">
             <label for="panne" class="block text-gray-700">Panne rencontrée <span class="text-red-500">*</span></label>
             <textarea type="text" id="panne" name="panne" rows="4" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" required></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-2">Nécessite un plan de prévention ? <span class="text-red-500">*</span></label>
+            <div class="flex space-x-4">
+                <label class="flex items-center space-x-2">
+                    <input type="radio" name="prevention" value="1" class="text-green-500" required>
+                    <span>Oui</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                    <input type="radio" name="prevention" value="0" class="text-green-500">
+                    <span>Non</span>
+                </label>
+            </div>
         </div>
 
         <div class="mb-4">

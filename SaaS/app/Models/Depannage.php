@@ -24,6 +24,7 @@ class Depannage extends Model
         'statut',
         'date_depannage',
         'provenance',
+        'prevention',
         'archived',
     ];
 

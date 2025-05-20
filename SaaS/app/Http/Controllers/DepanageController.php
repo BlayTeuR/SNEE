@@ -188,6 +188,7 @@ class DepanageController extends Controller
         try {
 
             $formSource = $request->input('form_source');
+
             // Validation des données
             $request->validate([
                 'name' => 'required|string|max:255',
@@ -199,6 +200,7 @@ class DepanageController extends Controller
                 'panne' => 'required|string',
                 'elec' => 'nullable|string',
                 'infos' => 'nullable|string',
+                'prevention' => 'required|boolean',
                 'image' => 'nullable|image|max:2048',
                 'date_intervention' => 'date',
             ]);
@@ -224,6 +226,7 @@ class DepanageController extends Controller
                 'infos_supplementaires' => $request->input('infos'),
                 'provenance' => $provenance,
                 'date_depannage' => $request->input('date_intervention'),
+                'prevention' => $request->boolean('prevention'),
             ]);
 
             // Création du Type associé au Depannage
