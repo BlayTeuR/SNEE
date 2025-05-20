@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('affection', function (Blueprint $table) {
+        Schema::create('affectation', function (Blueprint $table) {
             $table->id();
             $table->morphs('affecteable');
             $table->unsignedBigInteger('user_id');

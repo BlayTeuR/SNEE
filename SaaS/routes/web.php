@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AffectationController;
 use App\Http\Controllers\ApprovisionnementController;
 use App\Http\Controllers\DepanageController;
 use App\Http\Controllers\EntretienController;
@@ -146,6 +147,9 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     //Fiche
     Route::post('/depannage/{depannage}/fiches', [FicheController::class, 'storeForDepannage'])->name('show.store');
     Route::post('entretien/{entretien}/fiches', [FicheController::class, 'storeForEntretien'])->name('entretien.show.store');
+
+    //Affectation
+    Route::post('/depannage/{depannage}/affectation', [AffectationController::class, 'storeForDepannage'])->name('show.affectation');
 });
 
 Route::get('admin/test-nav', function () {

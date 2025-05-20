@@ -64,4 +64,9 @@ class Depannage extends Model
     public function fiches(){
         return $this->morphMany(Fiche::class, 'ficheable');
     }
+
+    public function affectation()
+    {
+        return $this->morphOne(Affectation::class, 'affecteable');
+    }
 }

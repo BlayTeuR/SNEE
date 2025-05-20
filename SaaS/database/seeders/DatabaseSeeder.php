@@ -43,5 +43,61 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('motdepassetechnicien'),
             'role' => Role::TECHNICIEN,
         ]);
+
+        User::factory()->create([
+            'name' => "Benjamin",
+            'email' => 'Benjamin@example.com',
+            'password' => bcrypt('motdepassetechnicien'),
+            'role' => Role::TECHNICIEN,
+        ]);
+
+        User::factory()->create([
+            'name' => "pierre",
+            'email' => 'pierre@example.com',
+            'password' => bcrypt('motdepassetechnicien'),
+            'role' => Role::TECHNICIEN,
+        ]);
+
+        User::factory()->create([
+            'name' => "claude",
+            'email' => 'claude@example.com',
+            'password' => bcrypt('motdepassetechnicien'),
+            'role' => Role::TECHNICIEN,
+        ]);
+
+        User::factory()->create([
+            'name' => "aude",
+            'email' => 'aude@example.com',
+            'password' => bcrypt('motdepassetechnicien'),
+            'role' => Role::TECHNICIEN,
+        ]);
+
+        User::factory()->create([
+            'name' => "jules",
+            'email' => 'jules@example.com',
+            'password' => bcrypt('motdepassetechnicien'),
+            'role' => Role::TECHNICIEN,
+        ]);
+
+        User::factory()->create([
+            'name' => "bertrand",
+            'email' => 'bertrand@example.com',
+            'password' => bcrypt('motdepassetechnicien'),
+            'role' => Role::TECHNICIEN,
+        ]);
+
+        User::factory()->create([
+            'name' => "antoine",
+            'email' => 'antoine@example.com',
+            'password' => bcrypt('motdepassetechnicien'),
+            'role' => Role::TECHNICIEN,
+        ]);
+
+        User::factory()->create([
+            'name' => "bastien",
+            'email' => 'bastien@example.com',
+            'password' => bcrypt('motdepassetechnicien'),
+            'role' => Role::TECHNICIEN,
+        ]);
     }
 }

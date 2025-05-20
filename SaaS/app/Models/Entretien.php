@@ -35,4 +35,8 @@ class Entretien extends Model
         return $this->morphMany(Fiche::class, 'ficheable');
     }
 
+    public function affectations(){
+        return $this->morphOne(Affectation::class, 'affectable');
+    }
+
 }
