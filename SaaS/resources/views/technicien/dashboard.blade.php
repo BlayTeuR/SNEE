@@ -89,8 +89,14 @@
 
         let modalOpen = false;
         let ficheId = null;
-        let previousFicheCount = {{ $fiches->count() }};
+        let previousFicheCount = null;
         const currentUserId = {{ auth()->id() }};
+
+        fetch(`/technicien/${currentUserId}/fiches/count/depannage`)
+            .then(response => response.json())
+            .then(data => {
+                previousFicheCount = data.count;
+            });
 
         function toggleModal(id = null) {
             const modal = document.getElementById('confirm-delete-modal');
@@ -132,11 +138,13 @@
         }
 
         setInterval(() => {
-            if (modalOpen) return;
+            if (modalOpen || previousFicheCount === null) return;
 
-            fetch(`/technicien/${currentUserId}/fiches/count`)
+            fetch(`/technicien/${currentUserId}/fiches/count/depannage`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log("preiviousFicheCount", previousFicheCount);
+                    console.log("currentFicheCount", data.count);
                     if (data.count > previousFicheCount) {
                         location.reload();
                     }
@@ -144,7 +152,7 @@
                 .catch(error => {
                     console.error("Erreur lors de la vérification des fiches :", error);
                 });
-        }, 3000);
+        }, 5000);
 
     </script>
 @endsection

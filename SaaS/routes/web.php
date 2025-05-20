@@ -13,6 +13,7 @@ use App\Http\Controllers\TechnicienDashboardController;
 use App\Http\Controllers\TechnicienEntretienController;
 use App\Http\Controllers\TypeController;
 use App\Http\Controllers\ValidationController;
+use App\Models\Fiche;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
@@ -66,10 +67,24 @@ Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technici
     Route::post('/fiche/{id}/del', [FicheController::class, 'delete'])->name('fiche.del');
 
     Route::get('/depannage/{id}', [TechnicienDashboardController::class, 'show'])->name('depannage.show');
-    Route::get('/{id}/fiches/count', function ($id) {
-        $count = \App\Models\Fiche::where('user_id', $id)->count();
+    Route::get('/{id}/fiches/count/{type}', function ($id, $type) {
+        $modelClass = match ($type) {
+            'entretien' => \App\Models\Entretien::class,
+            'depannage' => \App\Models\Depannage::class,
+            default => null,
+        };
+
+        if (!$modelClass) {
+            return response()->json(['error' => 'Type invalide'], 400);
+        }
+
+        $count = Fiche::where('user_id', $id)
+            ->where('ficheable_type', $modelClass)
+            ->count();
+
         return response()->json(['count' => $count]);
     });
+
 });
 
 // Admin

@@ -95,6 +95,35 @@
     </div>
 
     <script>
+        document.getElementById('assignForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Empêche la soumission par défaut
+
+            const form = e.target;
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Erreur réseau');
+                    return response.json();
+                })
+                .then(data => {
+                    saveNotificationBeforeReload(data.message || "Fiche envoyée avec succès aux techniciens.", 'success');
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Erreur :', error);
+                    saveNotificationBeforeReload("Erreur lors de l'envoi de la fiche.", 'error');
+                    location.reload();
+                });
+
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const { jsPDF } = window.jspdf;
 
