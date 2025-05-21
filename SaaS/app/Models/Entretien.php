@@ -36,7 +36,5 @@ class Entretien extends Model
     }
 
     public function affectations(){
-        return $this->morphOne(Affectation::class, 'affectable');
-    }
-
+        return $this->morphMany(Affectation::class, 'affecteable');    }
 }

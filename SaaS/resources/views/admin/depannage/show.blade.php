@@ -112,13 +112,6 @@
                     </button>
                 </form>
 
-                <!-- Deuxième formulaire : Assigner un technicien à ce dépannage -->
-                <div class="mt-10 border-t border-gray-300 pt-6">
-                    <button onclick="toggleModalAff()" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded">
-                        Affecter un ou plusieurs technicien
-                    </button>
-                </div>
-
             </div>
 
         </div>
@@ -198,7 +191,7 @@
 
         async function delAffectation() {
             try {
-                const res = await fetch(`/admin/depannage/${currentDepannageId}/affectation/${currentTechnicienId}/delete`, {
+                const res = await fetch(`/admin/depannage/${currentDepannageId}/affectation/${currentTechnicienId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

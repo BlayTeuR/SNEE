@@ -150,7 +150,9 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
 
     //Affectation
     Route::post('/depannage/{depannage}/affectation', [AffectationController::class, 'storeForDepannage'])->name('show.affectation');
-    Route::delete('/depannage/{depannage}/affectation/{technicien}/delete', [AffectationController::class, 'destroy'])->name('show.affectation.del');
+    Route::post('/entretien/{entretien}/affectation', [AffectationController::class, 'storeForEntretien'])->name('show.affectation.entretien');
+    Route::delete('/depannage/{depannage}/affectation/{technicien}/delete', [AffectationController::class, 'destroyForDepannage'])->name('show.affectation.del');
+    Route::delete('/entretien/{entretien}/affectation/{technicien}/delete', [AffectationController::class, 'destroyForEntretien'])->name('show.affectation.del.entretien');
 });
 
 Route::get('admin/test-nav', function () {

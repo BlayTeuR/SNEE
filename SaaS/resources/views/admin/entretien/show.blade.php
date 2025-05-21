@@ -10,6 +10,26 @@
                 <br>
                 <img src="{{ asset('images/logo.png') }}" alt="Logo de l'application" class="absolute top-5 right-5 max-h-20 max-w-20">
                 <h2 class="text-2xl font-bold mb-4 text-center">Détails de l'entretien de {{$entretien->nom}} : #ID{{$entretien->id}}</h2>
+
+                <div class="flex items-center mb-2 space-x-2">
+                    <span class="text-sm font-semibold">Technicien(s) assigné(s):</span>
+                    <button onclick="toggleModalAff()" class="text-sm text-blue-500 hover:text-blue-600 hover:underline">Edit</button>
+                </div>
+
+                @if($entretien->affectations->isNotEmpty())
+                    <ul class="space-y-1">
+                        @foreach($entretien->affectations as $affectation)
+                            <li class="text-sm flex items-center">
+                                <span>{{ $affectation->technicien->name }}</span>
+                                <button onclick="toggleDeleteAff({{ $affectation->technicien->id }})" class="text-red-500 hover:text-red-600 hover:underline ml-2">Supprimer</button>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p class="text-sm text-gray-600">Aucun technicien assigné</p>
+                @endif
+                <br>
+
                 <div class="border border-black p-4 mb-4">
                     <h3 class="font-semibold mb-4">Information sur le client</h3>
                     <p class="text-xs"><strong>Nom:</strong> {{ $entretien->nom }}</p>
@@ -94,7 +114,117 @@
         </div>
     </div>
 
+    <div id="create-aff-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                Associer des techniciens à ce dépannage ?
+            </h2>
+            <p class="text-sm text-gray-600 mb-6">
+                Cette action est facultative et peut être réalisée ultérieurement.
+            </p>
+
+            <div>
+                <label for="tech-list" class="block text-sm font-medium text-gray-700 mb-2">
+                    Choisir un ou plusieurs techniciens :
+                </label>
+                <ul id="tech-list" class="space-y-2 max-h-48 overflow-y-auto pr-2 border rounded-md p-3 bg-gray-50">
+                    @foreach($users as $technicien)
+                        <li class="flex items-center">
+                            <input type="checkbox" name="techniciens[]" value="{{ $technicien->id }}" id="tech{{ $technicien->id }}" class="mr-2 text-blue-600">
+                            <label for="tech{{ $technicien->id }}" class="text-sm text-gray-700">
+                                {{ $technicien->name }}
+                            </label>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <!-- Boutons -->
+            <div class="mt-6 flex justify-end gap-4">
+                <button onclick="toggleModalAff()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    Annuler
+                </button>
+                <button onclick="updateTechnicien()" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                    Valider
+                </button>
+            </div>
+        </div>
+    </div>
+
+        <div id="confirm-delete-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                <h2 class="text-xl font-semibold mb-4">Confirmer la suppression</h2>
+                <p>Êtes-vous sûr de vouloir désaffecter ce technicien du dépannage ?</p>
+                <div class="mt-4 flex justify-end space-x-4">
+                    <button onclick="toggleDeleteAff()" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                    <button onclick="delAffectation()" class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">Supprimer</button>
+                </div>
+            </div>
+        </div>
+
+
     <script>
+
+        let currentEntretienId = {{ $entretien->id }};
+        let currentTechnicienId = null;
+
+        function toggleModalAff(){
+            document.querySelector('#create-aff-modal').classList.toggle('hidden');
+        }
+
+        function toggleDeleteAff(id = null){
+            document.querySelector('#confirm-delete-modal').classList.toggle('hidden');
+            currentTechnicienId = id;
+        }
+
+        async function delAffectation() {
+            try {
+                const res = await fetch(`/admin/entretien/${currentEntretienId}/affectation/${currentTechnicienId}/delete`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                const data = await res.json();
+                console.log("technicien supprimé avec succès", data);
+                saveNotificationBeforeReload("Technicien désassocié avec succès", 'success');
+                location.reload();
+
+            } catch (err) {
+                console.error("erreur suppression du technicien", err);
+                saveNotificationBeforeReload("Echec lors de la désassociation du technicien ", 'error');
+                location.reload();
+            }
+        }
+
+        async function updateTechnicien() {
+
+            const selectedTechniciens = Array.from(document.querySelectorAll('input[name="techniciens[]"]:checked')).map(checkbox => checkbox.value);
+
+            try {
+                const res = await fetch(`/admin/entretien/${currentEntretienId}/affectation`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({ techniciens: selectedTechniciens })
+                });
+
+                const data = await res.json();
+                console.log("technicien enregistré avec succès", data);
+                saveNotificationBeforeReload("Technicien(s) associé(s) avec succès", 'success');
+                location.reload();
+
+            } catch (err) {
+                console.error("erreur enregistrement du technicien", err);
+                saveNotificationBeforeReload("Erreur lors de l'enregistrement du technicien", 'error');
+                location.reload();
+            }
+        }
+
         document.getElementById('assignForm').addEventListener('submit', function (e) {
             e.preventDefault(); // Empêche la soumission par défaut
 
