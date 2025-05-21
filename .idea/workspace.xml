@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/AffectationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/AffectationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Entretien.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Entretien.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/public/images/1746426151_brother.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/public/images/1747212526_brother.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/public/images/1747212526_e5b98110fcd62d6ebe0e636262170175.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/public/images/1747835459_1697467141573.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/public/images/1747835459_1mBiere.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/public/images/1747835459_HD-wallpaper-cowboy-bebop-anime-spike-spiegel.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/public/images/1747835459_brother.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/public/images/1747835459_rio.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/public/images/1747835459_téléchargement.webp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +236,7 @@
       <workItem from="1747375851118" duration="10886000" />
       <workItem from="1747634614211" duration="18055000" />
       <workItem from="1747807405208" duration="9955000" />
-      <workItem from="1747827270683" duration="7104000" />
+      <workItem from="1747827270683" duration="7575000" />
     </task>
     <servers />
   </component>

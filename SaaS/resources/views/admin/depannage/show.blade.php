@@ -191,7 +191,7 @@
 
         async function delAffectation() {
             try {
-                const res = await fetch(`/admin/depannage/${currentDepannageId}/affectation/${currentTechnicienId}`, {
+                const res = await fetch(`/admin/depannage/${currentDepannageId}/affectation/${currentTechnicienId}/delete`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
