@@ -11,6 +11,17 @@
                 <br>
                 <img src="{{ asset('images/logo.png') }}" alt="Logo de l'application" class="absolute top-5 right-5 max-h-20 max-w-20">
                 <h2 class="text-2xl font-bold mb-4 text-center">Détails du dépannage de {{$depannage->nom}} : #ID{{$depannage->id}}</h2>
+                <p class="text-sm"><strong>Technicien(s) assigné(s):</strong></p>
+                    @if($depannage->affectations->isNotEmpty())
+                        <ul>
+                        @foreach($depannage->affectations as $affectation)
+                            <li class="text-sm"> - {{ $affectation->technicien->name }}</li>
+                        @endforeach
+                        </ul>
+                    @else
+                        <p class="text-sm">Aucun technicien assigné</p>
+                    @endif
+                <br>
                 <div class="border border-black p-4 mb-4">
                     <h3 class="font-semibold mb-4">Information sur le client</h3>
                     <p class="text-xs"><strong>Nom:</strong> {{ $depannage->nom }}</p>

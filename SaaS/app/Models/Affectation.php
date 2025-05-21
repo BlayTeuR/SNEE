@@ -10,7 +10,7 @@ class Affectation extends Model
 
     use HasFactory;
 
-    protected $fillable = ['affecteable_id', 'affecteable_type', 'user_id'];
+    protected $fillable = ['user_id', 'affecteable_type', 'affecteable_id'];
 
     public function affecteable()
     {
@@ -20,5 +20,10 @@ class Affectation extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function technicien()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

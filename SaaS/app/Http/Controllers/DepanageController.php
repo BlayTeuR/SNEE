@@ -81,6 +81,14 @@ class DepanageController extends Controller
             }
         }
 
+        //filtrer par technicien
+        if ($request->filled('technicien')) {
+            $technicienId = $request->technicien;
+            $query->whereHas('affectations', function ($q) use ($technicienId) {
+                $q->where('user_id', $technicienId);
+            });
+        }
+
         // Appliquer le tri avant de récupérer les résultats
         $depannages = $query->where('archived', '=', false)->orderBy('created_at', 'desc')->get();
         $techniciens = User::where('role', 'technicien')->get();

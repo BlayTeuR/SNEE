@@ -20,7 +20,8 @@
                     </select>
                 </div>
 
-                <div class="mb-4">
+            <!-- Filtrer par technicien -->
+            <div class="mb-4">
                     <label for="technicien-filter" class="block text-sm font-medium text-gray-700">Filtrer par technicien</label>
                     <select name="technicien" id="technicien-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
                         <option value="">Tous</option>
@@ -255,7 +256,7 @@
                 <label for="date-create" class="block text-sm font-medium text-gray-700">Choisir une date</label>
                 <input type="date" name="date-create" id="date-create" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" value="{{ request('date-crate') }}">
                 <button onclick="toggleModalDate(false, null)" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
-                <button onclick="updateDate()" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
+                <button onclick="validateDateThenOpenTech(event, isFromAffectation)" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
             </div>
         </div>
     </div>
@@ -271,6 +272,44 @@
             </div>
         </div>
     </div>
+
+    <div id="create-aff-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                Associer des techniciens à ce dépannage ?
+            </h2>
+            <p class="text-sm text-gray-600 mb-6">
+                Cette action est facultative et peut être réalisée ultérieurement.
+            </p>
+
+            <div>
+                <label for="tech-list" class="block text-sm font-medium text-gray-700 mb-2">
+                    Choisir un ou plusieurs techniciens :
+                </label>
+                <ul id="tech-list" class="space-y-2 max-h-48 overflow-y-auto pr-2 border rounded-md p-3 bg-gray-50">
+                    @foreach($techniciens as $technicien)
+                        <li class="flex items-center">
+                            <input type="checkbox" name="techniciens[]" value="{{ $technicien->id }}" id="tech{{ $technicien->id }}" class="mr-2 text-blue-600">
+                            <label for="tech{{ $technicien->id }}" class="text-sm text-gray-700">
+                                {{ $technicien->name }}
+                            </label>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <!-- Boutons -->
+            <div class="mt-6 flex justify-end gap-4">
+                <button onclick="cancelTechChoice()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    Annuler
+                </button>
+                <button onclick="updateTechnicien()" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                    Valider
+                </button>
+            </div>
+        </div>
+    </div>
+
 </x-app-layout>
 
 
@@ -280,6 +319,8 @@
     let pendingStatut = null;
     let lastOpenedDropdown = null;
     let depannageIdToDelete = null;
+    let isFromAffectation = false;
+    let idForAffectation = null;
 
     function toggleModalArchiveBis(id) {
         const modal = document.getElementById('confirmation-modal-bis');
@@ -358,7 +399,35 @@
         currentDeppangeId = id;
     }
 
-    // Fonction pour afficher ou masquer le menu déroulant
+    async function validateDateThenOpenTech(event, openTechModal = false) {
+        event.preventDefault();
+        await updateDate();
+        if (openTechModal) {
+            toggleModalAff(true, idForAffectation);
+        } else {
+            window.location.reload();
+        }
+        isFromAffectation = false;
+    }
+
+    function toggleModalAff(show = true, id) {
+        console.log("id = " + id)
+        console.log("idForAffectation = " + idForAffectation)
+        console.log("appel de toggleModalDate avec show =", show);
+        const modal = document.getElementById('create-aff-modal');
+        if (show) {
+            modal.classList.remove('hidden');
+        } else {
+            modal.classList.add('hidden');
+        }
+        idForAffectation = id;
+    }
+
+    function cancelTechChoice() {
+        toggleModalAff(false, null);
+        location.reload();
+    }
+
     function toggleMenu(menuId) {
         const menu = document.getElementById(menuId);
         // Si le menu est visible, on le cache, sinon on l'affiche
@@ -391,6 +460,7 @@
         console.log(depannageId)
         if(statusText === 'Affecter'){
             currentDeppangeId = depannageId;
+            isFromAffectation = true;
             pendingStatut = {
                 dropdownId,
                 statusText,
@@ -437,6 +507,35 @@
             });
     }
 
+    async function updateTechnicien() {
+
+        console.log("technicien à affecter", idForAffectation);
+
+        const selectedTechniciens = Array.from(document.querySelectorAll('input[name="techniciens[]"]:checked')).map(checkbox => checkbox.value);
+
+        try {
+            const res = await fetch(`/admin/depannage/${idForAffectation}/affectation`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ techniciens: selectedTechniciens })
+            });
+
+            const data = await res.json();
+            console.log("technicien enregistré avec succès", data);
+            saveNotificationBeforeReload("Technicien(s) associé(s) avec succès", 'success');
+            idForAffectation = null;
+            location.reload();
+
+        } catch (err) {
+            console.error("erreur enregistrement du technicien", err);
+            saveNotificationBeforeReload("Erreur lors de l'enregistrement du technicien", 'error');
+            location.reload();
+        }
+    }
+
     async function updateDate() {
         const date = document.getElementById('date-create').value;
 
@@ -454,6 +553,8 @@
             console.log("date enregistrée avec succès", data);
 
             if (pendingStatut) {
+                idForAffectation = currentDeppangeId;
+
                 console.log("pendingStatus", pendingStatut);
                 const { dropdownId, statusText, statusColor, buttonId } = pendingStatut;
                 console.log("id = " + currentDeppangeId);
@@ -463,7 +564,13 @@
 
                 console.log("toujours pas d'erreur", pendingStatut);
                 pendingStatut = null;
+
+
+                console.log("currentDeppangeId before toggleModalDate = ", currentDeppangeId);
                 toggleModalDate(false, null);
+                console.log("currentDeppangeId after toggleModalDate = ", currentDeppangeId);
+
+                return true;
             }
 
             location.reload();
@@ -475,7 +582,6 @@
             location.reload();
         }
     }
-
 
     function delDepannage() {
         if (depannageIdToDelete !== null) {

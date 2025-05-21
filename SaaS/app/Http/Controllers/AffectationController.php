@@ -14,37 +14,26 @@ class AffectationController extends Controller
     {
         try {
             $request->validate([
-                'technicien_id' => 'required|exists:users,id',
+                'techniciens' => 'required|array|min:1',
+                'techniciens.*' => 'exists:users,id',
             ]);
 
             $depannage = Depannage::findOrFail($depannageId);
-            $technicienId = $request->technicien_id;
-            $confirmReplace = $request->input('confirm_replace');
 
-            $existing = $depannage->affectation;
+            foreach ($request->techniciens as $technicienId) {
+                $affectation = new Affectation([
+                    'user_id' => $technicienId,
+                    'affecteable_type' => Depannage::class,
+                    'affecteable_id' => $depannage->id,
+                ]);
 
-            if ($existing) {
-                if (!$confirmReplace) {
-                    return response()->json([
-                        'message' => 'Technicien déjà affecté',
-                        'technicien_actuel' => optional($existing->user)->name ?? 'Inconnu',
-                        'needs_confirmation' => true
-                    ], 200);
-                } else {
-                    $existing->delete();
-                }
+                $depannage->affectations()->save($affectation);
             }
 
-            $affectation = new Affectation([
-                'user_id' => $technicienId,
-            ]);
-
-            $depannage->affectation()->save($affectation);
-
-            return response()->json(['message' => 'Technicien affecté avec succès'], 200);
+            return response()->json(['message' => 'Technicien(s) affecté(s) avec succès'], 200);
 
         } catch (\Throwable $e) {
-            \Log::error('Erreur lors de l\'affectation du technicien : ' . $e->getMessage(), [
+            \Log::error('Erreur lors de l\'affectation des techniciens : ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
             return response()->json(['message' => 'Une erreur est survenue'], 500);
