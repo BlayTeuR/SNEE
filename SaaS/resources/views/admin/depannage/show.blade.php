@@ -11,16 +11,23 @@
                 <br>
                 <img src="{{ asset('images/logo.png') }}" alt="Logo de l'application" class="absolute top-5 right-5 max-h-20 max-w-20">
                 <h2 class="text-2xl font-bold mb-4 text-center">Détails du dépannage de {{$depannage->nom}} : #ID{{$depannage->id}}</h2>
-                <p class="text-sm"><strong>Technicien(s) assigné(s):</strong></p>
-                    @if($depannage->affectations->isNotEmpty())
-                        <ul>
+                <div class="flex items-center mb-2 space-x-2">
+                    <span class="text-sm font-semibold">Technicien(s) assigné(s):</span>
+                    <button onclick="toggleModalAff()" class="text-sm text-blue-500 hover:text-blue-600 hover:underline">Edit</button>
+                </div>
+
+                @if($depannage->affectations->isNotEmpty())
+                    <ul class="space-y-1">
                         @foreach($depannage->affectations as $affectation)
-                            <li class="text-sm"> - {{ $affectation->technicien->name }}</li>
+                            <li class="text-sm flex items-center">
+                                <span>{{ $affectation->technicien->name }}</span>
+                                <button onclick="toggleDeleteAff({{ $affectation->technicien->id }})" class="text-red-500 hover:text-red-600 hover:underline ml-2">Supprimer</button>
+                            </li>
                         @endforeach
-                        </ul>
-                    @else
-                        <p class="text-sm">Aucun technicien assigné</p>
-                    @endif
+                    </ul>
+                @else
+                    <p class="text-sm text-gray-600">Aucun technicien assigné</p>
+                @endif
                 <br>
                 <div class="border border-black p-4 mb-4">
                     <h3 class="font-semibold mb-4">Information sur le client</h3>
@@ -90,7 +97,8 @@
                 <form id="assignForm" method="POST" action="{{ route('admin.show.store', ['depannage' => $depannage->id]) }}">
                     @csrf
 
-                    <ul class="space-y-3 overflow-y-auto pr-2" style="max-height: 160px;" id="tech-list">                        @foreach($users as $user)
+                    <ul class="space-y-3 overflow-y-auto pr-2" style="max-height: 160px;" id="tech-list">
+                        @foreach($users as $user)
                             <li class="flex items-center">
                                 <!-- Case à cocher pour chaque technicien -->
                                 <input type="checkbox" name="techniciens[]" value="{{ $user->id }}" id="tech{{ $user->id }}" class="mr-2">
@@ -106,28 +114,9 @@
 
                 <!-- Deuxième formulaire : Assigner un technicien à ce dépannage -->
                 <div class="mt-10 border-t border-gray-300 pt-6">
-                    <h3 class="text-xl font-semibold mb-4 text-center">Assigner un technicien au dépannage</h3>
-
-                    <form id="affectform" method="POST" action="{{ route('admin.show.affectation', ['depannage' => $depannage->id]) }}">
-
-                        <input type="hidden" name="confirm_replace" id="confirm_replace" value="0">
-
-                        <!-- CSRF uniquement si tu prépares une action plus tard -->
-                        @csrf
-                        <div class="mb-4">
-                            <label for="technicien_id" class="block mb-2 text-sm font-medium text-gray-700">Choisir un technicien</label>
-                            <select name="technicien_id" id="technicien_id" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="">-- Sélectionner un technicien --</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded">
-                            Assigner au dépannage
-                        </button>
-                    </form>
+                    <button onclick="toggleModalAff()" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded">
+                        Affecter un ou plusieurs technicien
+                    </button>
                 </div>
 
             </div>
@@ -144,9 +133,118 @@
         </div>
     </div>
 
+    <div id="create-aff-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                Associer des techniciens à ce dépannage ?
+            </h2>
+            <p class="text-sm text-gray-600 mb-6">
+                Cette action est facultative et peut être réalisée ultérieurement.
+            </p>
+
+            <div>
+                <label for="tech-list" class="block text-sm font-medium text-gray-700 mb-2">
+                    Choisir un ou plusieurs techniciens :
+                </label>
+                <ul id="tech-list" class="space-y-2 max-h-48 overflow-y-auto pr-2 border rounded-md p-3 bg-gray-50">
+                    @foreach($users as $technicien)
+                        <li class="flex items-center">
+                            <input type="checkbox" name="techniciens[]" value="{{ $technicien->id }}" id="tech{{ $technicien->id }}" class="mr-2 text-blue-600">
+                            <label for="tech{{ $technicien->id }}" class="text-sm text-gray-700">
+                                {{ $technicien->name }}
+                            </label>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <!-- Boutons -->
+            <div class="mt-6 flex justify-end gap-4">
+                <button onclick="toggleModalAff()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    Annuler
+                </button>
+                <button onclick="updateTechnicien()" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                    Valider
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-delete-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-semibold mb-4">Confirmer la suppression</h2>
+            <p>Êtes-vous sûr de vouloir désaffecter ce technicien du dépannage ?</p>
+            <div class="mt-4 flex justify-end space-x-4">
+                <button onclick="toggleDeleteAff()" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="delAffectation()" class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
     <script>
 
         let currentDepannageId = {{ $depannage->id }};
+        let currentTechnicienId = null;
+
+        function toggleModalAff(){
+            document.querySelector('#create-aff-modal').classList.toggle('hidden');
+        }
+
+        function toggleDeleteAff(id = null){
+            document.querySelector('#confirm-delete-modal').classList.toggle('hidden');
+            currentTechnicienId = id;
+
+        }
+
+        async function delAffectation() {
+            try {
+                const res = await fetch(`/admin/depannage/${currentDepannageId}/affectation/${currentTechnicienId}/delete`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                const data = await res.json();
+                console.log("technicien supprimé avec succès", data);
+                saveNotificationBeforeReload("Technicien désassocié avec succès", 'success');
+                location.reload();
+
+            } catch (err) {
+                console.error("erreur suppression du technicien", err);
+                saveNotificationBeforeReload("Echec lors de la désassociation du technicien ", 'success');
+                location.reload();
+            }
+        }
+
+        async function updateTechnicien() {
+
+            const selectedTechniciens = Array.from(document.querySelectorAll('input[name="techniciens[]"]:checked')).map(checkbox => checkbox.value);
+
+            try {
+                const res = await fetch(`/admin/depannage/${currentDepannageId}/affectation`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({ techniciens: selectedTechniciens })
+                });
+
+                const data = await res.json();
+                console.log("technicien enregistré avec succès", data);
+                saveNotificationBeforeReload("Technicien(s) associé(s) avec succès", 'success');
+                location.reload();
+
+            } catch (err) {
+                console.error("erreur enregistrement du technicien", err);
+                saveNotificationBeforeReload("Erreur lors de l'enregistrement du technicien", 'error');
+                location.reload();
+            }
+        }
+
+
 
         document.getElementById('assignForm').addEventListener('submit', function (e) {
             e.preventDefault(); // Empêche la soumission par défaut

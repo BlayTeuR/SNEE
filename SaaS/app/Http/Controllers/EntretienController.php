@@ -60,7 +60,7 @@ class EntretienController extends Controller
         $techniciens = User::where('role', 'technicien')->get();
 
         // Retourner la vue avec les entretiens
-        return view('admin.entretien', compact('entretiens'));
+        return view('admin.entretien', compact('entretiens', 'techniciens'));
     }
 
     public function destroy($id)

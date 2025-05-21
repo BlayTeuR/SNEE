@@ -40,4 +40,25 @@ class AffectationController extends Controller
         }
     }
 
+    public function destroy($depannage, $technicien)
+    {
+        \Log::info("Params reçus", ['depannage' => $depannage, 'technicien' => $technicien]);
+
+        $affectation = Affectation::where('user_id', $technicien)
+            ->where('affecteable_type', Depannage::class)
+            ->where('affecteable_id', $depannage)
+            ->first();
+
+        if (!$affectation) {
+            \Log::warning("Affectation introuvable");
+            return response()->json(['message' => 'Affectation introuvable'], 404);
+        }
+
+        $affectation->delete();
+
+        \Log::info("Affectation supprimée");
+
+        return response()->json(['message' => 'Affectation supprimée avec succès'], 200);
+    }
+
 }

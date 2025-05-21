@@ -11,6 +11,17 @@
             <form method="GET" action="{{ route('admin.entretien') }}" class="flex flex-col">
                 <h2 class="text-lg font-bold mb-4">Filtres</h2>
 
+                <!-- Filtrer par entretien -->
+                <div class="mb-4">
+                    <label for="technicien-filter" class="block text-sm font-medium text-gray-700">Filtrer par technicien</label>
+                    <select name="technicien" id="technicien-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg">
+                        <option value="">Tous</option>
+                        @foreach($techniciens as $technicien)
+                            <option value="{{ $technicien->id }}" {{ request('technicien') == $technicien->id ? 'selected' : '' }}>{{ $technicien->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <!-- Filtrer par nom -->
                 <div class="mb-4">
                     <label for="name-filter" class="block text-sm font-medium text-gray-700">Filtrer par nom</label>
