@@ -45,7 +45,7 @@
 
         <div class="mb-4 relative">
             <label for="add-code-postal" class="block text-gray-700">Code postal <span class="text-red-500">*</span></label>
-            <input type="number" id="add-code-postal" name="add-code-postal" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" autocomplete="off" required>
+            <input type="text" id="add-code-postal" name="add-code-postal" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" autocomplete="off" required>
         </div>
 
         <div class="mb-4">

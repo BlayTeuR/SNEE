@@ -24,6 +24,8 @@ return new class extends Migration {
             $table->boolean('prevention')->default(false);
             $table->boolean('archived')->default(false);
             $table->unsignedBigInteger('entretien_id')->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->timestamps();
         });
     }

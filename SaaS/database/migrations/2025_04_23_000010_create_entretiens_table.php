@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('type_materiel');
             $table->date('derniere_date')->nullable();
             $table->boolean('archived')->default(false);
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->timestamps();
         });
     }

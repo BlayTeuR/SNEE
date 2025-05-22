@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Entretien;
 use App\Models\Historique;
 use App\Models\User;
+use App\Services\GeocodingService;
+use App\Traits\FormatsAdresse;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class EntretienController extends Controller
 {
+
+    use FormatsAdresse;
 
     public function index(Request $request)
     {
@@ -93,6 +97,7 @@ class EntretienController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'add' => 'required|string|max:255',
+                'add-code-postal' => 'required|string|max:10',
                 'email' => 'required|email|max:255',
                 'panne' => 'required|string|max:255',
                 'tel' => 'required|string|max:20',
@@ -102,14 +107,20 @@ class EntretienController extends Controller
                 'date' => 'nullable|date',
             ]);
 
+            $adresseNettoyee = $this->formatAdresse($request->input('add'), $request->input('add-code-postal'));
+            $coordinates = GeocodingService::geocode($adresseNettoyee);
+
             $entretien = Entretien::create([
                 'nom' => $request->input('name'),
                 'adresse' => $request->input('add'),
+                'code_postal' => $request->input('add-code-postal'),
                 'contact_email' => $request->input('email'),
                 'panne_vigilance' => $request->input('panne'),
                 'telephone' => $request->input('tel'),
                 'type_materiel' => $request->input('demande_type'),
                 'derniere_date' => $request->input('date'),
+                'latitude' => $coordinates['latitude'] ?? null,
+                'longitude' => $coordinates['longitude'] ?? null,
             ]);
 
             if ($request->hasFile('images')) {
@@ -124,7 +135,7 @@ class EntretienController extends Controller
                     }
                 }
             }
-            return redirect('/entretien')->with('success', 'Votre demande a été enregistrée avec succès.');
+            return redirect('admin.entretien')->with('success', 'Votre demande a été enregistrée avec succès.');
         }catch(\Exception $e) {
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());
         }

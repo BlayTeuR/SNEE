@@ -14,12 +14,15 @@ class Entretien extends Model
     protected $fillable = [
         'nom',
         'adresse',
+        'code_postal',
         'contact_email',
         'panne_vigilance',
         'telephone',
         'type_materiel',
         'derniere_date',
         'archived',
+        'latitude',
+        'longitude',
     ];
     public function historiques()
     {

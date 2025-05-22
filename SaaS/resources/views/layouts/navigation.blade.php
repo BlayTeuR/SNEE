@@ -30,7 +30,7 @@
                     <x-nav-link :href="route('admin.validation')" :active="request()->routeIs('admin.validation')">
                         {{ 'Validation' }}
                     </x-nav-link>
-                    <x-nav-link :href="route('carte')" :active="request()->routeIs('carte')">
+                    <x-nav-link :href="route('admin.carte')" :active="request()->routeIs('admin.carte')">
                         {{ __('Carte') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.historique', ['type' => 'Dépannage'])" :active="request()->routeIs('admin.historique')">
@@ -95,7 +95,7 @@
             <x-responsive-nav-link :href="route('admin.stat')" :active="request()->routeIs('admin.stat')">
                 {{ __('Statistique') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('carte')" :active="request()->routeIs('carte')">
+            <x-responsive-nav-link :href="route('admin.carte')" :active="request()->routeIs('admin.carte')">
                 {{ __('Carte') }}
             </x-responsive-nav-link>
         </div>

@@ -27,6 +27,8 @@ class Depannage extends Model
         'prevention',
         'archived',
         'entretien_id',
+        'latitude',
+        'longitude',
     ];
 
     protected static function booted()

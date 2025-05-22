@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AffectationController;
 use App\Http\Controllers\ApprovisionnementController;
+use App\Http\Controllers\CarteController;
 use App\Http\Controllers\DepanageController;
 use App\Http\Controllers\EntretienController;
 use App\Http\Controllers\FacturationsController;
@@ -54,9 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/carte', function () {
-        return view('carte');
-    })->name('carte');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technicien.')->group(function () {
@@ -154,6 +153,10 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     Route::post('/entretien/{entretien}/affectation', [AffectationController::class, 'storeForEntretien'])->name('show.affectation.entretien');
     Route::delete('/depannage/{depannage}/affectation/{technicien}/delete', [AffectationController::class, 'destroyForDepannage'])->name('show.affectation.del');
     Route::delete('/entretien/{entretien}/affectation/{technicien}/delete', [AffectationController::class, 'destroyForEntretien'])->name('show.affectation.del.entretien');
+
+    //Carte
+    Route::get('/carte', [CarteController::class, 'index'])->name('carte');
+
 });
 
 Route::get('admin/test-nav', function () {

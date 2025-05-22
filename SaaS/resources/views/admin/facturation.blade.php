@@ -72,7 +72,8 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Date d'intervention</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Montant</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left">Statut</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left" style="width: 10px;">Actions</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Actions</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left">Supprimer</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -174,10 +175,11 @@
                                     <li onclick="updateStatus('status-{{ $facturation->id }}', 'Envoyée', 'bg-green-500', 'status-{{ $facturation->id }}-btn', {{ $facturation->id }})" class="hover:bg-gray-200 p-1 cursor-pointer">Envoyée</li>
                                 </ul>
                             </td>
-                            <td class="p-3 text-sm text-gray-700">{{ $facturation->contact }}</td>
                             <td class="p-3 text-sm text-gray-700">
                                 @if($facturation->statut == 'Envoyée')
                                     <button onclick="toggleModalArchived({{ $facturation->id }})" class="text-blue-500 hover:text-blue-700 hover:underline">Archiver</button>
+                                @else
+                                    <p class="text-xs">non disponible</p>
                                 @endif
                             </td>
                             <td class="p-3 text-sm text-gray-700 relative">

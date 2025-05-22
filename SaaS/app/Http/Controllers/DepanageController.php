@@ -6,6 +6,8 @@ use App\Models\Depannage;
 use App\Models\Entretien;
 use App\Models\Type;
 use App\Models\User;
+use App\Services\GeocodingService;
+use App\Traits\FormatsAdresse;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +15,9 @@ use Termwind\Components\Element;
 
 class DepanageController extends Controller
 {
+
+    use FormatsAdresse;
+
     public function index(Request $request)
     {
         // Commencer la requête de base
@@ -195,7 +200,6 @@ class DepanageController extends Controller
     public function store(Request $request)
     {
         try {
-
             $formSource = $request->input('form_source');
 
             // Validation des données
@@ -213,6 +217,9 @@ class DepanageController extends Controller
                 'image' => 'nullable|image|max:2048',
                 'date_intervention' => 'date',
             ]);
+
+            $adresseNettoyee = $this->formatAdresse($request->input('add'), $request->input('add-code-postal'));
+            $coordinates = GeocodingService::geocode($adresseNettoyee);
 
             $provenance = 'ajout manuel';
             if($formSource == 'formulaire_ca'){
@@ -236,6 +243,8 @@ class DepanageController extends Controller
                 'provenance' => $provenance,
                 'date_depannage' => $request->input('date_intervention'),
                 'prevention' => $request->boolean('prevention'),
+                'latitude' => $coordinates['latitude'] ?? null,
+                'longitude' => $coordinates['longitude'] ?? null,
             ]);
 
             // Création du Type associé au Depannage
@@ -338,4 +347,5 @@ class DepanageController extends Controller
             return response()->json(['message' => 'Erreur lors de la création du dépannage : ' . $e->getMessage()], 500);
         }
     }
+
 }
