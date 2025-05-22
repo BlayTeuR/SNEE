@@ -143,6 +143,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     Route::post('/entretien/{id}/update-date', [EntretienController::class, 'updateDate'])->name('entretien.update.date');
     Route::post('/entretien/{id}/archiver', [EntretienController::class, 'archiver'])->name('entretien.archiver');
     Route::post('/entretien/{id}/desarchiver', [EntretienController::class, 'desarchiver'])->name('entretien.desarchiver');
+    Route::post('/entretien/{id}/depannage', [DepanageController::class, 'creerInterventionDepuisEntretien'])->name('entretien.depannage.create');
 
     //Fiche
     Route::post('/depannage/{depannage}/fiches', [FicheController::class, 'storeForDepannage'])->name('show.store');

@@ -97,14 +97,14 @@
                 <table class="w-full table-fixed">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">ID</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Adresse</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Type de client</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Date intervention</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Statut</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6"></th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">ID</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/12">Nom</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Adresse</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Type de client</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Date intervention</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Statut</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/12">Détails</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/12"></th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-16"></th>
                     </tr>
                     </thead>
@@ -130,7 +130,11 @@
                                 <div class="flex items-center space-x-2">
                                     <span class="text-gray-800 font-medium">{{ $depannage->id }}</span>
                                     <div class="ml-1 relative group flex flex-col space-y-1">
-                                        <span class="text-xs font-bold">({{ $depannage->provenance }})</span>
+                                        @if($depannage->provenance == 'entretien')
+                                            <button onclick="gotoentretien({{$depannage->entretien_id}})" class="text-left p-0 bg-transparent border-none text-xs font-bold text-blue-500 hover:text-blue-600 hover:underline">({{ $depannage->provenance }})</button>
+                                        @else
+                                            <span class="text-xs font-bold">({{ $depannage->provenance }})</span>
+                                        @endif
                                         <span class="text-xs font-bold">crée le : {{ \Carbon\Carbon::parse($depannage->created_at)->format('d/m/Y') }}</span>
                                     </div>
                                 </div>
@@ -604,6 +608,10 @@
                 });
         }
         toggleModal();
+    }
+
+    function gotoentretien(entretienId) {
+        window.location.href = `/admin/entretien?id=${entretienId}&mois_courant=off`;
     }
 
     document.addEventListener('click', function(event) {

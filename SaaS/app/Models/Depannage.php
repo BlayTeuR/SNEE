@@ -26,6 +26,7 @@ class Depannage extends Model
         'provenance',
         'prevention',
         'archived',
+        'entretien_id',
     ];
 
     protected static function booted()

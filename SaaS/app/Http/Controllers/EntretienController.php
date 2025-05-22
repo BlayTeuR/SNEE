@@ -15,6 +15,10 @@ class EntretienController extends Controller
     {
         $query = Entretien::with('historiques');
 
+        if ($request->filled('id')) {
+            $query->where('id', $request->input('id'));
+        }
+
         // Filtrer par nom si l'utilisateur a saisi quelque chose
         if ($request->filled('nom')) {
             $query->where('nom', 'like', '%' . $request->input('nom') . '%');

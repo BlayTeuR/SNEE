@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->string('provenance');
             $table->boolean('prevention')->default(false);
             $table->boolean('archived')->default(false);
+            $table->unsignedBigInteger('entretien_id')->nullable();
             $table->timestamps();
         });
     }

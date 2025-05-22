@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Depannage;
+use App\Models\Entretien;
 use App\Models\Type;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -302,5 +303,39 @@ class DepanageController extends Controller
         $depannage = Depannage::findOrFail($id);
         $users = User::all()->where('role', '=', 'technicien');
         return view('admin.depannage.show', compact('depannage', 'users'));
+    }
+
+    public function creerInterventionDepuisEntretien($id)
+    {
+        try {
+            $entretien = Entretien::findOrFail($id);
+
+            $depannage = Depannage::create([
+                'nom' => $entretien->nom,
+                'adresse' => $entretien->adresse,
+                'code_postal' => $entretien->code_postal,
+                'contact_email' => $entretien->contact_email,
+                'description_probleme' => $entretien->panne_vigilance ?? 'Entretien récurrent',
+                'telephone' => $entretien->telephone,
+                'type_materiel' => $entretien->type_materiel,
+                'statut' => 'À planifier',
+                'message_erreur' => null,
+                'infos_supplementaires' => null,
+                'date_depannage' => null,
+                'provenance' => 'entretien',
+                'prevention' => false,
+                'entretien_id' => $entretien->id,
+            ]);
+
+            $depannage->types()->create([
+                'garantie' => 'Non renseigné',
+                'contrat' => 'Non renseigné',
+            ]);
+
+            return response()->json(['message' => 'Dépannage créé avec succès à partir de l\'entretien.'], 201);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erreur lors de la création du dépannage : ' . $e->getMessage()], 500);
+        }
     }
 }

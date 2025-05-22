@@ -50,7 +50,7 @@
                 <div class="mb-4">
                     <label for="lieu-filter" class="block text-sm font-medium text-gray-700">Filtrer par lieu</label>
                     <input type="text" name="lieu" id="lieu-filter" class="block w-full mt-2 p-2 border border-gray-300 rounded-lg" placeholder="Lieu" value="{{ request('lieu') }}">
-                </div
+                </div>
 
                 <!-- Toggle switch pour le mois courant -->
                 <div class="mb-4 flex items-center">
@@ -88,13 +88,14 @@
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr class="bg-gray-50">
                         <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/12">ID</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Nom</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Adresse</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Prochaine visite</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Historique</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6">Détails</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/6"></th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-16"></th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Nom</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Adresse</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Prochaine visite</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Historique</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Option</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-2/12">Détails</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/12"></th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left w-1/12"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -146,6 +147,12 @@
                                     @endforeach
                                 </ul>
                             </div>
+                        </td>
+
+                        <td class="p-3 text-sm text-gray-700">
+                            <button onclick="toggleDep({{$entretien->id}})" class="flex items-center bg-gray-300 bg-opacity-50 px-3 py-1 rounded-lg hover:bg-gray-400">
+                                <span>Créer une intervention</span>
+                            </button>
                         </td>
 
                         <td class="p-3 text-sm text-gray-700">
@@ -209,6 +216,18 @@
             </div>
         </div>
     </div>
+
+    <div id="confirmation-depannage" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3 relative">
+            <!-- Croix de fermeture -->
+            <h2 class="text-xl font-bold mb-4">Création d'une intervention</h2>
+            <p class="mb-6">Souhaitez-vous créer une intervention pour cet entretien ?</p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="toggleDep()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Annuler</button>
+                <button onclick="createDep()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Confirmer</button>
+            </div>
+        </div>
+    </div>
 </x-app-layout>
 
 <script>
@@ -224,7 +243,36 @@
     function cancelArchiveBis(){
         const modal = document.getElementById('confirmation-modal-bis');
         modal.classList.add('hidden');
-        window.currentDepannageId = null;
+        window.currentEntretienId = null;
+    }
+
+    function toggleDep(id = null){
+        const modal = document.getElementById('confirmation-depannage');
+        modal.classList.toggle('hidden');
+        window.currentEntretienId = id;
+    }
+
+    function createDep(){
+        const id = window.currentEntretienId;
+        fetch(`/admin/entretien/${id}/depannage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                saveNotificationBeforeReload("Intervention créée avec succès", 'success');
+                console.log(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                saveNotificationBeforeReload("Erreur lors de la création de l'intervention", 'error');
+                console.error('Erreur:', error);
+                location.reload();
+            });
+        toggleDep();
     }
 
     function archiver() {
@@ -238,10 +286,13 @@
         })
             .then(response => response.json())
             .then(data => {
+                saveNotificationBeforeReload("Entretien archivé avec succès", 'success');
                 console.log(data.message);
                 location.reload();
             })
             .catch(error => {
+                saveNotificationBeforeReload("Erreur lors de l'archivage de l'entretien", 'error');
+                location.reload();
                 console.error('Erreur:', error);
             });
         cancelArchiveBis();

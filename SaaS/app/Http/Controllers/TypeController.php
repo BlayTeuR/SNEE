@@ -19,6 +19,6 @@ class TypeController extends Controller
             return response()->json(['message' => 'Type non trouvé!'], 404);
         }
 
-        return redirect('/dashboard')->with('success', 'Type mis à jour avec succès!');
+        return redirect('admin/dashboard')->with('success', 'Type mis à jour avec succès!');
     }
 }
