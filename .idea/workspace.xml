@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/carte.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SaaS/.env.development" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/CarteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/CarteController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/carte.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/carte.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/technicien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/technicien.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,7 +232,8 @@
       <workItem from="1747827270683" duration="8505000" />
       <workItem from="1747894191507" duration="9926000" />
       <workItem from="1747913770006" duration="8044000" />
-      <workItem from="1747980326320" duration="4724000" />
+      <workItem from="1747980326320" duration="7237000" />
+      <workItem from="1748000787154" duration="312000" />
     </task>
     <servers />
   </component>
