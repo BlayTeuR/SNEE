@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technicien.')->group(function () {
     Route::get('/dashboard', [TechnicienDashboardController::class, 'index'])->name('dashboard');
     Route::get('/entretien', [TechnicienEntretienController::class, 'index'])->name('entretien');
-    Route::get('/carte', [TechnicienDashboardController::class, 'index'])->name('carte');
+    Route::get('/carte', [CarteController::class, 'index'])->name('carte');
 
     //Fiche
     Route::post('/fiche/{id}/del', [FicheController::class, 'delete'])->name('fiche.del');

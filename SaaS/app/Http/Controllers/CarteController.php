@@ -15,6 +15,14 @@ class CarteController extends Controller
 
         $entretien = Entretien::with('historiques');
         $entretien = $entretien->where('archived', false)->get();
-        return view('admin.carte', compact('depannage', 'entretien'));
+
+        if($user = auth()->user()) {
+            if($user->isAdmin()) {
+                return view('admin.carte', compact('depannage', 'entretien'));
+            } elseif($user->isTechnicien()) {
+                return view('technicien.carte', compact('depannage', 'entretien'));
+            }
+        }
+        return true;
     }
 }
