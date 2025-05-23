@@ -1,6 +1,7 @@
 #  Application Laravel SaaS - SNEE
 
-Mise en place d'un logiciel permettant de dématérialiser la gestion des données faites par le SAV de l'entreprise SNEE
+Sneesaas est une application SaaS développée avec Laravel, utilisant Blade pour le templating et TailwindCSS pour le design.  
+L’application est hébergée sur Render, la base de données MySQL est managée via OVH Cloud, et le nom de domaine est configuré sur OVH.
 
 Ce dépôt contient le code source de l'application Laravel utilisant Blade, TailwindCSS et MySQL. Elle est destinée à être déployée via Render avec une gestion des environnements de développement, test (beta) et production.
 
@@ -29,4 +30,18 @@ cp .env.example .env
 # ou
 cp .env.development .env
 php artisan config:clear
+```
 
+## Architecture du projet
+
+```plaintext
+┌─────────────┐       ┌───────────────┐       ┌─────────────┐
+│  Navigateur │ <---> │ Render (App)  │ <---> │ OVH Cloud   │
+│ (Utilisateur)│      │ Laravel +     │       │ MySQL DB    │
+│             │       │ Blade + Tailwind │     │ Managé      │
+└─────────────┘       └───────────────┘       └─────────────┘
+         │
+         │
+         ▼
+  Nom de domaine OVH
+(sneesaas.com redirige vers Render)
