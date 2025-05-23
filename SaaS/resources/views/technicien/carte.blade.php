@@ -18,7 +18,13 @@
 
     <!-- Modal -->
     <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-[9999]">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+        <div class="relative bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+            <!-- Croix de fermeture -->
+            <button onclick="closeModal()"
+                    class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xl font-bold focus:outline-none">
+                &times;
+            </button>
+
             <h2 class="text-xl font-bold mb-4">Informations du point</h2>
             <div class="space-y-1 text-sm">
                 <p><strong>Type :</strong> <span id="modal-type">—</span></p>
@@ -29,25 +35,27 @@
                 <p><strong>Téléphone :</strong> <span id="modal-telephone">—</span></p>
                 <p><strong>Problème / Vigilance :</strong> <span id="modal-probleme_vigilance">—</span></p>
                 <p><strong>Matériel :</strong> <span id="modal-type_materiel">—</span></p>
-                <p><strong>Latitude :</strong> <span id="modal-lat">—</span></p>
-                <p><strong>Longitude :</strong> <span id="modal-lng">—</span></p>
             </div>
-            <div class="flex justify-end gap-2 mt-4">
-                <div class="flex flex-wrap justify-end gap-2 mt-4">
-                    <a id="btn-itineraire-google" href="#" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">
+
+            <div class="mt-6 px-2">
+                <div class="grid grid-cols-1 gap-3">
+                    <a id="btn-itineraire-google" href="#" target="_blank"
+                       class="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm text-center">
                         Google Maps
                     </a>
-                    <a id="btn-itineraire-waze" href="#" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                    <a id="btn-itineraire-waze" href="#" target="_blank"
+                       class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm text-center">
                         Waze
                     </a>
-                    <a id="btn-itineraire-apple" href="#" target="_blank" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 text-sm">
+                    <a id="btn-itineraire-apple" href="#" target="_blank"
+                       class="w-full px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 text-sm text-center">
                         Plans (Apple)
                     </a>
-                    <button onclick="closeModal()" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm">Fermer</button>
                 </div>
             </div>
         </div>
     </div>
+
 
     <script>
         const depannages = @json($depannage);
