@@ -35,6 +35,8 @@
                 <p><strong>Téléphone :</strong> <span id="modal-telephone">—</span></p>
                 <p><strong>Problème / Vigilance :</strong> <span id="modal-probleme_vigilance">—</span></p>
                 <p><strong>Matériel :</strong> <span id="modal-type_materiel">—</span></p>
+                <p><strong>Latitude :</strong> <span id="modal-lat">—</span></p>
+                <p><strong>Longitude :</strong> <span id="modal-lng">—</span></p>
             </div>
 
             <div class="mt-6 px-2">

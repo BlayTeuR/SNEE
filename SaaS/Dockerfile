@@ -54,7 +54,15 @@ RUN composer install --optimize-autoloader --no-dev
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
-# Port exposé (si tu utilises nginx ailleurs, pas besoin ici)
-EXPOSE 9000
+EXPOSE 80
 
-CMD ["php-fpm"]
+CMD php artisan key:generate --force && \
+    php artisan config:clear && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
+    php artisan migrate --force && \
+    php-fpm
+
+
+

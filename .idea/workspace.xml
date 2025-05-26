@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SaaS/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/technicien/carte.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/technicien/carte.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -235,7 +234,8 @@
       <workItem from="1747894191507" duration="9926000" />
       <workItem from="1747913770006" duration="8044000" />
       <workItem from="1747980326320" duration="7237000" />
-      <workItem from="1748000787154" duration="2767000" />
+      <workItem from="1748000787154" duration="3376000" />
+      <workItem from="1748239890884" duration="3440000" />
     </task>
     <servers />
   </component>
