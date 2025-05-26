@@ -37,8 +37,8 @@ RUN composer install --optimize-autoloader --no-dev
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
-# Copier la config nginx
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+# Copier la config nginx complète (voir fichier séparé nginx.conf)
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 # Exposer le port 80 (HTTP)
 EXPOSE 80
