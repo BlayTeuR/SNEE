@@ -55,7 +55,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technicien.')->group(function () {
@@ -89,7 +88,7 @@ Route::middleware(['auth', 'is_technicien'])->prefix('technicien')->as('technici
 
 // Admin
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(function () {
-    Route::get('/', [DepanageController::class, 'index'])->name('dashboard');
+    Route::get('/', [DepanageController::class, 'index'])->name('dashboard.home');
     Route::get('/dashboard', [DepanageController::class, 'index'])->name('dashboard');
     Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique');
     Route::get('/stat', [StatistiqueController::class, 'index'])->name('stat');
@@ -135,7 +134,6 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     Route::post('facturation/desarchiver/{id}', [FacturationsController::class, 'desarchiver'])->name('facturation.desarchiver');
 
     //Entretien
-    Route::get('/entretien', [EntretienController::class, 'index'])->name('entretien');
     Route::post('entretien/store', [EntretienController::class, 'store'])->name('entretien.store');
     Route::get('/entretien/{id}', [EntretienController::class, 'show'])->name('entretien.show')->middleware(['auth', 'verified']);
     Route::post('entretien/del/{id}', [EntretienController::class, 'destroy'])->name('entretien.del');
