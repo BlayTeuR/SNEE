@@ -56,13 +56,11 @@ RUN chown -R www-data:www-data /var/www \
 
 EXPOSE 80
 
-CMD php artisan key:generate --force && \
-    php artisan config:clear && \
+CMD php artisan config:clear && \
     php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
     php artisan migrate --force && \
     php-fpm
-
 
 
