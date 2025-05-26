@@ -171,5 +171,10 @@ Route::get('/manifest.json', function () {
     ]);
 });
 
+Route::get('/ip', function () {
+    return request()->ip();
+});
+
+
 
  require __DIR__.'/auth.php';
