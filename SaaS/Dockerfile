@@ -1,68 +1,47 @@
-# Étape 1 : Build des assets avec Node et Vite
+# Étape 1 : Build des assets frontend avec Node et Vite
 FROM node:18-alpine as node-builder
 
 WORKDIR /app
 
-COPY package.json vite.config.* tailwind.config.* postcss.config.* ./
+COPY package.json package-lock.json vite.config.* tailwind.config.* postcss.config.* ./
 COPY resources/ ./resources/
 COPY public/ ./public/
 
-RUN npm install && npm run build
+RUN npm install
+RUN npm run build
 
-# Étape 2 : Laravel avec PHP et Composer
+# Étape 2 : Backend Laravel avec PHP-FPM
 FROM php:8.2-fpm-alpine
 
-# Dépendances système
+# Installer dépendances système + extensions PHP
 RUN apk add --no-cache \
-    bash \
-    curl \
-    libpng \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    zip \
-    unzip \
-    git \
-    oniguruma-dev \
-    libxml2-dev \
-    icu-dev \
-    zlib-dev \
-    libzip-dev \
-    postgresql-dev \
-    nodejs \
-    npm
+    bash curl libpng libpng-dev libjpeg-turbo-dev freetype-dev zip unzip git oniguruma-dev libxml2-dev icu-dev zlib-dev libzip-dev postgresql-dev nginx
 
-# Extensions PHP nécessaires à Laravel
 RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd intl zip
 
-# Composer
+# Installer composer depuis l'image officielle
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Dossier de travail
 WORKDIR /var/www
 
-# Copier tout le code
+# Copier tout le code Laravel
 COPY . .
 
-# Copier les assets générés
+# Copier les assets frontend buildés par Vite
 COPY --from=node-builder /app/public/build /var/www/public/build
 
 # Installer les dépendances PHP
 RUN composer install --optimize-autoloader --no-dev
 
-# Donner les droits
+# Permissions
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
-EXPOSE 8080
+# Copier la config nginx
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD PORT=${PORT:-8080} && \
-    php artisan config:clear && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache && \
-    php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=$PORT
+# Exposer le port 80 (HTTP)
+EXPOSE 80
 
-
-
+# Lancer PHP-FPM + nginx en premier plan
+CMD php-fpm -D && nginx -g "daemon off;"
