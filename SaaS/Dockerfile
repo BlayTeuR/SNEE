@@ -44,10 +44,16 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
 # Copier la config nginx complète (voir fichier séparé nginx.conf)
+# Copier la config nginx complète
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# Exposer le port 80 (HTTP)
+# Copier le script d’entrée
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Exposer le port
 EXPOSE 80
 
-# Lancer PHP-FPM + nginx en premier plan
-CMD php-fpm -D && nginx -g "daemon off;"
+# Lancer le script
+CMD ["/entrypoint.sh"]
+
