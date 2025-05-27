@@ -28,10 +28,10 @@ WORKDIR /var/www
 COPY . .
 
 # Copie ton cert dans l'image
-# COPY resources/certs/ca-cert.pem /etc/ssl/certs/ca-cert.pem
+COPY resources/certs/ca-cert.pem /etc/ssl/certs/ca-cert.pem
 
 # Assure-toi que les permissions sont correctes
-#RUN chmod 644 /etc/ssl/certs/ca-cert.pem
+RUN chmod 644 /etc/ssl/certs/ca-cert.pem
 
 # Copier les assets frontend buildés par Vite
 COPY --from=node-builder /app/public/build /var/www/public/build
