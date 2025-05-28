@@ -8,7 +8,7 @@ export default defineConfig(({ command }) => {
                 host: '0.0.0.0',
                 port: 5173,
                 hmr: {
-                    host: 'https://639a-212-234-17-153.ngrok-free.app',
+                    host: 'https://3774-212-234-17-153.ngrok-free.app',
                 },
             },
             plugins: [

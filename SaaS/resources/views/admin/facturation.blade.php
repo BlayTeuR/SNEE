@@ -6,7 +6,7 @@
 
     <div class="flex bg-gray-200 p-4 space-x-4 overflow-hidden" style="height: calc(100vh - 6rem);">
         <!-- Filtres -->
-        <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden">
+        <div class="w-1/6 bg-white p-4 rounded-lg shadow-sm overflow-auto">
 
             <form method="GET" action="{{ route('admin.facturation') }}">
                 <h2 class="text-lg font-bold">Filtres</h2>
