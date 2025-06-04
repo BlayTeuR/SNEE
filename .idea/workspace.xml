@@ -5,16 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeception.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeception.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/phpspec.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/phpspec.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/bootstrap/cache/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/bootstrap/cache/services.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/approvisionnement.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/approvisionnement.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/facturation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/facturation.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/ValidationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/ValidationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Depannage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000003_create_depannages_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_04_10_000003_create_depannages_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/seeders/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/depannage/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/validation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/validation.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -259,7 +258,10 @@
       <workItem from="1748379278360" duration="530000" />
       <workItem from="1748379828822" duration="720000" />
       <workItem from="1748412608534" duration="5530000" />
-      <workItem from="1748432822286" duration="3076000" />
+      <workItem from="1748432822286" duration="9159000" />
+      <workItem from="1748844894338" duration="22101000" />
+      <workItem from="1748953318814" duration="3620000" />
+      <workItem from="1749037140769" duration="8119000" />
     </task>
     <servers />
   </component>

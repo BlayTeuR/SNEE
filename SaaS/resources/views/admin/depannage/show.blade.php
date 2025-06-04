@@ -58,9 +58,30 @@
                     </p>
                     <p class="text-xs"><strong>Historique:</strong></p>
                     <ul>
-                        @if($depannage->historiques->isNotEmpty())
-                            @foreach($depannage->historiques as $histo)
-                                <li> - {{ \Carbon\Carbon::parse($histo->date)->format('d/m/Y') }}</li>
+                        @if($depannage->validations->isNotEmpty())
+                            @foreach($depannage->validations->sortByDesc('date') as $validation)
+                                @php
+                                    $date = \Carbon\Carbon::parse($validation->date)->format('d/m/Y');
+                                    $label = '';
+
+                                    if ($validation->validation === 'valide') {
+                                        $label = 'Validé';
+                                    } elseif ($validation->validation === 'nonValide') {
+                                        if ($validation->detail === 'ultérieurement') {
+                                            $label = 'Non validé : repassé dans l’état à planifier';
+                                        } elseif ($validation->detail === 'nouvelle_date') {
+                                            $label = 'Non validé : reprogrammé';
+                                        } else {
+                                            $label = 'Non validé';
+                                        }
+                                    } else {
+                                        $label = 'Inconnu';
+                                    }
+                                @endphp
+
+                                <li class="text-xs">
+                                    {{ $date }} : ({{ $label }})
+                                </li>
                             @endforeach
                         @else
                             <li class="text-xs">Aucun historique disponible.</li>

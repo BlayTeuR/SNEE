@@ -155,6 +155,9 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->as('admin.')->group(fu
     //Carte
     Route::get('/carte', [CarteController::class, 'index'])->name('carte');
 
+    //Validation
+    Route::post('/replanifierWithoutHisto/{depannage}', [ValidationController::class, 'replanifierWithoutHisto'])->name('replanifierWithoutHisto');
+    Route::post('/valideEntretien/{entretien}', [ValidationController::class, 'valideEntretien'])->name('valideEntretien');
 });
 
 Route::get('admin/test-nav', function () {

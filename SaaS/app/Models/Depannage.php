@@ -72,4 +72,17 @@ class Depannage extends Model
     {
         return $this->morphMany(Affectation::class, 'affecteable');
     }
+
+    public function validations()
+    {
+        return $this->morphMany(Validation::class, 'validationable');
+    }
+
+    public function hasBeenValidatedForDate($date)
+    {
+        return $this->validations()
+            ->where('date', $date)
+            ->whereIn('validation', ['valide', 'nonValide'])
+            ->exists();
+    }
 }

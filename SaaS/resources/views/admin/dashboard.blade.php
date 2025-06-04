@@ -241,6 +241,7 @@
             +
         </a>
     </div>
+
     <!-- Modal de confirmation -->
     <div id="confirm-delete-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">

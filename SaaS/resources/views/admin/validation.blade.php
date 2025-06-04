@@ -61,23 +61,39 @@
             <!-- Contenu scrollable -->
             <div class="flex-1 overflow-auto">
                 @if($type == 'depannage')
-                    @foreach($depannages as $depannage)
+                    @foreach($interventions as $intervention)
+                        @php
+                            $depannage = $intervention['depannage'];
+                            $date = \Carbon\Carbon::parse($intervention['date'])->format('Y-m-d');
+                            $validation = $depannage->validations->first(function ($v) use ($date) {
+                                return \Carbon\Carbon::parse($v->date)->format('Y-m-d') === $date;
+                            });
+
+                            $isTraite = !is_null($validation);
+                        @endphp
+
                         <div class="bg-gray-100 p-4 mb-4 rounded-lg shadow-sm flex items-center justify-between">
                             <!-- Infos à gauche -->
                             <div>
                                 <h3 class="text-lg font-bold">{{ $depannage->nom }}</h3>
-                                <p class="text-gray-600">Adresse: {{ $depannage->adresse }}</p>
-                                <p class="text-gray-600">Date: {{ \Carbon\Carbon::parse($depannage->date_depannage)->format('d/m/Y') }}</p>
+                                <p class="text-gray-600">Adresse : {{ $depannage->adresse }}</p>
+                                <p class="text-gray-600">Date : {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</p>
                             </div>
 
-                            <!-- Boutons à droite -->
+                            <!-- À droite : boutons ou "Traité" -->
                             <div class="flex space-x-2">
-                                <button onclick="openValideModal({{ $depannage->id }})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valide</button>
-                                <button onclick="openNonValideModal({{ $depannage->id }})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Non valide</button>
+                                @if($isTraite)
+                                    <span class="text-sm font-semibold text-green-700 bg-green-100 px-4 py-2 rounded">
+                    Traité ({{ $validation->validation ?? 'Inconnu' }})
+                </span>
+                                @else
+                                    <button onclick="openValideModal({{ $depannage->id }}, '{{ $date }}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valide</button>
+                                    <button onclick="openNonValideModal({{ $depannage->id }}, '{{ $date }}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Non valide</button>
+                                @endif
                             </div>
                         </div>
-
                     @endforeach
+
                 @elseif($type == 'entretiens')
                     @foreach($entretiens as $entretien)
                         <div class="bg-gray-100 p-4 mb-4 rounded-lg shadow-sm flex items-center justify-between">
@@ -90,8 +106,8 @@
 
                             <!-- Boutons à droite -->
                             <div class="flex space-x-2">
-                                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valider</button>
-                                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Annuler</button>
+                                <button onclick="toggleValideEntretien({{$entretien->id}})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valider</button>
+                                <button onclick="openNonValideModal({{$entretien->id}})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Annuler</button>
                             </div>
                         </div>
                     @endforeach
@@ -126,6 +142,18 @@
         </div>
     </div>
 
+    <!-- Modal de confirmation Entretien-->
+    <div id="confirm-valide-modal-entretien" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 class="text-xl font-semibold mb-4">Confirmer la validation de l'entretien</h2>
+            <p>Êtes-vous sûr de vouloir valider cet entretien ? Ceci programmera un nouvel entretien pour dans 6 mois et créera un historique de celui-ci. Cette action est irréversible.</p>
+            <div class="mt-4 flex justify-end space-x-4">
+                <button onclick="toggleValideEntretien()" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="submitValideEntretien()" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider</button>
+            </div>
+        </div>
+    </div>
+
     <div id="create-date-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[9999]">
         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 relative z-[10000]">
             <h2 class="text-xl font-semibold mb-4">À quelle date voulez-vous associer ce dépannage ?</h2>
@@ -156,42 +184,78 @@
 
                 <div class="flex justify-end space-x-2">
                     <button type="button" onclick="closeNonValideModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Annuler</button>
-                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Valider</button>
+                    <button type="button" onclick="submitNonValide()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Valider</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        let currentContext = null;
+    <!-- Modal Commentaire -->
+    <div id="commentModal" class="fixed inset-0 hidden z-50 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white w-full max-w-lg mx-auto rounded-lg shadow-lg p-6">
+            <h2 class="text-lg font-semibold mb-4">Voulez-vous laisser un commentaire ?</h2>
+            <textarea id="commentaire" rows="4" placeholder="Votre commentaire (facultatif)"
+                      class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+            <div class="mt-4 flex justify-end gap-2">
+                <button onclick="closeModalCommentaire()"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Annuler</button>
+                <button onclick="sendWithCommentaire()"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Envoyer</button>
+            </div>
+        </div>
+    </div>
 
-        function openValideModal() {
+    <script>
+        function getReplanifierUrl(id) {
+            return `/admin/replanifierWithoutHisto/${id}`;
+        }
+
+        let currentContext = null;
+        let currentInterventionId = null;
+        let selectedDate = null;
+        let currentEntretienId = null;
+        let pendingData = null;
+
+        function toggleValideEntretien(id = null){
+            document.getElementById('confirm-valide-modal-entretien').classList.toggle('hidden');
+            currentEntretienId = id;
+        }
+
+        function openValideModal(id) {
             document.getElementById('valideModal').classList.remove('hidden');
             currentContext = 'valide';
+            currentInterventionId = id;
         }
 
-        function openNonValideModal() {
+        function openNonValideModal(id) {
             document.getElementById('nonValideModal').classList.remove('hidden');
             currentContext = 'nonValide';
+            currentInterventionId = id;
+            console.log('nonValideModal = ' + currentInterventionId)
         }
 
-        function closeValideModal() {
+        function closeValideModal(etat = null) {
             document.getElementById('valideModal').classList.add('hidden');
+            currentInterventionId = null;
+            currentContext = etat;
         }
 
-        function closeNonValideModal() {
+        function closeNonValideModal(etat = null, id = null) {
             document.getElementById('nonValideModal').classList.add('hidden');
+            currentContext = etat;
+            currentInterventionId = id;
         }
 
-        function toggleModalDate(show, sourceModal) {
+        function toggleModalDate(show, sourceModal, reopenParent = true) {
+            id = currentInterventionId;
             const dateModal = document.getElementById('create-date-modal');
 
             if (show) {
                 // Masquer le modal source
                 if (sourceModal === 'valide') {
-                    closeValideModal();
+                    closeValideModal('valide');
                 } else if (sourceModal === 'nonValide') {
-                    closeNonValideModal();
+                    closeNonValideModal('nonValide', id);
                 }
 
                 dateModal.classList.remove('hidden');
@@ -200,12 +264,16 @@
                 resetRadioButtons();
 
                 // Réafficher le modal parent
-                if (sourceModal === 'valide') {
-                    document.getElementById('valideModal').classList.remove('hidden');
-                } else if (sourceModal === 'nonValide') {
-                    document.getElementById('nonValideModal').classList.remove('hidden');
+                if (reopenParent) {
+                    // Réafficher le modal parent uniquement si demandé
+                    if (sourceModal === 'valide') {
+                        document.getElementById('valideModal').classList.remove('hidden');
+                    } else if (sourceModal === 'nonValide') {
+                        document.getElementById('nonValideModal').classList.remove('hidden');
+                    }
                 }
             }
+            console.log('toggleDate = ' + currentInterventionId)
         }
 
         function resetRadioButtons() {
@@ -215,12 +283,139 @@
             });
         }
 
-        function updateDate() {
-            const selectedDate = document.getElementById('date-create').value;
-            console.log("Nouvelle date sélectionnée :", selectedDate);
+        function submitNonValide() {
+            const selectedOption = document.querySelector('input[name="non_valide_option"]:checked');
+            if (!selectedOption) {
+                alert("Veuillez sélectionner une option.");
+                return;
+            }
 
-            document.getElementById('create-date-modal').classList.add('hidden');
+            const type = document.getElementById("status-filter").value;
+            const data = {
+                intervention_id: currentInterventionId,
+                context: currentContext,
+                option: selectedOption.value,
+                type: type,
+            };
+
+            if (selectedOption.value === "nouvelle_date") {
+                if (!selectedDate) {
+                    alert("Veuillez choisir une date avant de valider.");
+                    return;
+                }
+                data.date = selectedDate;
+            }
+
+            // Stocker temporairement les données dans pendingData
+            pendingData = data;
+
+            // Ouvrir le modal de commentaire
+            document.getElementById("commentaire").value = "";
+            document.getElementById("commentModal").classList.remove("hidden");
         }
+
+
+        function updateDate(){
+            console.log('click on updateDate');
+            selectedDate = document.getElementById('date-create').value;
+
+            console.log(selectedDate);
+            if (!selectedDate) {
+                saveNotificationBeforeReload('Veuillez choisir une date avant de valider', 'error');
+                location.reload();
+                return;
+            }
+
+            // On ferme le modal de date sans rouvrir le parent
+            toggleModalDate(false, currentContext, false);
+
+            // On construit les données manuellement puisque l'utilisateur vient de choisir la date
+            const type = document.getElementById("status-filter").value;
+
+            pendingData = {
+                intervention_id: currentInterventionId,
+                context: currentContext,
+                option: "nouvelle_date",
+                type: type,
+                date: selectedDate,
+            };
+
+            // Ouvrir le modal de commentaire directement
+            document.getElementById("commentaire").value = "";
+            document.getElementById("commentModal").classList.remove("hidden");
+
+            console.log('updateDate = ' + currentInterventionId);
+        }
+
+
+        function submitValideEntretien(){
+            fetch(`/admin/valideEntretien/${currentEntretienId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify({ id: currentEntretienId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                    setTimeout(() => {
+                        currentEntretienId = null;
+                        saveNotificationBeforeReload("Entretien validé avec succès.", 'success');
+                        location.reload();
+                    }, 100);
+
+                })
+                .catch(error => {
+                        currentEntretienId = null;
+                        saveNotificationBeforeReload("Erreur lors de la validation de l'entretien", 'error');
+                        console.error('Erreur:', error);
+                    }
+                );
+        }
+
+        function closeModalCommentaire() {
+            document.getElementById("commentModal").classList.add("hidden");
+            currentContext = null;
+            currentInterventionId = null;
+            selectedOptionValue = null;
+            selectedDate = null;
+            typeIntervention = null;
+            pendingData = null;
+        }
+
+        async function sendWithCommentaire() {
+            const commentaire = document.getElementById("commentaire").value.trim();
+
+            // Ajouter le commentaire aux données
+            pendingData.commentaire = commentaire || null;
+
+            try {
+                const response = await fetch(getReplanifierUrl(currentInterventionId), {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(pendingData),
+                });
+
+                if (!response.ok) throw new Error("Erreur serveur");
+
+                closeModalCommentaire();
+                saveNotificationBeforeReload("Enregistrement effectué avec succès", 'success');
+                location.reload();
+
+            } catch (error) {
+                console.error("Erreur complète :", error.response?.data || error.message);
+                closeModalCommentaire();
+                console.error("Erreur:", error);
+                saveNotificationBeforeReload(error.message || 'Une erreur est survenue', 'error');
+                setTimeout(() => location.reload(), 2000);
+            }
+        }
+
     </script>
 
 </x-app-layout>

@@ -26,6 +26,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('entretien_id')->nullable();
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
+            $table->string('validation')->nullable();
             $table->timestamps();
         });
     }
