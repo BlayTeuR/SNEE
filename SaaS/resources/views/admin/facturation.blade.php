@@ -192,6 +192,11 @@
                     @endforeach
                     </tbody>
                 </table>
+
+                <div class="mt-4 flex justify-start">
+                    {{ $facturations->appends(request()->query())->links() }}
+                </div>
+
             </div>
         </div>
     </div>

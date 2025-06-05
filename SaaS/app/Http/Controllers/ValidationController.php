@@ -32,7 +32,12 @@ class ValidationController extends Controller
             }
 
             if ($request->input('jour_courant', 'on') === 'on') {
-                $query->whereDate('date_depannage', now()->format('Y-m-d'));
+                $query->where(function ($q) {
+                    $q->whereDate('date_depannage', now()->format('Y-m-d'))
+                        ->orWhereHas('validations', function ($sub) {
+                            $sub->whereDate('date', now()->format('Y-m-d'));
+                        });
+                });
             }
 
             $depannages = $query->get();
@@ -54,13 +59,17 @@ class ValidationController extends Controller
                         return $i['date'] === $datePlanifiee && $i['depannage']->id === $depannage->id;
                     });
 
-                    if (!$dejaPlanifiee) {
+                    $jourCourantActive = $request->input('jour_courant', 'on') === 'on';
+                    $estDateDuJour = $datePlanifiee === now()->format('Y-m-d');
+
+                    if (!$dejaPlanifiee && (!$jourCourantActive || $estDateDuJour)) {
                         $interventions->push([
                             'depannage' => $depannage,
                             'date' => $datePlanifiee,
                         ]);
                     }
                 }
+
             }
 
             // Trier par date décroissante

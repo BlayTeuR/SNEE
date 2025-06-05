@@ -93,6 +93,7 @@
 
         <!-- Liste des dépannages -->
         <div class="w-full md:w-5/6 bg-white p-4 rounded-lg shadow-sm overflow-hidden flex flex-col">
+
             <div class="flex-1 overflow-auto">
                 <table class="w-full table-fixed">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
@@ -234,6 +235,11 @@
                     @endforeach
                     </tbody>
                 </table>
+
+                <div class="mt-4 flex justify-start">
+                    {{ $depannages->appends(request()->query())->links() }}
+                </div>
+
             </div>
         </div>
         <a href="{{ route('admin.adminform') }}"

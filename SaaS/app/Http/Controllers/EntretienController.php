@@ -64,7 +64,7 @@ class EntretienController extends Controller
         }
 
         // Récupérer les entretiens filtrés et trier par date de création
-        $entretiens = $query->where('archived', false)->orderBy('derniere_date', 'desc')->get();
+        $entretiens = $query->where('archived', false)->orderBy('derniere_date', 'desc')->paginate(15);
         $techniciens = User::where('role', 'technicien')->get();
 
         // Retourner la vue avec les entretiens

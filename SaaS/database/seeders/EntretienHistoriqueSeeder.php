@@ -11,7 +11,7 @@ class EntretienHistoriqueSeeder extends Seeder
     public function run()
     {
         Entretien::factory()
-            ->count(10)
+            ->count(30)
             ->create()
             ->each(function ($entretien) {
                 // Pour chaque Entretien créé, on crée 2 à 5 historiques

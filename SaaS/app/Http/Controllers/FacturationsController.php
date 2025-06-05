@@ -41,7 +41,7 @@ class FacturationsController extends Controller
             $query->where('montant', '<=', $request->montant_max);
         }
 
-        $facturations = $query->where('archived', '=', false)->get();
+        $facturations = $query->where('archived', '=', false)->paginate(15);
 
         return view('admin.facturation', compact('facturations'));
     }

@@ -96,7 +96,7 @@ class DepanageController extends Controller
         }
 
         // Appliquer le tri avant de récupérer les résultats
-        $depannages = $query->where('archived', '=', false)->orderBy('created_at', 'desc')->get();
+        $depannages = $query->where('archived', '=', false)->orderBy('created_at', 'desc')->paginate(15);
         $techniciens = User::where('role', 'technicien')->get();
 
         return view('admin/dashboard', compact('depannages', 'techniciens'));

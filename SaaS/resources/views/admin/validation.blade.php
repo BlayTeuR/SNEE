@@ -70,6 +70,10 @@
                             });
 
                             $isTraite = !is_null($validation);
+
+                            $isValidatedToday = $depannage->validations->contains(function ($v) {
+                                return \Carbon\Carbon::parse($v->date)->isToday();
+                            });
                         @endphp
 
                         <div class="bg-gray-100 p-4 mb-4 rounded-lg shadow-sm flex items-center justify-between">
@@ -83,9 +87,13 @@
                             <!-- À droite : boutons ou "Traité" -->
                             <div class="flex space-x-2">
                                 @if($isTraite)
-                                    <span class="text-sm font-semibold text-green-700 bg-green-100 px-4 py-2 rounded">
-                    Traité ({{ $validation->validation ?? 'Inconnu' }})
-                </span>
+                                    <span class="text-sm font-semibold {{ $isValidatedToday ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700' }} px-4 py-2 rounded">
+        Traité ({{ $validation->validation ?? 'Inconnu' }})
+        @if($isValidatedToday && $date !== \Carbon\Carbon::now()->format('Y-m-d'))
+                                            <br><span class="text-xs">Validé aujourd’hui ({{ \Carbon\Carbon::parse($date)->format('d/m/Y') }})</span>
+                                        @endif
+    </span>
+
                                 @else
                                     <button onclick="openValideModal({{ $depannage->id }}, '{{ $date }}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valide</button>
                                     <button onclick="openNonValideModal({{ $depannage->id }}, '{{ $date }}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Non valide</button>
@@ -113,6 +121,7 @@
                     @endforeach
                 @endif
             </div>
+
         </div>
     </div>
 

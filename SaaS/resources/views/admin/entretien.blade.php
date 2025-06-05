@@ -173,6 +173,11 @@
                     @endforeach
                     </tbody>
                 </table>
+
+                <div class="mt-4 flex justify-start">
+                    {{ $entretiens->appends(request()->query())->links() }}
+                </div>
+
             </div>
         </div>
         <a href="{{ route('admin.entretienform') }}"
