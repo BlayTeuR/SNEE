@@ -70,10 +70,7 @@
                             });
 
                             $isTraite = !is_null($validation);
-
-                            $isValidatedToday = $depannage->validations->contains(function ($v) {
-                                return \Carbon\Carbon::parse($v->date)->isToday();
-                            });
+                            $isValidatedToday = $validation && \Carbon\Carbon::parse($validation->created_at)->isToday();
                         @endphp
 
                         <div class="bg-gray-100 p-4 mb-4 rounded-lg shadow-sm flex items-center justify-between">
@@ -88,11 +85,7 @@
                             <div class="flex space-x-2">
                                 @if($isTraite)
                                     <span class="text-sm font-semibold {{ $isValidatedToday ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700' }} px-4 py-2 rounded">
-        Traité ({{ $validation->validation ?? 'Inconnu' }})
-        @if($isValidatedToday && $date !== \Carbon\Carbon::now()->format('Y-m-d'))
-                                            <br><span class="text-xs">Validé aujourd’hui ({{ \Carbon\Carbon::parse($date)->format('d/m/Y') }})</span>
-                                        @endif
-    </span>
+                                        Traité le {{\Carbon\Carbon::parse($validation->created_at)->format('d/m/Y')}} ({{ $validation->validation ?? 'Inconnu' }})
 
                                 @else
                                     <button onclick="openValideModal({{ $depannage->id }}, '{{ $date }}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valide</button>
@@ -145,7 +138,7 @@
 
                 <div class="flex justify-end space-x-2">
                     <button type="button" onclick="closeValideModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Annuler</button>
-                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Valider</button>
+                    <button type="button" onclick="submitValide()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Valider</button>
                 </div>
             </form>
         </div>
@@ -216,7 +209,7 @@
 
     <script>
         function getReplanifierUrl(id) {
-            return `/admin/replanifierWithoutHisto/${id}`;
+            return `/admin/validationDepannage/${id}`;
         }
 
         let currentContext = null;
@@ -243,9 +236,9 @@
             console.log('nonValideModal = ' + currentInterventionId)
         }
 
-        function closeValideModal(etat = null) {
+        function closeValideModal(etat = null, id = null) {
             document.getElementById('valideModal').classList.add('hidden');
-            currentInterventionId = null;
+            currentInterventionId = id;
             currentContext = etat;
         }
 
@@ -262,7 +255,7 @@
             if (show) {
                 // Masquer le modal source
                 if (sourceModal === 'valide') {
-                    closeValideModal('valide');
+                    closeValideModal('valide', id);
                 } else if (sourceModal === 'nonValide') {
                     closeNonValideModal('nonValide', id);
                 }
@@ -294,6 +287,38 @@
 
         function submitNonValide() {
             const selectedOption = document.querySelector('input[name="non_valide_option"]:checked');
+            if (!selectedOption) {
+                alert("Veuillez sélectionner une option.");
+                return;
+            }
+
+            const type = document.getElementById("status-filter").value;
+            const data = {
+                intervention_id: currentInterventionId,
+                context: currentContext,
+                option: selectedOption.value,
+                type: type,
+            };
+
+            if (selectedOption.value === "nouvelle_date") {
+                if (!selectedDate) {
+                    alert("Veuillez choisir une date avant de valider.");
+                    return;
+                }
+                data.date = selectedDate;
+            }
+
+            // Stocker temporairement les données dans pendingData
+            pendingData = data;
+
+            // Ouvrir le modal de commentaire
+            document.getElementById("commentaire").value = "";
+            document.getElementById("commentModal").classList.remove("hidden");
+        }
+
+        function submitValide() {
+            console.log('on passe dans sendValide');
+            const selectedOption = document.querySelector('input[name="valide_option"]:checked');
             if (!selectedOption) {
                 alert("Veuillez sélectionner une option.");
                 return;
@@ -395,6 +420,7 @@
         }
 
         async function sendWithCommentaire() {
+            console.log('on passe dans sendWithCommentaire');
             const commentaire = document.getElementById("commentaire").value.trim();
 
             // Ajouter le commentaire aux données

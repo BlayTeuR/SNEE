@@ -42,35 +42,38 @@ class ValidationController extends Controller
 
             $depannages = $query->get();
 
+            $jourCourantActive = $request->input('jour_courant', 'on') === 'on';
+            $interventions = collect();
+
             foreach ($depannages as $depannage) {
-                // Ajouter toutes les dates validées via historique
                 foreach ($depannage->historiques as $historique) {
-                    $interventions->push([
-                        'depannage' => $depannage,
-                        'date' => $historique->date,
-                    ]);
+                    $date = \Carbon\Carbon::parse($historique->date)->format('Y-m-d');
+
+                    if (!$jourCourantActive || $date === now()->format('Y-m-d')) {
+                        $interventions->push([
+                            'depannage' => $depannage,
+                            'date' => $date,
+                        ]);
+                    }
                 }
 
-                // Ajouter la date planifiée si elle est différente de celles déjà traitées
+                // Ajouter l'intervention planifiée si elle est valide
                 if ($depannage->date_depannage) {
                     $datePlanifiee = \Carbon\Carbon::parse($depannage->date_depannage)->format('Y-m-d');
 
-                    $dejaPlanifiee = $interventions->contains(function ($i) use ($datePlanifiee, $depannage) {
+                    $dejaPresente = $interventions->contains(function ($i) use ($datePlanifiee, $depannage) {
                         return $i['date'] === $datePlanifiee && $i['depannage']->id === $depannage->id;
                     });
 
-                    $jourCourantActive = $request->input('jour_courant', 'on') === 'on';
-                    $estDateDuJour = $datePlanifiee === now()->format('Y-m-d');
-
-                    if (!$dejaPlanifiee && (!$jourCourantActive || $estDateDuJour)) {
+                    if (!$dejaPresente && (!$jourCourantActive || $datePlanifiee === now()->format('Y-m-d'))) {
                         $interventions->push([
                             'depannage' => $depannage,
                             'date' => $datePlanifiee,
                         ]);
                     }
                 }
-
             }
+
 
             // Trier par date décroissante
             $interventions = $interventions->sortByDesc('date')->values();
@@ -85,12 +88,12 @@ class ValidationController extends Controller
             ->with('success', 'Données récupérées avec succès.');
     }
 
-    public function replanifierWithoutHisto(Request $request, $id)
+    public function validationDepannage(Request $request, $id)
     {
         try {
             $validated = $request->validate([
                 'intervention_id' => 'required|integer',
-                'option' => 'required|in:nouvelle_date,ultérieurement',
+                'option' => 'required|in:nouvelle_date,ultérieurement,approvisionnement,facturer',
                 'type' => 'required|in:depannage,entretiens',
                 'date' => 'nullable|date',
                 'context' => 'required|in:nonValide,valide',
@@ -107,6 +110,19 @@ class ValidationController extends Controller
                 } elseif ($validated['option'] === 'nouvelle_date') {
                     $intervention->statut = 'Affecter';
                     $intervention->date_depannage = \Carbon\Carbon::parse($validated['date'])->format('Y-m-d');
+                } elseif ($validated['option'] === 'approvisionnement') {
+                    $intervention->statut = 'Approvisionnement';
+                    $intervention->approvisionnements()->create([
+                        'statut' => 'À planifier',
+                    ]);
+                    $intervention->date_depannage = null;
+                } elseif ($validated['option'] === 'facturer') {
+                    $intervention->statut = 'À facturer';
+                    $intervention->facturations()->create([
+                        'montant' => 0,
+                        'statut' => 'Non envoyée',
+                        'date_intervention' => $intervention->date_depannage,
+                    ]);
                 }
 
                 $intervention->save();

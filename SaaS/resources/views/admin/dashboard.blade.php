@@ -561,26 +561,29 @@
             });
 
             const data = await res.json();
+
+            // Si erreur type 409 (conflit : date déjà utilisée)
+            if (res.status === 409) {
+                saveNotificationBeforeReload('Une intervention à cette date pour ce dépannage a déjà été validé', 'error');
+                return;
+            }
+
+            if (!res.ok) {
+                throw new Error(data.error || "Erreur inconnue");
+            }
+
             console.log("date enregistrée avec succès", data);
 
             if (pendingStatut) {
                 idForAffectation = currentDeppangeId;
 
-                console.log("pendingStatus", pendingStatut);
                 const { dropdownId, statusText, statusColor, buttonId } = pendingStatut;
-                console.log("id = " + currentDeppangeId);
                 const button = document.getElementById(buttonId);
 
                 await performStatusUpdate(dropdownId, statusText, statusColor, currentDeppangeId, button);
 
-                console.log("toujours pas d'erreur", pendingStatut);
                 pendingStatut = null;
-
-
-                console.log("currentDeppangeId before toggleModalDate = ", currentDeppangeId);
                 toggleModalDate(false, null);
-                console.log("currentDeppangeId after toggleModalDate = ", currentDeppangeId);
-
                 return true;
             }
 
@@ -588,7 +591,6 @@
 
         } catch (err) {
             console.error("erreur enregistrement de la date", err);
-
             saveNotificationBeforeReload("Erreur lors de l'enregistrement de la date", 'error');
             location.reload();
         }

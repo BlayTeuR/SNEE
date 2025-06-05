@@ -18,10 +18,28 @@
 
                 @if($entretien->affectations->isNotEmpty())
                     <ul class="space-y-1">
-                        @foreach($entretien->affectations as $affectation)
-                            <li class="text-sm flex items-center">
-                                <span>{{ $affectation->technicien->name }}</span>
-                                <button onclick="toggleDeleteAff({{ $affectation->technicien->id }})" class="text-red-500 hover:text-red-600 hover:underline ml-2">Supprimer</button>
+                        @foreach($depannage->validations->sortByDesc('date') as $validation)
+                            @php
+                                $date = \Carbon\Carbon::parse($validation->date)->format('d/m/Y');
+                                $label = '';
+
+                                if ($validation->validation === 'valide') {
+                                    $label = 'Validé';
+                                } elseif ($validation->validation === 'nonValide') {
+                                    if ($validation->detail === 'ultérieurement') {
+                                        $label = 'Non validé : repassé dans l’état à planifier';
+                                    } elseif ($validation->detail === 'nouvelle_date') {
+                                        $label = 'Non validé : reprogrammé';
+                                    } else {
+                                        $label = 'Non validé';
+                                    }
+                                } else {
+                                    $label = 'Inconnu';
+                                }
+                            @endphp
+
+                            <li class="text-xs">
+                                {{ $date }} : ({{ $label }})
                             </li>
                         @endforeach
                     </ul>

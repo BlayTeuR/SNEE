@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Depannage;
 use App\Models\Entretien;
+use App\Models\Historique;
 use App\Models\Type;
 use App\Models\User;
 use App\Services\GeocodingService;
 use App\Traits\FormatsAdresse;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -186,15 +188,33 @@ class DepanageController extends Controller
         $request->validate([
             'date_depannage' => 'required|date',
         ]);
+
         $depannage = Depannage::find($id);
         if (!$depannage) {
             return response()->json(['error' => 'Dépannage non trouvé.'], 404);
         }
-        $depannage->date_depannage = $request->date_depannage;
+
+        $nouvelleDate = Carbon::parse($request->date_depannage)->toDateString();
+
+        // Vérifie si cette date existe déjà dans les historiques
+        $dateExistante = Historique::where('historiqueable_type', Depannage::class)
+            ->where('historiqueable_id', $depannage->id)
+            ->whereDate('date', $nouvelleDate)
+            ->exists();
+
+        if ($dateExistante) {
+            return response()->json([
+                'error' => "La date {$nouvelleDate} a déjà été validée dans l'historique. Veuillez en choisir une autre."
+            ], 409); // 409 = Conflit
+        }
+
+        // Sinon on enregistre la date
+        $depannage->date_depannage = $nouvelleDate;
         $depannage->save();
 
-        return response()->json(['success' => 'Statut et date mise à jour avec succès.']);
+        return response()->json(['success' => 'Date mise à jour avec succès.']);
     }
+
 
     // méthode store pour enregistrer un dépannage
     public function store(Request $request)
