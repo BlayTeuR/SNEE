@@ -139,13 +139,18 @@ class DepanageController extends Controller
             if ($nouveauStatut == 'Affecter') {
                 $depannage->save();
                 // Vérifier si la date est déjà renseignée
-                if ($depannage->depannage_date == null) {
+                if ($depannage->date_depannage == null) {
                     // Si la date est null, demander à l'utilisateur de renseigner une date
                     return response()->json(['action' => 'request_date']);
                 } else {
                     // Si la date est déjà renseignée, demander à l'utilisateur s'il souhaite la modifier
-                    return response()->json(['action' => 'modify_date', 'date' => $depannage->depannage_date]);
+                    return response()->json(['action' => 'modify_date', 'date' => $depannage->date_depannage]);
                 }
+            }
+
+            if($ancienStatut != 'À planifier' && $nouveauStatut == 'À planifier'){
+                $depannage->date_depannage = null;
+                $depannage->save();
             }
 
             // Si le statut passe de "Approvisionnement" à un autre statut
@@ -347,10 +352,10 @@ class DepanageController extends Controller
                 'description_probleme' => $entretien->panne_vigilance ?? 'Entretien récurrent',
                 'telephone' => $entretien->telephone,
                 'type_materiel' => $entretien->type_materiel,
-                'statut' => 'À planifier',
+                'statut' => 'Affecter',
                 'message_erreur' => null,
                 'infos_supplementaires' => null,
-                'date_depannage' => null,
+                'date_depannage' => $entretien->derniere_date,
                 'provenance' => 'entretien',
                 'prevention' => false,
                 'entretien_id' => $entretien->id,

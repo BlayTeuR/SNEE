@@ -8,11 +8,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/ValidationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/ValidationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/approvisionnement.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/approvisionnement.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/app/Models/Entretien.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Models/Entretien.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/entretien/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/validation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/validation.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,7 +258,7 @@
       <workItem from="1748432822286" duration="9159000" />
       <workItem from="1748844894338" duration="22101000" />
       <workItem from="1748953318814" duration="3620000" />
-      <workItem from="1749037140769" duration="31380000" />
+      <workItem from="1749037140769" duration="42181000" />
     </task>
     <servers />
   </component>

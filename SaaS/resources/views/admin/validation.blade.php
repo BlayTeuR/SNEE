@@ -33,17 +33,34 @@
 
                 <!-- Jour courant -->
                 <div class="mb-4 flex items-center">
-                    <label for="jour_courant" class="block text-sm font-medium text-gray-700 mr-4">Intervention du {{ \Carbon\Carbon::parse(today())->format('d/m/Y') }} uniquement</label>
-                    <label for="jour_courant" class="inline-flex relative items-center cursor-pointer">
-                        <!-- Champ caché pour forcer la valeur "off" si décoché -->
-                        <input type="hidden" name="jour_courant" value="off">
 
-                        <input type="checkbox" id="jour_courant" name="jour_courant" value="on" class="sr-only peer"
-                               @if(request()->get('jour_courant', 'on') == 'on') checked @endif>
-                        <span class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 peer-checked:dark:bg-blue-600"></span>
-                        <span class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></span>
-                    </label>
+                @if(request('type', 'depannage') === 'depannage')
+                        <label for="jour_courant" class="block text-sm font-medium text-gray-700 mr-4">
+                            Intervention du {{ \Carbon\Carbon::parse(today())->format('d/m/Y') }} uniquement
+                        </label>
+                        <label for="jour_courant" class="inline-flex relative items-center cursor-pointer">
+                            <!-- Champ caché pour forcer la valeur "off" si décoché -->
+                            <input type="hidden" name="jour_courant" value="off">
+                            <input type="checkbox" id="jour_courant" name="jour_courant" value="on" class="sr-only peer"
+                                   @if(request()->get('jour_courant', 'on') === 'on') checked @endif>
+                            <span class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600"></span>
+                            <span class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></span>
+                        </label>
+                    @elseif(request('type') === 'entretiens')
+                        <label for="mois_courant" class="block text-sm font-medium text-gray-700 mr-4">
+                            Interventions du mois de {{ \Carbon\Carbon::now()->locale('fr')->isoFormat('MMMM YYYY') }}
+                        </label>
+                        <label for="mois_courant" class="inline-flex relative items-center cursor-pointer">
+                            <!-- Champ caché pour forcer la valeur "off" si décoché -->
+                            <input type="hidden" name="mois_courant" value="off">
+                            <input type="checkbox" id="mois_courant" name="mois_courant" value="on" class="sr-only peer"
+                                   @if(request()->get('mois_courant', 'on') === 'on') checked @endif>
+                            <span class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600"></span>
+                            <span class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></span>
+                        </label>
+                    @endif
                 </div>
+
 
                 <!-- Boutons -->
                 <div>
@@ -96,23 +113,22 @@
                     @endforeach
 
                 @elseif($type == 'entretiens')
-                    @foreach($entretiens as $entretien)
+                    @foreach($interventions as $item)
+                        @php $entretien = $item['entretien']; @endphp
                         <div class="bg-gray-100 p-4 mb-4 rounded-lg shadow-sm flex items-center justify-between">
-                            <!-- Infos à gauche -->
                             <div>
                                 <h3 class="text-lg font-bold">{{ $entretien->nom }}</h3>
-                                <p class="text-gray-600">Date: {{ $entretien->adresse }}</p>
-                                <p class="text-gray-600">Statut: {{ $entretien->derniere_date }}</p>
+                                <p class="text-gray-600">Adresse: {{ $entretien->adresse }}</p>
+                                <p class="text-gray-600">Date: {{ $item['date'] }}</p>
                             </div>
-
-                            <!-- Boutons à droite -->
                             <div class="flex space-x-2">
                                 <button onclick="toggleValideEntretien({{$entretien->id}})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valider</button>
-                                <button onclick="openNonValideModal({{$entretien->id}})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Annuler</button>
+                                <button onclick="toggleModalDateEntretien(true, {{$entretien->id}})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Annuler</button>
                             </div>
                         </div>
                     @endforeach
                 @endif
+
             </div>
 
         </div>
@@ -165,6 +181,19 @@
             <div class="flex justify-end space-x-4">
                 <button onclick="toggleModalDate(false, currentContext)" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
                 <button onclick="updateDate()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Valider</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="create-date-modal-entretien" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[9999]">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 relative z-[10000]">
+            <h2 class="text-xl font-semibold mb-4">À quelle date souhaitez-vous reprogrammer cet entretien ?</h2>
+            <label for="date-create" class="block text-sm font-medium text-gray-700 mb-2">Choisir une date</label>
+            <input type="date" name="date-create" id="date-create-entretien" class="block w-full mb-4 p-2 border border-gray-300 rounded-lg" value="{{ request('date-crate-entretien') }}">
+
+            <div class="flex justify-end space-x-4">
+                <button onclick="toggleModalDateEntretien(false, null)" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="updateDateEntretien()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Valider</button>
             </div>
         </div>
     </div>
@@ -234,6 +263,16 @@
             currentContext = 'nonValide';
             currentInterventionId = id;
             console.log('nonValideModal = ' + currentInterventionId)
+        }
+
+        function toggleModalDateEntretien(show, id = null){
+            currentInterventionId = id;
+            const dateModal = document.getElementById('create-date-modal-entretien');
+            if(!show){
+                dateModal.classList.add('hidden');
+            } else {
+                dateModal.classList.remove('hidden');
+            }
         }
 
         function closeValideModal(etat = null, id = null) {
@@ -346,6 +385,41 @@
             // Ouvrir le modal de commentaire
             document.getElementById("commentaire").value = "";
             document.getElementById("commentModal").classList.remove("hidden");
+        }
+
+        function updateDateEntretien(){
+            selectedDate = document.getElementById('date-create-entretien').value;
+            if (!selectedDate) {
+                saveNotificationBeforeReload('Veuillez choisir une date avant de valider', 'error');
+                location.reload();
+                return;
+            }
+
+            fetch(`/admin/updateDateEnretienValidation/${currentInterventionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify({ id: currentEntretienId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                    setTimeout(() => {
+                        currentEntretienId = null;
+                        saveNotificationBeforeReload("Entretien non validé avec succès.", 'success');
+                        location.reload();
+                    }, 100);
+
+                })
+                .catch(error => {
+                        currentEntretienId = null;
+                        saveNotificationBeforeReload("Erreur lors de la non validation de l'entretien", 'error');
+                        console.error('Erreur:', error);
+                    }
+
+            )
         }
 
 

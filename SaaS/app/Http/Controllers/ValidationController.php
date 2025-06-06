@@ -23,6 +23,8 @@ class ValidationController extends Controller
                 })
                 ->where('archived', false);
 
+            $jourCourantActive = $type === 'depannage' && $request->input('jour_courant', 'on') === 'on';
+
             if ($request->filled('nom')) {
                 $query->where('nom', 'like', '%' . $request->input('nom') . '%');
             }
@@ -31,7 +33,7 @@ class ValidationController extends Controller
                 $query->whereDate('date_depannage', '=', $request->input('date'));
             }
 
-            if ($request->input('jour_courant', 'on') === 'on') {
+            if ($jourCourantActive) {
                 $query->where(function ($q) {
                     $q->whereDate('date_depannage', now()->format('Y-m-d'))
                         ->orWhereHas('validations', function ($sub) {
@@ -73,16 +75,58 @@ class ValidationController extends Controller
                     }
                 }
             }
-
-
             // Trier par date décroissante
             $interventions = $interventions->sortByDesc('date')->values();
             // dd($interventions);
-        } else {
-            // Tu peux ajouter un traitement similaire pour les entretiens si besoin
-            $entretiens = Entretien::with('historiques')->get();
-            return view('admin.validation', compact('entretiens', 'type'));
+        } else if ($type === 'entretiens') {
+            $query = Entretien::with(['historiques', 'validations']);
+
+            $moisCourantActive = $type === 'entretien' && $request->input('mois_courant', 'on') === 'on';
+
+            if ($request->filled('nom')) {
+                $query->where('nom', 'like', '%' . $request->input('nom') . '%');
+            }
+
+            if ($request->filled('date')) {
+                $query->whereDate('derniere_date', '=', $request->input('date'));
+            }
+
+            if ($moisCourantActive) {
+                $query->whereMonth('derniere_date', now()->month)
+                    ->whereYear('derniere_date', now()->year);
+            }
+
+            $entretiens = $query->get();
+            $jourCourantActive = $request->input('jour_courant', 'on') === 'on';
+
+            foreach ($entretiens as $entretien) {
+                foreach ($entretien->historiques as $historique) {
+                    $date = \Carbon\Carbon::parse($historique->date)->format('Y-m-d');
+                    if (!$jourCourantActive || $date === now()->format('Y-m-d')) {
+                        $interventions->push([
+                            'entretien' => $entretien,
+                            'date' => $date,
+                        ]);
+                    }
+                }
+
+                if ($entretien->derniere_date) {
+                    $datePlanifiee = \Carbon\Carbon::parse($entretien->derniere_date)->format('Y-m-d');
+                    $dejaPresente = $interventions->contains(function ($i) use ($datePlanifiee, $entretien) {
+                        return $i['date'] === $datePlanifiee && $i['entretien']->id === $entretien->id;
+                    });
+
+                    if (!$dejaPresente && (!$jourCourantActive || $datePlanifiee === now()->format('Y-m-d'))) {
+                        $interventions->push([
+                            'entretien' => $entretien,
+                            'date' => $datePlanifiee,
+                        ]);
+                    }
+                }
+            }
         }
+
+        $interventions = $interventions->sortByDesc('date')->values();
 
         return view('admin.validation', compact('interventions', 'type'))
             ->with('success', 'Données récupérées avec succès.');

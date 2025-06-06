@@ -564,7 +564,7 @@
 
             // Si erreur type 409 (conflit : date déjà utilisée)
             if (res.status === 409) {
-                saveNotificationBeforeReload('Une intervention à cette date pour ce dépannage a déjà été validé', 'error');
+                saveNotificationBeforeReload('Une intervention à cette date existe déjà pour ce dépannage ', 'error');
                 return;
             }
 
