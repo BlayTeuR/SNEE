@@ -691,7 +691,7 @@
 
     function confirmApproChange() {
         const { dropdownId, statusText, statusColor, depannageId } = pendingStatut;
-        const button = document.getElementById(`status-button-${depannageId}`);
+        const button = document.getElementById(`status-${depannageId}-btn`);
 
         performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button, true);
         closeApproModal();
@@ -699,6 +699,7 @@
 
     function cancelApproChange() {
         closeApproModal();
+        location.reload();
     }
 
     function closeApproModal() {

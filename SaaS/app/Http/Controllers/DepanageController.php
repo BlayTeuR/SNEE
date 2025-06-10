@@ -122,49 +122,61 @@ class DepanageController extends Controller
     public function updateStatus(Request $request, $id)
     {
         try {
-            // Validation des données envoyées
             $request->validate([
                 'statut' => 'required|string|in:À planifier,Affecter,Approvisionnement,À facturer',
+                'force' => 'boolean', // Ajout pour forcer la mise à jour
             ]);
 
-            // Récupérer le dépannage
+            $force = $request->input('force', false);
+            $nouveauStatut = $request->input('statut');
             $depannage = Depannage::findOrFail($id);
             $ancienStatut = $depannage->statut;
 
-            // Mettre à jour le statut
-            $nouveauStatut = $request->input('statut');
+            // Vérifier si on quitte le statut "Approvisionnement"
+            if ($ancienStatut === 'Approvisionnement' && $nouveauStatut !== 'Approvisionnement') {
+                // Chercher un approvisionnement actif non fait
+                $appro = $depannage->approvisionnements()
+                    ->where('statut', '!=', 'Fait')
+                    ->where('archived', false)
+                    ->first();
+
+                if ($appro && !$force) {
+                    // Demander confirmation avant suppression
+                    return response()->json(['action' => 'confirm_override']);
+                }
+
+                if ($appro && $force) {
+                    // Supprimer l'approvisionnement avant changement
+                    $appro->delete();
+                }
+            }
+
+            // Mise à jour du statut
             $depannage->statut = $nouveauStatut;
 
-            // Si le statut est "Affecter"
+            // Logique existante...
             if ($nouveauStatut == 'Affecter') {
                 $depannage->save();
-                // Vérifier si la date est déjà renseignée
                 if ($depannage->date_depannage == null) {
-                    // Si la date est null, demander à l'utilisateur de renseigner une date
                     return response()->json(['action' => 'request_date']);
                 } else {
-                    // Si la date est déjà renseignée, demander à l'utilisateur s'il souhaite la modifier
                     return response()->json(['action' => 'modify_date', 'date' => $depannage->date_depannage]);
                 }
             }
 
-            if($ancienStatut != 'À planifier' && $nouveauStatut == 'À planifier'){
+            if ($ancienStatut != 'À planifier' && $nouveauStatut == 'À planifier') {
                 $depannage->date_depannage = null;
                 $depannage->save();
             }
 
-            // Si le statut passe de "Approvisionnement" à un autre statut
             if ($ancienStatut != 'Approvisionnement' && $nouveauStatut == 'Approvisionnement') {
                 $depannage->save();
-                // Créer un nouvel enregistrement dans la table 'approvisionnement'
                 $depannage->approvisionnements()->create([
                     'statut' => 'À planifier',
                 ]);
             }
 
-            // Si le statut passe de "À facturer" à un autre statut
             if ($ancienStatut != 'À facturer' && $nouveauStatut == 'À facturer') {
-                // Créer un nouvel enregistrement dans la table 'facturation'
                 if ($depannage->date_depannage == null) {
                     return response()->json(['message' => 'Aucune date d\'intervenion'], 500);
                 } else {
@@ -178,6 +190,7 @@ class DepanageController extends Controller
             }
 
             $depannage->save();
+
             return response()->json(['message' => 'Statut mis à jour avec succès!']);
         } catch (QueryException $e) {
             Log::error("Erreur SQL dans updateStatus : " . $e->getMessage());
