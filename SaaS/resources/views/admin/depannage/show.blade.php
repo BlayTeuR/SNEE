@@ -63,6 +63,7 @@
                                 @php
                                     $date = \Carbon\Carbon::parse($validation->date)->format('d/m/Y');
                                     $label = '';
+                                    $commentaire = '';
 
                                     if ($validation->validation === 'valide') {
                                         $label = 'Validé';
@@ -79,9 +80,20 @@
                                     }
                                 @endphp
 
+                                @php
+                                    if($validation->commentaire != null) {
+                                        $commentaire = $validation->commentaire;
+                                    }
+                                @endphp
+                            @if($commentaire == '')
                                 <li class="text-xs">
-                                    {{ $date }} : ({{ $label }})
+                                    {{ $date }} : ({{ $label }}) -> aucun commentaire
                                 </li>
+                                @else
+                                    <li class="text-xs">
+                                        {{ $date }} : ({{ $label }}) -> {{$commentaire}}
+                                    </li>
+                                @endif
                             @endforeach
                         @else
                             <li class="text-xs">Aucun historique disponible.</li>
