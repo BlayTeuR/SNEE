@@ -5,6 +5,8 @@ import Alpine from 'alpinejs';
 import './loading.js';
 import '../css/notifications.css';
 import { saveNotificationBeforeReload } from './notifications';
+import { fetchWithSpinner } from './spinner';
+
 window.saveNotificationBeforeReload = saveNotificationBeforeReload;
 
 window.Alpine = Alpine;

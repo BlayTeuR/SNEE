@@ -284,6 +284,20 @@
         </div>
     </div>
 
+    <div id="modal-appro" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3 relative">
+            <h2 class="text-xl font-bold mb-4 text-red-600">Attention</h2>
+            <p class="mb-6">
+                Un approvisionnement dont le statut est différent de <strong>"Fait"</strong> existe pour ce dépannage.
+                Changer l'état supprimera cet approvisionnement. Voulez-vous continuer ?
+            </p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="cancelApproChange()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Annuler</button>
+                <button onclick="confirmApproChange()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Valider</button>
+            </div>
+        </div>
+    </div>
+
     <div id="create-aff-modal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
         <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
@@ -332,6 +346,8 @@
     let depannageIdToDelete = null;
     let isFromAffectation = false;
     let idForAffectation = null;
+    let openDropdownId = null;
+    let originalStatus = {};
 
     function toggleModalArchiveBis(id) {
         const modal = document.getElementById('confirmation-modal-bis');
@@ -412,14 +428,20 @@
 
     async function validateDateThenOpenTech(event, openTechModal = false) {
         event.preventDefault();
-        await updateDate();
+
+        const success = await updateDate(); // ❗️on attend le résultat SANS reload automatique
+
+        if (!success) return;
+
         if (openTechModal) {
-            toggleModalAff(true, idForAffectation);
+            toggleModalAff(true, idForAffectation); // ✅ ici seulement le modal est lancé
         } else {
-            window.location.reload();
+            location.reload(); // ✅ reload uniquement si pas de modal à ouvrir
         }
+
         isFromAffectation = false;
     }
+
 
     function toggleModalAff(show = true, id) {
         console.log("id = " + id)
@@ -445,15 +467,32 @@
         menu.classList.toggle('hidden');
     }
 
-    function toggleDropdown(id, buttonId = null) {
-        const dropdown = document.getElementById(id);
+    function toggleDropdown(dropdownId, buttonId = null) {
+        const dropdown = document.getElementById(dropdownId);
+        if (!dropdown) return;
 
-        if (lastOpenedDropdown && lastOpenedDropdown !== dropdown) {
-            lastOpenedDropdown.classList.add('hidden');
+        // Fermer le menu précédent si différent
+        if (openDropdownId && openDropdownId !== dropdownId) {
+            const oldDropdown = document.getElementById(openDropdownId);
+            if (oldDropdown) oldDropdown.classList.add('hidden');
         }
 
-        dropdown.classList.toggle('hidden');
-        lastOpenedDropdown = dropdown.classList.contains('hidden') ? null : dropdown;
+        // Basculer l'affichage du menu courant
+        if (dropdown.classList.contains('hidden')) {
+            dropdown.classList.remove('hidden');
+            openDropdownId = dropdownId;
+
+            // Enregistrer le statut actuel si un bouton est fourni
+            if (buttonId) {
+                const button = document.getElementById(buttonId);
+                if (button) {
+                    originalStatus[dropdownId] = button.textContent.trim();
+                }
+            }
+        } else {
+            dropdown.classList.add('hidden');
+            openDropdownId = null;
+        }
     }
 
     function toggleModal(depannageID = null) {
@@ -464,7 +503,7 @@
         modal.classList.toggle('hidden');
     }
 
-    function updateStatus(dropdownId, statusText, statusColor, buttonId) {
+    async function updateStatus(dropdownId, statusText, statusColor, buttonId) {
         const button = document.getElementById(buttonId);
         const depannageId = buttonId.split('-')[1].trim();
 
@@ -482,14 +521,11 @@
             return;
         }
 
-        performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button);
+        await performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button);
         toggleDropdown(dropdownId);
-        setTimeout(() => {
-            location.reload();
-        }, 300);
     }
 
-    async function performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button) {
+    async function performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button, force = false) {
         button.textContent = statusText;
         button.classList.remove('bg-gray-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500');
         button.classList.add(statusColor);
@@ -500,7 +536,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             },
-            body: JSON.stringify({ statut: statusText }),
+            body: JSON.stringify({ statut: statusText, force }),
         })
             .then(response => {
                 if (!response.ok) {
@@ -511,12 +547,23 @@
                 return response.json();
             })
             .then(data => {
+                if (data.action === 'confirm_override') {
+                    showApproModal(dropdownId, statusText, statusColor, depannageId);
+                    return;
+                }
+
                 console.log('Statut mis à jour avec succès:', data);
+
+                // ✅ Ne reload que si ce n'est pas un "affecter"
+                if (!idForAffectation) {
+                    location.reload();
+                }
             })
             .catch(error => {
                 saveNotificationBeforeReload(error.message || 'Une erreur est survenue', 'error');
             });
     }
+
 
     async function updateTechnicien() {
 
@@ -562,10 +609,9 @@
 
             const data = await res.json();
 
-            // Si erreur type 409 (conflit : date déjà utilisée)
             if (res.status === 409) {
                 saveNotificationBeforeReload('Une intervention à cette date existe déjà pour ce dépannage ', 'error');
-                return;
+                return false;
             }
 
             if (!res.ok) {
@@ -576,7 +622,6 @@
 
             if (pendingStatut) {
                 idForAffectation = currentDeppangeId;
-
                 const { dropdownId, statusText, statusColor, buttonId } = pendingStatut;
                 const button = document.getElementById(buttonId);
 
@@ -584,17 +629,17 @@
 
                 pendingStatut = null;
                 toggleModalDate(false, null);
-                return true;
             }
 
-            location.reload();
+            return true;
 
         } catch (err) {
             console.error("erreur enregistrement de la date", err);
             saveNotificationBeforeReload("Erreur lors de l'enregistrement de la date", 'error');
-            location.reload();
+            return false;
         }
     }
+
 
     function delDepannage() {
         if (depannageIdToDelete !== null) {
@@ -633,6 +678,41 @@
             if (lastOpenedDropdown) {
                 lastOpenedDropdown.classList.add('hidden');
                 lastOpenedDropdown = null;
+            }
+        }
+    });
+
+    function showApproModal(dropdownId, statusText, statusColor, depannageId) {
+        pendingStatut = { dropdownId, statusText, statusColor, depannageId };
+
+        const modal = document.getElementById("modal-appro");
+        modal.classList.remove("hidden");
+    }
+
+    function confirmApproChange() {
+        const { dropdownId, statusText, statusColor, depannageId } = pendingStatut;
+        const button = document.getElementById(`status-button-${depannageId}`);
+
+        performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button, true);
+        closeApproModal();
+    }
+
+    function cancelApproChange() {
+        closeApproModal();
+    }
+
+    function closeApproModal() {
+        const modal = document.getElementById("modal-appro");
+        modal.classList.add("hidden");
+    }
+
+    document.addEventListener('click', function(event) {
+        if (openDropdownId) {
+            const dropdown = document.getElementById(openDropdownId);
+            const button = document.getElementById(openDropdownId + '-btn');
+            if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.add('hidden');
+                openDropdownId = null;
             }
         }
     });
