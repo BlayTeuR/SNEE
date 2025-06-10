@@ -230,6 +230,7 @@
     let facturationToDelete = null;
     let lastOpenedDropdown = null;
     let openedModals = new Set();
+    let openDropdownId = null;
 
     function toggleModalArchived(id) {
         const modal = document.getElementById('confirmation-modal-bis');
@@ -245,7 +246,17 @@
 
     function toggleDropdown(id) {
         const dropdown = document.getElementById(id);
-        dropdown.classList.toggle('hidden');
+        if (openDropdownId && openDropdownId !== id) {
+            const oldDropdown = document.getElementById(openDropdownId);
+            if (oldDropdown) oldDropdown.classList.add('hidden');
+        }
+        if (dropdown.classList.contains('hidden')) {
+            dropdown.classList.remove('hidden');
+            openDropdownId = id;
+        } else {
+            dropdown.classList.add('hidden');
+            openDropdownId = null;
+        }
     }
 
     function toggleModal(facturationId = null) {
@@ -372,5 +383,15 @@
         openedModals.delete(modal);
     }
 
+    document.addEventListener('click', function(event) {
+        if (openDropdownId) {
+            const dropdown = document.getElementById(openDropdownId);
+            const button = document.getElementById(openDropdownId + '-btn');
+            if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.add('hidden');
+                openDropdownId = null;
+            }
+        }
+    });
 
 </script>

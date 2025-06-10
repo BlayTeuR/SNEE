@@ -246,6 +246,8 @@
 
 <script>
 
+    let openDropdownId = null;
+
     function openModalPiece(approvisionnementId) {
         document.getElementById(`modal-${approvisionnementId}-piece`).classList.remove('hidden');
     }
@@ -258,7 +260,17 @@
 
     function toggleDropdown(id) {
         const dropdown = document.getElementById(id);
-        dropdown.classList.toggle('hidden');
+        if (openDropdownId && openDropdownId !== id) {
+            const oldDropdown = document.getElementById(openDropdownId);
+            if (oldDropdown) oldDropdown.classList.add('hidden');
+        }
+        if (dropdown.classList.contains('hidden')) {
+            dropdown.classList.remove('hidden');
+            openDropdownId = id;
+        } else {
+            dropdown.classList.add('hidden');
+            openDropdownId = null;
+        }
     }
 
     function toggleModal(approvisionnementId = null) {
@@ -453,6 +465,17 @@
         }
         toggleModal();
     }
+
+    document.addEventListener('click', function(event) {
+        if (openDropdownId) {
+            const dropdown = document.getElementById(openDropdownId);
+            const button = document.getElementById(openDropdownId + '-btn');
+            if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.add('hidden');
+                openDropdownId = null;
+            }
+        }
+    });
 
     document.addEventListener('click', function(event) {
         const isClickInsideMenu = event.target.closest('.relative');

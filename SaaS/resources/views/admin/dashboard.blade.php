@@ -561,6 +561,7 @@
             })
             .catch(error => {
                 saveNotificationBeforeReload(error.message || 'Une erreur est survenue', 'error');
+                location.reload();
             });
     }
 
