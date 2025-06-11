@@ -90,7 +90,9 @@
                                 $count++;
                                 $currentApprovisionnementId = $approvisionnement->id;
                             @endphp
-                            <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->depannage_id }}</td>
+                            <td class="p-3 text-sm text-gray-700">
+                                <button onclick="accessDepannage({{$approvisionnement->depannage_id}})" class="p-3 text-sm text-blue-500 hover:text-blue-600 hover:underline">{{ $approvisionnement->depannage_id }}</button>
+                            </td>
                             <td class="p-3 text-sm text-gray-700">{{$approvisionnement->depannage->nom}}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $approvisionnement->created_at->format('d/m/Y') }}</td>
                             <td class="p-3 text-sm text-gray-700">
@@ -443,6 +445,10 @@
             .catch(error => {
                 console.error('Erreur:', error);
             });
+    }
+
+    function accessDepannage(id){
+        window.location.href = `/admin/dashboard?id=${id}`;
     }
 
     function delApprovisionnementConfirm() {

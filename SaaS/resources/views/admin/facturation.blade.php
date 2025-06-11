@@ -91,7 +91,9 @@
                             @endphp
                         @endif
                         <tr class="hover:bg-gray-200 {{$bgColor}}">
-                            <td class="p-3 text-sm text-gray-700">{{ $facturation->depannage_id }}</td>
+                            <td class="p-3 text-sm text-gray-700">
+                                <button onclick="accessDepannage({{$facturation->depannage_id}})" class="p-3 text-sm text-blue-500 hover:text-blue-600 hover:underline">{{ $facturation->depannage_id }}</button>
+                            </td>
                             <td class="p-3 text-sm text-gray-700">{{ $facturation->depannage->nom }}</td>
                             <td class="p-3 text-sm text-gray-700">{{ $facturation->created_at->format('d/m/Y') }}</td>
                             <td class="p-3 text-sm text-gray-700">
@@ -381,6 +383,10 @@
         const modal = document.getElementById(`modal-${facturationId}-montant`);
         modal.classList.add('hidden');
         openedModals.delete(modal);
+    }
+
+    function accessDepannage(id){
+        window.location.href = `/admin/dashboard?id=${id}`;
     }
 
     document.addEventListener('click', function(event) {

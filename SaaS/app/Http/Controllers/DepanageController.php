@@ -25,6 +25,9 @@ class DepanageController extends Controller
         // Commencer la requête de base
         $query = Depannage::with('historiques', 'types');
 
+        if ($request->filled('id')) {
+            $query->where('id', $request->input('id'));
+        }
         // Filtrer par statut
         if ($request->filled('statut') && $request->statut !== 'all') {
             $query->where('statut', $request->statut);
