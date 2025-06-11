@@ -40,7 +40,7 @@ class PieceController extends Controller
         $piece->quantite = $request->input('quantite');
         $piece->save();
 
-        return redirect('/approvisionnement')->with('success', 'Pièce mise à jour avec succès!');
+        return redirect('/admin/approvisionnement')->with('success', 'Pièce mise à jour avec succès!');
     }
 
     public function destroy($id)
