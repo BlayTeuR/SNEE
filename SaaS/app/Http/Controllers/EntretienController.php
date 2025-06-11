@@ -135,7 +135,7 @@ class EntretienController extends Controller
                     }
                 }
             }
-            return redirect('admin.entretien')->with('success', 'Votre demande a été enregistrée avec succès.');
+            return redirect('/admin/entretien')->with('success', 'Votre demande a été enregistrée avec succès.');
         }catch(\Exception $e) {
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());
         }

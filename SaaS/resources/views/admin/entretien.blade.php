@@ -140,8 +140,8 @@
                                     @if($entretien->historiques->isEmpty())
                                         <li>Aucun historique</li>
                                     @endif
-                                    @foreach($entretien->historiques as $historique)
-                                        <li>Visite {{ $numVisite }} - {{ \Carbon\Carbon::parse($historique->date)->format('d/m/Y') }}</li>
+                                    @foreach($entretien->validations as $historique)
+                                        <li>{{ \Carbon\Carbon::parse($historique->date)->format('d/m/Y') }} ({{$historique->validation}})</li>
                                         @php $numVisite++; @endphp
                                     @endforeach
                                 </ul>

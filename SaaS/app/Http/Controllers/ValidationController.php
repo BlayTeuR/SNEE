@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Depannage;
 use App\Models\Entretien;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ValidationController extends Controller
 {
@@ -79,30 +80,41 @@ class ValidationController extends Controller
             $interventions = $interventions->sortByDesc('date')->values();
             // dd($interventions);
         } else if ($type === 'entretiens') {
-            $query = Entretien::with(['historiques', 'validations']);
+            $query = Entretien::with(['historiques', 'validations'])
+                ->where('archived', false);
 
-            $moisCourantActive = $type === 'entretien' && $request->input('mois_courant', 'on') === 'on';
-
+            // Filtres généraux
             if ($request->filled('nom')) {
                 $query->where('nom', 'like', '%' . $request->input('nom') . '%');
             }
-
             if ($request->filled('date')) {
-                $query->whereDate('derniere_date', '=', $request->input('date'));
+                $query->whereDate('derniere_date', $request->input('date'));
             }
 
+            $moisCourantActive = $request->input('mois_courant', 'on') === 'on';
+
             if ($moisCourantActive) {
-                $query->whereMonth('derniere_date', now()->month)
-                    ->whereYear('derniere_date', now()->year);
+                // Filtrer sur les entretiens du mois courant soit via derniere_date soit via validation->date
+                $query->where(function ($q) {
+                    $q->whereMonth('derniere_date', now()->month)
+                        ->whereYear('derniere_date', now()->year)
+                        ->orWhereHas('validations', function ($sub) {
+                            $sub->whereMonth('date', now()->month)
+                                ->whereYear('date', now()->year);
+                        });
+                });
             }
 
             $entretiens = $query->get();
-            $jourCourantActive = $request->input('jour_courant', 'on') === 'on';
+
+            $interventions = collect();
 
             foreach ($entretiens as $entretien) {
+                // 1) Ajouter tous les historiques (dates) d'interventions (validation ou non)
                 foreach ($entretien->historiques as $historique) {
                     $date = \Carbon\Carbon::parse($historique->date)->format('Y-m-d');
-                    if (!$jourCourantActive || $date === now()->format('Y-m-d')) {
+
+                    if (!$moisCourantActive || \Carbon\Carbon::parse($date)->isSameMonth(now())) {
                         $interventions->push([
                             'entretien' => $entretien,
                             'date' => $date,
@@ -110,13 +122,15 @@ class ValidationController extends Controller
                     }
                 }
 
+                // 2) Ajouter la date principale d'entretien (derniere_date) si elle n'est pas déjà dans la liste
                 if ($entretien->derniere_date) {
                     $datePlanifiee = \Carbon\Carbon::parse($entretien->derniere_date)->format('Y-m-d');
+
                     $dejaPresente = $interventions->contains(function ($i) use ($datePlanifiee, $entretien) {
                         return $i['date'] === $datePlanifiee && $i['entretien']->id === $entretien->id;
                     });
 
-                    if (!$dejaPresente && (!$jourCourantActive || $datePlanifiee === now()->format('Y-m-d'))) {
+                    if (!$dejaPresente && (!$moisCourantActive || \Carbon\Carbon::parse($datePlanifiee)->isSameMonth(now()))) {
                         $interventions->push([
                             'entretien' => $entretien,
                             'date' => $datePlanifiee,
@@ -198,8 +212,55 @@ class ValidationController extends Controller
         }
     }
 
-    public function valideEntretien(Request $request){
-        $validated = $request->validate([]);
-    }
+    public function valideEntretien(Request $request, $id)
+    {
+        try {
+            // Validation avec règle conditionnelle pour 'date'
+            $validated = $request->validate([
+                'intervention_id' => 'required|integer',
+                'option' => 'required|in:nouvelle_date,valide',
+                'type' => 'required|in:depannage,entretiens',
+                'date' => 'nullable|date|required_if:option,nouvelle_date',
+                'context' => 'required|in:nonValide,valide',
+                'commentaire' => 'nullable|string',
+            ]);
 
+            if ($validated['type'] === 'entretiens') {
+                $intervention = Entretien::findOrFail($id);
+                $date_before = $intervention->derniere_date;
+
+                if ($validated['option'] === 'valide') {
+                    // On reprogramme 6 mois après la dernière date
+                    $intervention->derniere_date = Carbon::parse($date_before)->addMonths(6)->format('Y-m-d');
+                } elseif ($validated['option'] === 'nouvelle_date') {
+                    $intervention->derniere_date = Carbon::parse($validated['date'])->format('Y-m-d');
+                }
+
+                $intervention->save();
+
+                $intervention->validations()->create([
+                    'validation' => $validated['context'],
+                    'commentaire' => $validated['commentaire'] ?? null,
+                    'date' => $date_before,
+                    'detail' => $validated['option'],
+                ]);
+
+                $intervention->historiques()->firstOrCreate([
+                    'date' => $date_before,
+                ]);
+            }
+
+            return response()->json(['success' => true, 'message' => 'Entretien validé/reprogrammé.']);
+        } catch (\Throwable $e) {
+            \Log::error('Erreur valideEntretien', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'error' => true,
+                'message' => 'Erreur serveur : ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

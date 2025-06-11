@@ -40,12 +40,55 @@
                     @endif
                     </p>
                     <p class="text-sm font-semibold mt-2">Historique :</p>
-                    <ul class="list-disc list-inside">
-                        @forelse($depannage->historiques as $histo)
-                            <li class="text-sm"> - {{ \Carbon\Carbon::parse($histo->date)->format('d/m/Y') }}</li>
-                        @empty
+                    <ul>
+                        @if($depannage->validations->isNotEmpty())
+                            @foreach($depannage->validations->sortByDesc('date') as $validation)
+                                @php
+                                    $date = \Carbon\Carbon::parse($validation->date)->format('d/m/Y');
+                                    $label = '';
+                                    $commentaire = '';
+
+                                    if ($validation->validation === 'valide') {
+                                        if ($validation->detail === 'approvisionnement') {
+                                            $label = 'Validé : approvisionnement';
+                                        } elseif ($validation->detail === 'nouvelle_date') {
+                                            $label = 'Validé : affectation d\'une nouvelle intervention';
+                                        } elseif ($validation->detail === 'facturer') {
+                                            $label = 'Validé : facturation';
+                                        } else {
+                                            $label = 'Non validé';
+                                        }
+                                    } elseif ($validation->validation === 'nonValide') {
+                                        if ($validation->detail === 'ultérieurement') {
+                                            $label = 'Non validé : repassé dans l’état à planifier';
+                                        } elseif ($validation->detail === 'nouvelle_date') {
+                                            $label = 'Non validé : reprogrammé';
+                                        } else {
+                                            $label = 'Non validé';
+                                        }
+                                    } else {
+                                        $label = 'Inconnu';
+                                    }
+                                @endphp
+
+                                @php
+                                    if($validation->commentaire != null) {
+                                        $commentaire = $validation->commentaire;
+                                    }
+                                @endphp
+                                @if($commentaire == '')
+                                    <li class="text-sm">
+                                        - {{ $date }} : ({{ $label }}) -> aucun commentaire
+                                    </li>
+                                @else
+                                    <li class="text-sm">
+                                        - {{ $date }} : ({{ $label }}) -> {{$commentaire}}
+                                    </li>
+                                @endif
+                            @endforeach
+                        @else
                             <li class="text-sm">Aucun historique disponible.</li>
-                        @endforelse
+                        @endif
                     </ul>
                     <p class="text-sm"><strong>Type de matériel:</strong> {{ $depannage->type_materiel }}</p>
                     <p class="text-sm"><strong>Panne rencontrée:</strong> {{ $depannage->description_probleme }}</p>

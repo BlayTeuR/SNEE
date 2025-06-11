@@ -31,12 +31,39 @@
                         @endif
                     </p>
                     <p class="text-sm font-semibold mt-2">Historique :</p>
-                    <ul class="list-disc list-inside">
-                        @forelse($entretien->historiques as $histo)
-                            <li class="text-sm"> - {{ \Carbon\Carbon::parse($histo->date)->format('d/m/Y') }}</li>
-                        @empty
+                    <ul>
+                        @if($entretien->validations->isNotEmpty())
+                            @foreach($entretien->validations->sortByDesc('date') as $validation)
+                                @php
+                                    $date = \Carbon\Carbon::parse($validation->date)->format('d/m/Y');
+                                    $label = '';
+                                    $commentaire = '';
+
+                                    if ($validation->validation === 'valide') {
+                                        $label = 'Validé';
+                                    } else {
+                                        $label = 'Non validé : reprogrammé';
+                                    }
+                                @endphp
+
+                                @php
+                                    if($validation->commentaire != null) {
+                                        $commentaire = $validation->commentaire;
+                                    }
+                                @endphp
+                                @if($commentaire == '')
+                                    <li class="text-sm">
+                                        - {{ $date }} : ({{ $label }}) -> aucun commentaire
+                                    </li>
+                                @else
+                                    <li class="text-sm">
+                                        - {{ $date }} : ({{ $label }}) -> {{$commentaire}}
+                                    </li>
+                                @endif
+                            @endforeach
+                        @else
                             <li class="text-sm">Aucun historique disponible.</li>
-                        @endforelse
+                        @endif
                     </ul>
                     <p class="text-sm"><strong>Type de matériel:</strong> {{ $depannage->type_materiel }}</p>
                     <p class="text-sm"><strong>Panne ou vigilance:</strong> {{ $depannage->description_probleme }}</p>

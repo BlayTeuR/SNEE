@@ -105,25 +105,43 @@
                                         Traité le {{\Carbon\Carbon::parse($validation->created_at)->format('d/m/Y')}} ({{ $validation->validation ?? 'Inconnu' }})
 
                                 @else
-                                    <button onclick="openValideModal({{ $depannage->id }}, '{{ $date }}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valide</button>
-                                    <button onclick="openNonValideModal({{ $depannage->id }}, '{{ $date }}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Non valide</button>
+                                    <button onclick="openValideModal({{ $depannage->id }}, 'depannage')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valide</button>
+                                    <button onclick="openNonValideModal({{ $depannage->id }}, 'depannage')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Non valide</button>
                                 @endif
                             </div>
                         </div>
                     @endforeach
 
                 @elseif($type == 'entretiens')
-                    @foreach($interventions as $item)
-                        @php $entretien = $item['entretien']; @endphp
+                    @foreach($interventions as $intervention)
+                        @php
+                            $entretien = $intervention['entretien'];
+                            $date = \Carbon\Carbon::parse($intervention['date'])->format('Y-m-d');
+                            // Trouver la validation correspondant à la date (si elle existe)
+                            $validation = $entretien->validations->first(function ($v) use ($date) {
+                                return \Carbon\Carbon::parse($v->date)->format('Y-m-d') === $date;
+                            });
+
+                            $isTraite = !is_null($validation);
+                            $isValidatedToday = $validation && \Carbon\Carbon::parse($validation->created_at)->isToday();
+                        @endphp
+
                         <div class="bg-gray-100 p-4 mb-4 rounded-lg shadow-sm flex items-center justify-between">
                             <div>
                                 <h3 class="text-lg font-bold">{{ $entretien->nom }}</h3>
-                                <p class="text-gray-600">Adresse: {{ $entretien->adresse }}</p>
-                                <p class="text-gray-600">Date: {{ $item['date'] }}</p>
+                                <p class="text-gray-600">Date : {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</p>
+                                <p class="text-gray-600">Adresse : {{ $entretien->adresse }}</p>
                             </div>
+
                             <div class="flex space-x-2">
-                                <button onclick="toggleValideEntretien({{$entretien->id}})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valider</button>
-                                <button onclick="toggleModalDateEntretien(true, {{$entretien->id}})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Annuler</button>
+                                @if($isTraite)
+                                    <span class="text-sm font-semibold {{ $isValidatedToday ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700' }} px-4 py-2 rounded">
+                        Traité le {{ \Carbon\Carbon::parse($validation->created_at)->format('d/m/Y') }} ({{ $validation->validation ?? 'Inconnu' }})
+                    </span>
+                                @else
+                                    <button onclick="toggleValideEntretien({{ $entretien->id }}, 'entretien')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Valide</button>
+                                    <button onclick="toggleModalDateEntretien(true, {{ $entretien->id }}, 'entretien')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Non valide</button>
+                                @endif
                             </div>
                         </div>
                     @endforeach
@@ -179,7 +197,7 @@
             <input type="date" name="date-create" id="date-create" class="block w-full mb-4 p-2 border border-gray-300 rounded-lg" value="{{ request('date-crate') }}">
 
             <div class="flex justify-end space-x-4">
-                <button onclick="toggleModalDate(false, currentContext)" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
+                <button onclick="toggleModalDate(false, currentContext, 'depannage')" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
                 <button onclick="updateDate()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Valider</button>
             </div>
         </div>
@@ -188,12 +206,12 @@
     <div id="create-date-modal-entretien" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[9999]">
         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 relative z-[10000]">
             <h2 class="text-xl font-semibold mb-4">À quelle date souhaitez-vous reprogrammer cet entretien ?</h2>
-            <label for="date-create" class="block text-sm font-medium text-gray-700 mb-2">Choisir une date</label>
-            <input type="date" name="date-create" id="date-create-entretien" class="block w-full mb-4 p-2 border border-gray-300 rounded-lg" value="{{ request('date-crate-entretien') }}">
+            <label for="date-create-entretien" class="block text-sm font-medium text-gray-700 mb-2">Choisir une date</label>
+            <input type="date" name="date-create-entretien" id="date-create-entretien" class="block w-full mb-4 p-2 border border-gray-300 rounded-lg" value="{{ request('date-crate-entretien') }}">
 
             <div class="flex justify-end space-x-4">
                 <button onclick="toggleModalDateEntretien(false, null)" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
-                <button onclick="updateDateEntretien()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Valider</button>
+                <button onclick="updateDate()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Valider</button>
             </div>
         </div>
     </div>
@@ -237,35 +255,49 @@
     </div>
 
     <script>
-        function getReplanifierUrl(id) {
-            return `/admin/validationDepannage/${id}`;
+        function getReplanifierUrl(id, etat) {
+            if(etat === 'depannage'){
+                console.log('return /admin/validationDepannage/'+id+'/ avec etat = ' + etat)
+                return `/admin/validationDepannage/${id}`;
+            } else if(etat === 'entretien') {
+                console.log('return /admin/valideEntretien/'+id+'/ avec etat = ' + etat)
+                return `/admin/valideEntretien/${id}`;
+            }
+            console.log('probleme avec etat = ' + etat);
+            return '/admin/validationDepannage/${id}'
         }
 
         let currentContext = null;
         let currentInterventionId = null;
         let selectedDate = null;
-        let currentEntretienId = null;
         let pendingData = null;
+        let currentEtat = null;
 
-        function toggleValideEntretien(id = null){
+        function toggleValideEntretien(id = null, etat = null){
             document.getElementById('confirm-valide-modal-entretien').classList.toggle('hidden');
-            currentEntretienId = id;
+            currentInterventionId = id;
+            currentEtat = etat;
+            currentContext = 'valide';
+            console.log('etat = ' + etat);
         }
 
-        function openValideModal(id) {
+        function openValideModal(id, etat = null) {
             document.getElementById('valideModal').classList.remove('hidden');
             currentContext = 'valide';
             currentInterventionId = id;
+            currentEtat = etat;
+            console.log('etat = ' + etat);
         }
 
-        function openNonValideModal(id) {
+        function openNonValideModal(id, etat = null) {
             document.getElementById('nonValideModal').classList.remove('hidden');
             currentContext = 'nonValide';
             currentInterventionId = id;
-            console.log('nonValideModal = ' + currentInterventionId)
+            currentEtat = etat;
+            console.log('etat = ' + etat);
         }
 
-        function toggleModalDateEntretien(show, id = null){
+        function toggleModalDateEntretien(show, id = null, etat = null){
             currentInterventionId = id;
             const dateModal = document.getElementById('create-date-modal-entretien');
             if(!show){
@@ -273,30 +305,40 @@
             } else {
                 dateModal.classList.remove('hidden');
             }
+            currentEtat = etat;
+            currentContext = 'nonValide';
+            console.log('etat = ' + etat);
+            console.log('currentEtat before = ' + currentEtat)
         }
 
-        function closeValideModal(etat = null, id = null) {
+        function closeValideModal(context = null, id = null, etat = null) {
             document.getElementById('valideModal').classList.add('hidden');
             currentInterventionId = id;
-            currentContext = etat;
+            currentContext = context;
+            currentEtat = etat;
+            console.log('etat = ' + etat);
         }
 
-        function closeNonValideModal(etat = null, id = null) {
+        function closeNonValideModal(context = null, id = null, etat = null) {
             document.getElementById('nonValideModal').classList.add('hidden');
-            currentContext = etat;
+            currentContext = context;
             currentInterventionId = id;
+            currentEtat = etat;
+            console.log('etat = ' + etat);
         }
 
-        function toggleModalDate(show, sourceModal, reopenParent = true) {
+        function toggleModalDate(show, sourceModal, reopenParent = true, etat = null) {
             id = currentInterventionId;
+            currentEtat = etat;
+            console.log('etat = ' + etat);
             const dateModal = document.getElementById('create-date-modal');
 
             if (show) {
                 // Masquer le modal source
                 if (sourceModal === 'valide') {
-                    closeValideModal('valide', id);
+                    closeValideModal('valide', id, 'depannage');
                 } else if (sourceModal === 'nonValide') {
-                    closeNonValideModal('nonValide', id);
+                    closeNonValideModal('nonValide', id, 'depannage');
                 }
 
                 dateModal.classList.remove('hidden');
@@ -337,6 +379,7 @@
                 context: currentContext,
                 option: selectedOption.value,
                 type: type,
+                etat: currentEtat,
             };
 
             if (selectedOption.value === "nouvelle_date") {
@@ -369,6 +412,7 @@
                 context: currentContext,
                 option: selectedOption.value,
                 type: type,
+                etat: currentEtat,
             };
 
             if (selectedOption.value === "nouvelle_date") {
@@ -387,55 +431,30 @@
             document.getElementById("commentModal").classList.remove("hidden");
         }
 
-        function updateDateEntretien(){
-            selectedDate = document.getElementById('date-create-entretien').value;
-            if (!selectedDate) {
-                saveNotificationBeforeReload('Veuillez choisir une date avant de valider', 'error');
-                location.reload();
-                return;
+        function updateDate(){
+            console.log('currentEtat = ' + currentEtat);
+            if(currentEtat === 'depannage'){
+                selectedDate = document.getElementById('date-create').value;
+            } else if(currentEtat === 'entretien'){
+                selectedDate = document.getElementById('date-create-entretien').value;
+                console.log('SelectedDate = ' + selectedDate)
+            } else {
+                console.error('problème avec selecteDate');
             }
 
-            fetch(`/admin/updateDateEnretienValidation/${currentInterventionId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                body: JSON.stringify({ id: currentEntretienId })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.message);
-                    setTimeout(() => {
-                        currentEntretienId = null;
-                        saveNotificationBeforeReload("Entretien non validé avec succès.", 'success');
-                        location.reload();
-                    }, 100);
-
-                })
-                .catch(error => {
-                        currentEntretienId = null;
-                        saveNotificationBeforeReload("Erreur lors de la non validation de l'entretien", 'error');
-                        console.error('Erreur:', error);
-                    }
-
-            )
-        }
-
-
-        function updateDate(){
-            console.log('click on updateDate');
-            selectedDate = document.getElementById('date-create').value;
 
             console.log(selectedDate);
             if (!selectedDate) {
                 saveNotificationBeforeReload('Veuillez choisir une date avant de valider', 'error');
-                location.reload();
+                setTimeout(() => {location.reload();}, 100000)
                 return;
             }
 
-            // On ferme le modal de date sans rouvrir le parent
-            toggleModalDate(false, currentContext, false);
+            if(currentEtat === 'depannage'){
+                toggleModalDate(false, currentContext, false, currentEtat);
+            } else if(currentEtat === 'entretien'){
+                toggleModalDateEntretien(false, currentInterventionId, currentEtat);
+            }
 
             // On construit les données manuellement puisque l'utilisateur vient de choisir la date
             const type = document.getElementById("status-filter").value;
@@ -455,32 +474,22 @@
             console.log('updateDate = ' + currentInterventionId);
         }
 
-
         function submitValideEntretien(){
-            fetch(`/admin/valideEntretien/${currentEntretienId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                body: JSON.stringify({ id: currentEntretienId })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.message);
-                    setTimeout(() => {
-                        currentEntretienId = null;
-                        saveNotificationBeforeReload("Entretien validé avec succès.", 'success');
-                        location.reload();
-                    }, 100);
+            console.log('on passe dans sendValideEntretien');
 
-                })
-                .catch(error => {
-                        currentEntretienId = null;
-                        saveNotificationBeforeReload("Erreur lors de la validation de l'entretien", 'error');
-                        console.error('Erreur:', error);
-                    }
-                );
+            const type = document.getElementById("status-filter").value;
+            const data = {
+                intervention_id: currentInterventionId,
+                context: currentContext,
+                option: "valide",
+                type: type,
+                etat: currentEtat,
+            };
+
+            pendingData = data;
+
+            document.getElementById("commentaire").value = "";
+            document.getElementById("commentModal").classList.remove("hidden");
         }
 
         function closeModalCommentaire() {
@@ -491,6 +500,7 @@
             selectedDate = null;
             typeIntervention = null;
             pendingData = null;
+            currentEtat = null;
         }
 
         async function sendWithCommentaire() {
@@ -501,7 +511,9 @@
             pendingData.commentaire = commentaire || null;
 
             try {
-                const response = await fetch(getReplanifierUrl(currentInterventionId), {
+                console.log("Données envoyées au serveur:", pendingData);
+
+                const response = await fetch(getReplanifierUrl(currentInterventionId, currentEtat), {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json',

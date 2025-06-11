@@ -66,7 +66,15 @@
                                     $commentaire = '';
 
                                     if ($validation->validation === 'valide') {
-                                        $label = 'Validé';
+                                        if ($validation->detail === 'approvisionnement') {
+                                            $label = 'Validé : approvisionnement';
+                                        } elseif ($validation->detail === 'nouvelle_date') {
+                                            $label = 'Validé : affectation d\'une nouvelle intervention';
+                                        } elseif ($validation->detail === 'facturer') {
+                                            $label = 'Validé : facturation';
+                                        } else {
+                                            $label = 'Non validé';
+                                        }
                                     } elseif ($validation->validation === 'nonValide') {
                                         if ($validation->detail === 'ultérieurement') {
                                             $label = 'Non validé : repassé dans l’état à planifier';
@@ -87,11 +95,11 @@
                                 @endphp
                             @if($commentaire == '')
                                 <li class="text-xs">
-                                    {{ $date }} : ({{ $label }}) -> aucun commentaire
+                                    - {{ $date }} : ({{ $label }}) -> aucun commentaire
                                 </li>
                                 @else
                                     <li class="text-xs">
-                                        {{ $date }} : ({{ $label }}) -> {{$commentaire}}
+                                        - {{ $date }} : ({{ $label }}) -> {{$commentaire}}
                                     </li>
                                 @endif
                             @endforeach
