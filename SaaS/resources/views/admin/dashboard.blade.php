@@ -775,7 +775,7 @@
                             saveNotificationBeforeReload("Erreur lors de l'opération du suppression", 'error');
                         });
                 }
-                toggleModal();
+                this.toggleModal();
             },
             gotoentretien: function (entretienId) {
                 window.location.href = `/admin/entretien?id=${entretienId}&mois_courant=off`;
