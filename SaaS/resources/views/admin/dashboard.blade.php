@@ -605,7 +605,7 @@
                     openDropdownId = null;
                 }
             },
-            
+
             toggleModal: function (depannageID = null) {
                 const modal = document.getElementById('confirm-delete-modal');
                 console.log("toggleModal appelé. modal =", modal);
@@ -775,7 +775,7 @@
                         .then(data => {
                             console.log(data.message);
                             saveNotificationBeforeReload("L'opération de suppression a été réalisée avec succès.", 'success');
-                            location.reload();
+                            setTimeout(() => {location.reload();}, 500)
                         })
                         .catch(error => {
                             console.error('Erreur:', error);
