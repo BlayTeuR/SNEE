@@ -52,9 +52,7 @@ Route::get('/caform', function() {
 })->name('caform');
 
 Route::post('/depannage/store', [DepanageController::class, 'store'])
-    ->middleware('throttle:5,10')  // 5 requêtes toutes les 10 minutes par IP
     ->name('depannage.store');
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
