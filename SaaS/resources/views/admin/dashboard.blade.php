@@ -482,7 +482,7 @@
             menu.classList.toggle('hidden');
         }
 
-        function toggleDropdown(dropdownId, buttonId = null) {
+        window.toggleDropdown = function(dropdownId, buttonId = null) {
             const dropdown = document.getElementById(dropdownId);
             if (!dropdown) return;
 
