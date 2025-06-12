@@ -161,7 +161,7 @@
                                     <span class="text-gray-800 font-medium">{{ $depannage->id }}</span>
                                     <div class="ml-1 relative group flex flex-col space-y-1">
                                         @if($depannage->provenance == 'entretien')
-                                            <button onclick="gotoentretien({{$depannage->entretien_id}})"
+                                            <button onclick="dashboard.gotoentretien({{$depannage->entretien_id}})"
                                                     class="text-left p-0 bg-transparent border-none text-xs font-bold text-blue-500 hover:text-blue-600 hover:underline">
                                                 ({{ $depannage->provenance }})
                                             </button>
@@ -181,7 +181,7 @@
 
                                 <!-- Bouton d'édition -->
                                 <button
-                                    onclick="openModal({{ $depannage->id }})"
+                                    onclick="dashboard.openModal({{ $depannage->id }})"
                                     class="ml-2 text-blue-500 hover:text-blue-700 hover:underline">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
@@ -230,7 +230,7 @@
 
                                             <!-- Boutons Valider et Annuler -->
                                             <div class="mt-4 flex justify-end">
-                                                <button type="button" onclick="closeModal({{ $depannage->id }})"
+                                                <button type="button" onclick="dashboard.closeModal({{ $depannage->id }})"
                                                         class="px-4 py-2 bg-red-500 text-white rounded-lg mr-2 hover:bg-red-600">
                                                     Annuler
                                                 </button>
@@ -253,7 +253,7 @@
                                 @endif
                                 @if($depannage->statut == 'Affecter' || $depannage->date_depannage != null)
                                     <button
-                                        onclick="toggleModalDate(true, {{ $depannage->id }})"
+                                        onclick="dashboard.toggleModalDate(true, {{ $depannage->id }})"
                                         class="ml-2 text-blue-500 hover:text-blue-700 hover:underline">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
@@ -261,7 +261,7 @@
                             </td>
                             <td class="p-3 text-sm text-gray-700 relative">
                                 <button id="status-{{ $depannage->id }}-btn"
-                                        onclick="toggleDropdown('status-{{ $depannage->id }}', 'status-{{ $depannage->id }}-btn')"
+                                        onclick="dashboard.toggleDropdown('status-{{ $depannage->id }}', 'status-{{ $depannage->id }}-btn')"
                                         class="px-4 py-2 rounded-lg text-white {{
                                                 $depannage->statut == 'À planifier' ? 'bg-red-500' :
                                                 ($depannage->statut == 'Affecter' ? 'bg-yellow-500' :
@@ -272,16 +272,16 @@
                                 </button>
                                 <ul id="status-{{ $depannage->id }}"
                                     class="hidden absolute left-0 top-full bg-white p-2 mt-2 rounded shadow-md z-10 w-48">
-                                    <li onclick="updateStatus('status-{{ $depannage->id }}', 'À planifier', 'bg-red-500', 'status-{{ $depannage->id }}-btn')"
+                                    <li onclick="dashboard.updateStatus('status-{{ $depannage->id }}', 'À planifier', 'bg-red-500', 'status-{{ $depannage->id }}-btn')"
                                         class="hover:bg-gray-200 p-1 cursor-pointer">À planifier
                                     </li>
-                                    <li onclick="updateStatus('status-{{ $depannage->id }}', 'Affecter', 'bg-yellow-500', 'status-{{ $depannage->id }}-btn')"
+                                    <li onclick="dashboard.updateStatus('status-{{ $depannage->id }}', 'Affecter', 'bg-yellow-500', 'status-{{ $depannage->id }}-btn')"
                                         class="hover:bg-gray-200 p-1 cursor-pointer">Affecter
                                     </li>
-                                    <li onclick="updateStatus('status-{{ $depannage->id }}', 'Approvisionnement', 'bg-blue-500', 'status-{{ $depannage->id }}-btn')"
+                                    <li onclick="dashboard.updateStatus('status-{{ $depannage->id }}', 'Approvisionnement', 'bg-blue-500', 'status-{{ $depannage->id }}-btn')"
                                         class="hover:bg-gray-200 p-1 cursor-pointer">Approvisionnement
                                     </li>
-                                    <li onclick="updateStatus('status-{{ $depannage->id }}', 'À facturer', 'bg-green-500', 'status-{{ $depannage->id }}-btn')"
+                                    <li onclick="dashboard.updateStatus('status-{{ $depannage->id }}', 'À facturer', 'bg-green-500', 'status-{{ $depannage->id }}-btn')"
                                         class="hover:bg-gray-200 p-1 cursor-pointer">À facturer
                                     </li>
                                 </ul>
@@ -293,14 +293,14 @@
                             <td class="text-left p-3 text-sm text-gray-700">
                                 @if($depannage->statut == 'À facturer')
                                     <button class="text-blue-500 hover:underline text-blue-600"
-                                            onclick="toggleModalArchiveBis({{$depannage->id}})">Archiver
+                                            onclick="dashboard.toggleModalArchiveBis({{$depannage->id}})">Archiver
                                     </button>
                                 @endif
                             </td>
 
                             <!-- Colonne suppression -->
                             <td class="p-1 text-xs text-gray-700 w-10 text-center">
-                                <button onclick="toggleModal({{ $depannage->id }})"
+                                <button onclick="dashboard.toggleModal({{ $depannage->id }})"
                                         class="text-red-600 hover:text-red-800">❌
                                 </button>
                             </td>
@@ -328,10 +328,10 @@
             <h2 class="text-xl font-semibold mb-4">Confirmer la suppression</h2>
             <p>Êtes-vous sûr de vouloir supprimer ce dépannage ? Cette action est irréversible.</p>
             <div class="mt-4 flex justify-end space-x-4">
-                <button onclick="toggleModal()" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">
+                <button onclick="dashboard.toggleModal()" class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">
                     Annuler
                 </button>
-                <button onclick="delDepannage()" class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">
+                <button onclick="dashboard.delDepannage()" class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">
                     Supprimer
                 </button>
             </div>
@@ -347,10 +347,10 @@
                 <input type="date" name="date-create" id="date-create"
                        class="block w-full mt-2 p-2 border border-gray-300 rounded-lg"
                        value="{{ request('date-crate') }}">
-                <button onclick="toggleModalDate(false, null)"
+                <button onclick="dashboard.toggleModalDate(false, null)"
                         class="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600">Annuler
                 </button>
-                <button onclick="validateDateThenOpenTech(event, isFromAffectation)"
+                <button onclick="dashboard.validateDateThenOpenTech(event, isFromAffectation)"
                         class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Valider
                 </button>
             </div>
@@ -365,10 +365,10 @@
             <p class="mb-6">Souhaitez-vous que ce dépannage reste visible ou qu’il soit seulement dans l’historique
                 ?</p>
             <div class="flex justify-end space-x-4">
-                <button onclick="cancelArchiveBis()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                <button onclick="dashboard.cancelArchiveBis()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
                     Annuler
                 </button>
-                <button onclick="archiver()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <button onclick="dashboard.archiver()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                     Archiver
                 </button>
             </div>
@@ -383,10 +383,10 @@
                 Changer l'état supprimera cet approvisionnement. Voulez-vous continuer ?
             </p>
             <div class="flex justify-end space-x-4">
-                <button onclick="cancelApproChange()"
+                <button onclick="dashboard.cancelApproChange()"
                         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Annuler
                 </button>
-                <button onclick="confirmApproChange()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                <button onclick="dashboard.confirmApproChange()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Valider
                 </button>
             </div>
@@ -401,10 +401,10 @@
                 Changer l'état supprimera cette facture. Voulez-vous continuer ?
             </p>
             <div class="flex justify-end space-x-4">
-                <button onclick="cancelFactuChange()"
+                <button onclick="dashboard.cancelFactuChange()"
                         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Annuler
                 </button>
-                <button onclick="confirmFactuChange()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                <button onclick="dashboard.confirmFactuChange()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Valider
                 </button>
             </div>
@@ -440,11 +440,11 @@
 
             <!-- Boutons -->
             <div class="mt-6 flex justify-end gap-4">
-                <button onclick="cancelTechChoice()"
+                <button onclick="dashboard.cancelTechChoice()"
                         class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
                     Annuler
                 </button>
-                <button onclick="updateTechnicien()"
+                <button onclick="dashboard.updateTechnicien()"
                         class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
                     Valider
                 </button>
