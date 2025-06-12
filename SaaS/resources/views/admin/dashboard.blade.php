@@ -478,7 +478,7 @@
                 modal.classList.add('hidden');
                 window.currentDepannageId = null;
             },
-            archiver: function () {
+            archiver:  function () {
                 fetch(`/admin/depannage/${window.currentDepannageId}/archiver`, {
                     method: 'POST',
                     headers: {
@@ -901,6 +901,13 @@
                 }
             }
         });
+    });
+
+    window.addEventListener("error", function(event) {
+        console.log("🧠 Erreur capturée :", event.message);
+        console.log("📄 Script :", event.filename);
+        console.log("📍 Ligne/colonne :", event.lineno + ":" + event.colno);
+        console.log("💥 Objet erreur :", event.error);
     });
 
 </script>
