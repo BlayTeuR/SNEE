@@ -812,6 +812,13 @@
                         })
                         .catch(error => {
                             console.error('💥 Erreur JS lors du fetch :', error);
+
+                            // Ajout temporaire pour débogage
+                            console.log("📦 DOM au moment de l'erreur :", {
+                                modal: document.getElementById('confirm-delete-modal'),
+                                depRow: document.getElementById(`depannage-row-${depannageIdToDelete}`), // Exemple
+                            });
+
                             saveNotificationBeforeReload("Erreur lors de l'opération du suppression", 'error');
                         });
                 } else {
