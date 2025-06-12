@@ -272,7 +272,7 @@ class DepanageController extends Controller
                 'elec' => 'nullable|string',
                 'infos' => 'nullable|string',
                 'prevention' => 'required|boolean',
-                'image' => 'nullable|image|max:2048',
+                'image' => 'nullable|image|max:10240',
                 'date_intervention' => 'date',
             ]);
 
