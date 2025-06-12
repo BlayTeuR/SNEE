@@ -19,11 +19,9 @@ RUN apk add --no-cache \
 
 RUN docker-php-ext-configure gd \
     --with-freetype=/usr/include/ \
-    --with-jpeg=/usr/include/ \
-    --with-webp=/usr/include/
+    --with-jpeg=/usr/include/
 
 RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd intl zip
-
 
 # Installer composer depuis l'image officielle
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
