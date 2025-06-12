@@ -2,6 +2,13 @@
 
 @section('content')
     <div class="min-h-screen flex flex-col">
+
+        <div class="p-4 bg-white">
+            <input type="text" id="search-input" placeholder="Rechercher un dépannage..."
+                   class="w-full p-2 border border-gray-300 rounded" autocomplete="off" />
+            <ul id="search-results" class="border border-gray-300 rounded mt-1 max-h-48 overflow-y-auto hidden bg-white z-50 absolute w-full"></ul>
+        </div>
+
         <!-- Carte -->
         <div class="w-full md:w-4/5">
             <div class="map-wrapper">
@@ -64,7 +71,64 @@
         const entretiens = @json($entretien);
 
         document.addEventListener("DOMContentLoaded", function () {
+
             window.map = L.map('map').setView([46.603354, 1.888334], 6);
+
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+
+            // Combiner dépannages et entretiens avec un type pour recherche
+            const allPoints = [
+                ...depannages.map((item, i) => ({ ...item, type: 'Dépannage', index: i })),
+                ...entretiens.map((item, i) => ({ ...item, type: 'Entretien', index: i }))
+            ];
+
+            searchInput.addEventListener('input', function () {
+                const query = this.value.trim().toLowerCase();
+                if (!query) {
+                    searchResults.innerHTML = '';
+                    searchResults.classList.add('hidden');
+                    return;
+                }
+
+                const filtered = allPoints.filter(item => item.nom && item.nom.toLowerCase().includes(query));
+
+                if (filtered.length === 0) {
+                    searchResults.innerHTML = '<li class="p-2 text-gray-500">Aucun résultat</li>';
+                    searchResults.classList.remove('hidden');
+                    return;
+                }
+
+                searchResults.innerHTML = filtered.map(item => `
+            <li class="p-2 cursor-pointer hover:bg-blue-100" data-type="${item.type}" data-index="${item.index}">
+                ${item.nom} <small class="text-gray-500">(${item.type})</small>
+            </li>
+        `).join('');
+                searchResults.classList.remove('hidden');
+            });
+
+            // Gestion du clic sur un résultat de recherche
+            searchResults.addEventListener('click', function(e) {
+                const li = e.target.closest('li');
+                if (!li || li.classList.contains('text-gray-500')) return;
+
+                const type = li.getAttribute('data-type');
+                const index = parseInt(li.getAttribute('data-index'));
+                const data = (type === 'Dépannage') ? depannages[index] : entretiens[index];
+
+                if (data) {
+                    openModal(data, type, parseFloat(data.latitude), parseFloat(data.longitude));
+                    searchResults.classList.add('hidden');
+                    searchInput.value = '';  // Reset input après sélection
+                }
+            });
+
+            // Cacher le menu si on clique en dehors
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.classList.add('hidden');
+                }
+            });
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
@@ -169,5 +233,29 @@
             width: 100%;
             height: 100%;
         }
+
+        #search-results {
+            position: absolute;
+            background: white;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            border: 1px solid #d1d5db;
+            max-height: 12rem;
+            overflow-y: auto;
+            z-index: 10000;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #search-results li {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+
+        #search-results li:hover {
+            background-color: #bfdbfe;
+        }
+
     </style>
 @endsection
