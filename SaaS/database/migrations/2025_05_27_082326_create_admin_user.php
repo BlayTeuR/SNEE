@@ -16,7 +16,7 @@ return new class extends Migration
             'name' => 'Admin',
             'email' => 'sav@snee-cloture.com',
             'role' => 'admin',
-            'password' => Hash::make('Raltenus88580*'),
+            'password' => Hash::make(env('ADMIN_PASSWORD')),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             'created_at' => now(),

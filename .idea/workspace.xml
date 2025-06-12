@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_05_27_082326_create_admin_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_05_27_082326_create_admin_user.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/js/loading.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/js/loading.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" afterDir="false" />
-    </list>
+    <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -268,7 +260,7 @@
       <workItem from="1749621912505" duration="13525000" />
       <workItem from="1749642031060" duration="7428000" />
       <workItem from="1749655593933" duration="879000" />
-      <workItem from="1749708550367" duration="621000" />
+      <workItem from="1749708550367" duration="970000" />
     </task>
     <servers />
   </component>
