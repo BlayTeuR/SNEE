@@ -7,8 +7,11 @@
     <list default="true" id="ab2a82fa-a54b-4033-a120-9ff621dac357" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/app/Http/Controllers/DepanageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/approvisionnement.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/approvisionnement.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/facturation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/facturation.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/database/migrations/2025_05_27_082326_create_admin_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/database/migrations/2025_05_27_082326_create_admin_user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/js/loading.js" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/js/loading.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/admin/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/SaaS/resources/views/layouts/app.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,26 +155,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.nodejs.core.library.configured.version": "22.16.0",
-    "javascript.nodejs.core.library.typings.version": "22.15.23",
-    "last_opened_file_path": "C:/Users/Bastien/Documents/Stage/SNEE",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\PhpStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;22.16.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;22.15.23&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Bastien/Documents/Stage/SNEE&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\PhpStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Utilisateur\Documents\IUT\Stage\SNEE\SaaS" />
@@ -262,7 +265,10 @@
       <workItem from="1749540938437" duration="7738000" />
       <workItem from="1749563297175" duration="2317000" />
       <workItem from="1749584873267" duration="2967000" />
-      <workItem from="1749621912505" duration="12957000" />
+      <workItem from="1749621912505" duration="13525000" />
+      <workItem from="1749642031060" duration="7428000" />
+      <workItem from="1749655593933" duration="879000" />
+      <workItem from="1749708550367" duration="621000" />
     </task>
     <servers />
   </component>

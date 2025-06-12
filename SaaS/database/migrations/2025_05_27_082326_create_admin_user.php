@@ -14,9 +14,9 @@ return new class extends Migration
     {
         DB::table('users')->insert([
             'name' => 'Admin',
-            'email' => 'admin@example.com',
+            'email' => 'sav@snee-cloture.com',
             'role' => 'admin',
-            'password' => Hash::make('password'), // ⚠️ change ce mot de passe
+            'password' => Hash::make('Raltenus88580*'),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             'created_at' => now(),

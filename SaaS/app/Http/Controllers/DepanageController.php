@@ -145,12 +145,29 @@ class DepanageController extends Controller
 
                 if ($appro && !$force) {
                     // Demander confirmation avant suppression
-                    return response()->json(['action' => 'confirm_override']);
+                    return response()->json(['action' => 'confirm_override', 'type' => 'appro']);
                 }
 
                 if ($appro && $force) {
                     // Supprimer l'approvisionnement avant changement
                     $appro->delete();
+                }
+            }
+
+            if ($ancienStatut === 'À facturer' && $nouveauStatut !== 'À facturer'){
+                $factu =  $depannage->facturations()
+                    ->where('statut', '!=', 'Envoyée')
+                    ->where('archived', false)
+                    ->first();
+
+                if ($factu && !$force) {
+                    // Demander confirmation avant suppression
+                    return response()->json(['action' => 'confirm_override', 'type' => 'factu']);
+                }
+
+                if ($factu && $force) {
+                    // Supprimer l'approvisionnement avant changement
+                    $factu->delete();
                 }
             }
 
