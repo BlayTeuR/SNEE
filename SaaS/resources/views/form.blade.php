@@ -16,7 +16,7 @@
 <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
     <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">Formulaire de contact</h1>
 
-    <form action="{{route('admin.depannage.store')}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('depannage.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="form_source" value="formulaire_classique">
         <div class="mb-4">
@@ -51,7 +51,7 @@
 
         <div class="mb-4">
             <label class="block text-gray-700 mb-2">Type de matériel <span class="text-red-500">*</span></label>
-            <div class="flex space-x-4">
+            <div class="flex flex-wrap space-x-4">
                 <label class="flex items-center space-x-2">
                     <input type="radio" name="demande_type" value="portail" class="text-green-500" required>
                     <span>Portail</span>
