@@ -607,16 +607,30 @@
             },
 
             toggleModal: function (depannageID = null) {
+                console.log('🧨 Fonction toggleModal appelée avec depannageID =', depannageID);
+
                 const modal = document.getElementById('confirm-delete-modal');
-                console.log("toggleModal appelé. modal =", modal);
+                console.log('🔍 Recherche de l\'élément #confirm-delete-modal :', modal);
+
                 if (!modal) {
-                    console.error("Erreur : l'élément #confirm-delete-modal est introuvable dans le DOM !");
-                    return; // on évite l'erreur
+                    console.error('❌ Erreur : Modal introuvable (#confirm-delete-modal est null)');
+                    return;
                 }
+
                 if (depannageID) {
+                    console.log('🆔 Mise à jour de depannageIdToDelete avec :', depannageID);
                     depannageIdToDelete = depannageID;
                 }
+
+                // État avant bascule
+                const wasHidden = modal.classList.contains('hidden');
+                console.log('📦 Modal actuellement :', wasHidden ? 'caché' : 'visible');
+
                 modal.classList.toggle('hidden');
+
+                // État après bascule
+                const isHiddenNow = modal.classList.contains('hidden');
+                console.log('🎬 Modal maintenant :', isHiddenNow ? 'caché' : 'visible');
             },
 
 
@@ -763,26 +777,49 @@
                 }
             },
             delDepannage: function () {
+                console.log('🧨 Fonction delDepannage appelée');
+                console.log('➡️ ID à supprimer :', depannageIdToDelete);
+
                 if (depannageIdToDelete !== null) {
-                    fetch(`/admin/depannage/del/${depannageIdToDelete}`, {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+                    if (!csrfToken) {
+                        console.error('❌ Token CSRF introuvable dans le DOM.');
+                        return;
+                    }
+
+                    console.log('🔐 Token CSRF récupéré :', csrfToken.getAttribute('content'));
+
+                    const url = `/admin/depannage/del/${depannageIdToDelete}`;
+                    console.log('🌐 Envoi de la requête POST vers :', url);
+
+                    fetch(url, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'X-CSRF-Token': csrfToken.getAttribute('content'),
                         }
                     })
-                        .then(response => response.json())
+                        .then(response => {
+                            console.log('📥 Réponse reçue (raw) :', response);
+                            return response.json();
+                        })
                         .then(data => {
-                            console.log(data.message);
+                            console.log('✅ Réponse JSON :', data);
                             saveNotificationBeforeReload("L'opération de suppression a été réalisée avec succès.", 'success');
-                            setTimeout(() => {location.reload();}, 500)
+
+                            console.log('🔄 Rechargement de la page prévu dans 500ms...');
+                            setTimeout(() => { location.reload(); }, 500);
                         })
                         .catch(error => {
-                            console.error('Erreur:', error);
+                            console.error('💥 Erreur JS lors du fetch :', error);
                             saveNotificationBeforeReload("Erreur lors de l'opération du suppression", 'error');
                         });
+                } else {
+                    console.warn('⚠️ Aucun ID de dépannage sélectionné pour la suppression.');
                 }
-                this.toggleModal();
+
+                console.log('🔁 Fermeture du modal via toggleModal');
+                this.toggleModal();  // ⚠️ C'est ici que tu pourrais avoir le classList null
             },
             gotoentretien: function (entretienId) {
                 window.location.href = `/admin/entretien?id=${entretienId}&mois_courant=off`;
