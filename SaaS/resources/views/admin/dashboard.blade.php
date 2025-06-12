@@ -903,13 +903,6 @@
         });
     });
 
-    window.addEventListener("error", function(event) {
-        console.log("🧠 Erreur capturée :", event.message);
-        console.log("📄 Script :", event.filename);
-        console.log("📍 Ligne/colonne :", event.lineno + ":" + event.colno);
-        console.log("💥 Objet erreur :", event.error);
-    });
-
 </script>
 
 <style>
