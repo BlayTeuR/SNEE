@@ -1,4 +1,15 @@
 <?php return array (
+  'intervention/image' => 
+  array (
+    'aliases' => 
+    array (
+      'Image' => 'Intervention\\Image\\Facades\\Image',
+    ),
+    'providers' => 
+    array (
+      0 => 'Intervention\\Image\\ImageServiceProvider',
+    ),
+  ),
   'ladumor/laravel-pwa' => 
   array (
     'aliases' => 

@@ -17,7 +17,13 @@ FROM php:8.2-fpm-alpine
 RUN apk add --no-cache \
     bash curl libpng libpng-dev libjpeg-turbo-dev freetype-dev zip unzip git oniguruma-dev libxml2-dev icu-dev zlib-dev libzip-dev postgresql-dev nginx
 
+RUN docker-php-ext-configure gd \
+    --with-freetype=/usr/include/ \
+    --with-jpeg=/usr/include/ \
+    --with-webp=/usr/include/
+
 RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd intl zip
+
 
 # Installer composer depuis l'image officielle
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

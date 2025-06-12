@@ -14,6 +14,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Termwind\Components\Element;
+use Intervention\Image\ImageManager;
 
 class DepanageController extends Controller
 {
@@ -315,11 +316,29 @@ class DepanageController extends Controller
 
             // Gestion des images
             if ($request->hasFile('images')) {
+                $manager = new ImageManager(['driver' => 'gd']);
+
                 foreach ($request->file('images') as $image) {
                     if ($image->isValid()) {
-                        $imageName = time() . '_' . $image->getClientOriginalName();
-                        $image->move(public_path('images'), $imageName);
+                        // 1. Lire l'image
+                        $img = $manager->make($image->getRealPath());
 
+                        // 2. Redimensionner
+                        $img->resize(1024, 1024, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+
+                        // 3. Encoder en JPEG avec compression
+                        $encoded = $img->encode('jpg', 70);
+
+                        // 4. Générer un nom unique
+                        $imageName = time() . '_' . uniqid() . '.jpg';
+
+                        // 5. Sauvegarder l’image dans le dossier public/images
+                        file_put_contents(public_path('images/' . $imageName), $encoded);
+
+                        // 6. Enregistrer en BDD
                         $depannage->photos()->create([
                             'chemin_photo' => $imageName,
                         ]);
@@ -335,6 +354,7 @@ class DepanageController extends Controller
                 return redirect()->route('admin.dashboard')->with('success', 'ajout du dépannage effectué avec succès !');
             }
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.' . $e->getMessage());
         }
     }

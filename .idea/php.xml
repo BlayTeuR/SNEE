@@ -130,6 +130,7 @@
       <path value="$PROJECT_DIR$/SaaS/vendor/sebastian/exporter" />
       <path value="$PROJECT_DIR$/SaaS/vendor/laravel/breeze" />
       <path value="$PROJECT_DIR$/SaaS/vendor/ladumor/laravel-pwa" />
+      <path value="$PROJECT_DIR$/SaaS/vendor/intervention/image" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
