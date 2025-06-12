@@ -605,13 +605,20 @@
                     openDropdownId = null;
                 }
             },
+            
             toggleModal: function (depannageID = null) {
                 const modal = document.getElementById('confirm-delete-modal');
+                console.log("toggleModal appelé. modal =", modal);
+                if (!modal) {
+                    console.error("Erreur : l'élément #confirm-delete-modal est introuvable dans le DOM !");
+                    return; // on évite l'erreur
+                }
                 if (depannageID) {
                     depannageIdToDelete = depannageID;
                 }
                 modal.classList.toggle('hidden');
             },
+
 
             async updateStatus(dropdownId, statusText, statusColor, buttonId) {
                 const button = document.getElementById(buttonId);
