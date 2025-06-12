@@ -236,6 +236,84 @@
 
     // Initialisation du formulaire
     toggleDeleteButton(); // Vérifier si un fichier est déjà sélectionné à l'initialisation
+
+    function resizeImage(file, maxWidth = 800, quality = 0.7) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                img.src = e.target.result;
+            };
+
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                if (width > maxWidth) {
+                    height = height * (maxWidth / width);
+                    width = maxWidth;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob(
+                    (blob) => {
+                        // Création d'un nouveau fichier compressé
+                        const resizedFile = new File([blob], file.name, {
+                            type: 'image/jpeg',
+                            lastModified: Date.now(),
+                        });
+                        resolve(resizedFile);
+                    },
+                    'image/jpeg',
+                    quality
+                );
+            };
+
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function handleFileInputChange(event) {
+        const input = event.target;
+        const files = Array.from(input.files);
+        const resizedFiles = [];
+
+        for (const file of files) {
+            if (!file.type.startsWith('image/')) {
+                resizedFiles.push(file); // garder les fichiers non-images tels quels
+                continue;
+            }
+            try {
+                const resizedFile = await resizeImage(file, 1024, 0.7);
+                resizedFiles.push(resizedFile);
+            } catch (err) {
+                console.error('Erreur redimension image', err);
+                resizedFiles.push(file); // fallback : garder fichier original
+            }
+        }
+
+        // Créer un DataTransfer pour remplacer les fichiers de l'input (simulateur d’upload)
+        const dataTransfer = new DataTransfer();
+        resizedFiles.forEach(f => dataTransfer.items.add(f));
+
+        input.files = dataTransfer.files;
+
+        toggleDeleteButton(); // ta fonction pour afficher le bouton supprimer
+    }
+
+    // Attacher ce handler à chaque input de type file
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', handleFileInputChange);
+    });
+
 </script>
 
 </body>
