@@ -53,14 +53,6 @@
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <script>
 
-            window.fetch = window.originalFetch || window.fetch;
-
-            if (window.fetch.toString().includes('nc')) {
-                // Restaurer la fetch native en la ré-exécutant depuis une IIFE
-                window.fetch = (...args) => (Function('return fetch')())(...args);
-                console.log('🌟 Fetch restauré à la version native pour tests.');
-            }
-
             window.onerror = function(message, source, lineno, colno, error) {
                 console.groupCollapsed("🛑 Erreur JavaScript capturée");
                 console.log("📛 Message :", message);
