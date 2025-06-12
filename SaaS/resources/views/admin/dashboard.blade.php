@@ -354,413 +354,415 @@
 
 <script>
 
-    let currentDeppangeId = null;
-    let pendingStatut = null;
-    let lastOpenedDropdown = null;
-    let depannageIdToDelete = null;
-    let isFromAffectation = false;
-    let idForAffectation = null;
-    let openDropdownId = null;
-    let originalStatus = {};
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentDeppangeId = null;
+        let pendingStatut = null;
+        let lastOpenedDropdown = null;
+        let depannageIdToDelete = null;
+        let isFromAffectation = false;
+        let idForAffectation = null;
+        let openDropdownId = null;
+        let originalStatus = {};
 
-    function toggleModalArchiveBis(id) {
-        const modal = document.getElementById('confirmation-modal-bis');
-        modal.classList.remove('hidden');
-        window.currentDepannageId = id;
-    }
-
-    function cancelArchiveBis(){
-        const modal = document.getElementById('confirmation-modal-bis');
-        modal.classList.add('hidden');
-        window.currentDepannageId = null;
-    }
-
-    function archiver(){
-        fetch(`/admin/depannage/${window.currentDepannageId}/archiver`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            },
-            body: JSON.stringify({ id: window.currentDepannageId })
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.message);
-                setTimeout(() => {
-                    saveNotificationBeforeReload("Dépannage archivé avec succès.", 'success');
-                    location.reload();
-                }, 100);
-
-            })
-            .catch(error => {
-                saveNotificationBeforeReload("Erreur lors de l'archivage du dépannage", 'error');
-                console.error('Erreur:', error);
-            }
-        );
-    }
-
-    function toggleChoice(buttonId) {
-        const buttons = document.querySelectorAll(`#${buttonId}, #${buttonId}-2`); // Sélectionner les deux boutons correspondants
-
-        // Bascule entre les deux états
-        buttons.forEach(button => {
-            button.classList.toggle('bg-blue-500');
-            button.classList.toggle('bg-blue-600');
-            button.classList.toggle('bg-gray-500');
-            button.classList.toggle('bg-gray-600');
-        });
-    }
-
-    function openModal(depannageId) {
-        document.getElementById(`modal-${depannageId}`).classList.remove('hidden');
-    }
-
-    // Fonction pour fermer le modal
-    function closeModal(depannageId) {
-        document.getElementById(`modal-${depannageId}`).classList.add('hidden');
-    }
-
-    // Fermer le modal si on clique à l'extérieur
-    window.addEventListener('click', function(event) {
-        if (event.target.classList.contains('bg-opacity-50')) {
-            const modalId = event.target.id.split('-')[1];
-            closeModal(modalId);
-        }
-    });
-
-    function toggleModalDate(show = true, id) {
-        console.log("appel de toggleModalDate avec show =", show);
-        const modal = document.getElementById('create-date-modal');
-        if (show) {
+        function toggleModalArchiveBis(id) {
+            const modal = document.getElementById('confirmation-modal-bis');
             modal.classList.remove('hidden');
-        } else {
+            window.currentDepannageId = id;
+        }
+
+        function cancelArchiveBis() {
+            const modal = document.getElementById('confirmation-modal-bis');
             modal.classList.add('hidden');
-        }
-        currentDeppangeId = id;
-    }
-
-    async function validateDateThenOpenTech(event, openTechModal = false) {
-        event.preventDefault();
-
-        const success = await updateDate(); // ❗️on attend le résultat SANS reload automatique
-
-        if (!success) return;
-
-        if (openTechModal) {
-            toggleModalAff(true, idForAffectation); // ✅ ici seulement le modal est lancé
-        } else {
-            location.reload(); // ✅ reload uniquement si pas de modal à ouvrir
+            window.currentDepannageId = null;
         }
 
-        isFromAffectation = false;
-    }
-
-
-    function toggleModalAff(show = true, id) {
-        console.log("id = " + id)
-        console.log("idForAffectation = " + idForAffectation)
-        console.log("appel de toggleModalDate avec show =", show);
-        const modal = document.getElementById('create-aff-modal');
-        if (show) {
-            modal.classList.remove('hidden');
-        } else {
-            modal.classList.add('hidden');
-        }
-        idForAffectation = id;
-    }
-
-    function cancelTechChoice() {
-        toggleModalAff(false, null);
-        location.reload();
-    }
-
-    function toggleMenu(menuId) {
-        const menu = document.getElementById(menuId);
-        // Si le menu est visible, on le cache, sinon on l'affiche
-        menu.classList.toggle('hidden');
-    }
-
-    function toggleDropdown(dropdownId, buttonId = null) {
-        const dropdown = document.getElementById(dropdownId);
-        if (!dropdown) return;
-
-        // Fermer le menu précédent si différent
-        if (openDropdownId && openDropdownId !== dropdownId) {
-            const oldDropdown = document.getElementById(openDropdownId);
-            if (oldDropdown) oldDropdown.classList.add('hidden');
-        }
-
-        // Basculer l'affichage du menu courant
-        if (dropdown.classList.contains('hidden')) {
-            dropdown.classList.remove('hidden');
-            openDropdownId = dropdownId;
-
-            // Enregistrer le statut actuel si un bouton est fourni
-            if (buttonId) {
-                const button = document.getElementById(buttonId);
-                if (button) {
-                    originalStatus[dropdownId] = button.textContent.trim();
-                }
-            }
-        } else {
-            dropdown.classList.add('hidden');
-            openDropdownId = null;
-        }
-    }
-
-    function toggleModal(depannageID = null) {
-        const modal = document.getElementById('confirm-delete-modal');
-        if (depannageID) {
-            depannageIdToDelete = depannageID;
-        }
-        modal.classList.toggle('hidden');
-    }
-
-    async function updateStatus(dropdownId, statusText, statusColor, buttonId) {
-        const button = document.getElementById(buttonId);
-        const depannageId = buttonId.split('-')[1].trim();
-
-        console.log(depannageId)
-        if(statusText === 'Affecter'){
-            currentDeppangeId = depannageId;
-            isFromAffectation = true;
-            pendingStatut = {
-                dropdownId,
-                statusText,
-                statusColor,
-                buttonId,
-            };
-            toggleModalDate(true, depannageId);
-            return;
-        }
-
-        await performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button);
-        toggleDropdown(dropdownId);
-    }
-
-    async function performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button, force = false) {
-        // Assurez-vous que loading.js a eu le temps d’attacher les fonctions
-
-        button.textContent = statusText;
-        button.classList.remove('bg-gray-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500');
-        button.classList.add(statusColor);
-
-        await fetch(`/admin/depannage/${depannageId}/update-status`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            },
-            body: JSON.stringify({ statut: statusText, force }),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(errorData => {
-                        throw new Error(errorData.message || 'Erreur serveur');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.action === 'confirm_override') {
-                    if (data.type === 'appro') {
-                        showApproModal(dropdownId, statusText, statusColor, depannageId);
-                    } else if (data.type === 'factu') {
-                        showFactuModal(dropdownId, statusText, statusColor, depannageId);
-                    }
-                    return;
-                }
-
-                console.log('Statut mis à jour avec succès:', data);
-
-                // ✅ Ne reload que si ce n'est pas un "affecter"
-                if (!idForAffectation) {
-                    location.reload();
-                }
-            })
-            .catch(error => {
-                saveNotificationBeforeReload(error.message || 'Une erreur est survenue', 'error');
-                location.reload();
-            });
-    }
-
-    async function updateTechnicien() {
-
-        console.log("technicien à affecter", idForAffectation);
-
-        const selectedTechniciens = Array.from(document.querySelectorAll('input[name="techniciens[]"]:checked')).map(checkbox => checkbox.value);
-
-        try {
-            const res = await fetch(`/admin/depannage/${idForAffectation}/affectation`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({ techniciens: selectedTechniciens })
-            });
-
-            const data = await res.json();
-            console.log("technicien enregistré avec succès", data);
-            saveNotificationBeforeReload("Technicien(s) associé(s) avec succès", 'success');
-            idForAffectation = null;
-            location.reload();
-
-        } catch (err) {
-            console.error("erreur enregistrement du technicien", err);
-            saveNotificationBeforeReload("Erreur lors de l'enregistrement du technicien", 'error');
-            location.reload();
-        }
-    }
-
-    async function updateDate() {
-        const date = document.getElementById('date-create').value;
-
-        try {
-            const res = await fetch(`/admin/depannage/${currentDeppangeId}/update-date`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({ date_depannage: date })
-            });
-
-            const data = await res.json();
-
-            if (res.status === 409) {
-                saveNotificationBeforeReload('Une intervention à cette date existe déjà pour ce dépannage ', 'error');
-                return false;
-            }
-
-            if (!res.ok) {
-                throw new Error(data.error || "Erreur inconnue");
-            }
-
-            console.log("date enregistrée avec succès", data);
-
-            if (pendingStatut) {
-                idForAffectation = currentDeppangeId;
-                const { dropdownId, statusText, statusColor, buttonId } = pendingStatut;
-                const button = document.getElementById(buttonId);
-
-                await performStatusUpdate(dropdownId, statusText, statusColor, currentDeppangeId, button);
-
-                pendingStatut = null;
-                toggleModalDate(false, null);
-            }
-
-            return true;
-
-        } catch (err) {
-            console.error("erreur enregistrement de la date", err);
-            saveNotificationBeforeReload("Erreur lors de l'enregistrement de la date", 'error');
-            return false;
-        }
-    }
-
-
-    function delDepannage() {
-        if (depannageIdToDelete !== null) {
-            fetch(`/admin/depannage/del/${depannageIdToDelete}`, {
+        function archiver() {
+            fetch(`/admin/depannage/${window.currentDepannageId}/archiver`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                }
+                },
+                body: JSON.stringify({id: window.currentDepannageId})
             })
                 .then(response => response.json())
                 .then(data => {
                     console.log(data.message);
-                    saveNotificationBeforeReload("L'opération de suppression a été réalisée avec succès.", 'success');
-                    location.reload();
+                    setTimeout(() => {
+                        saveNotificationBeforeReload("Dépannage archivé avec succès.", 'success');
+                        location.reload();
+                    }, 100);
+
                 })
                 .catch(error => {
-                    console.err('Erreur:', error);
-                    saveNotificationBeforeReload("Erreur lors de l'opération du suppression", 'error');
-                });
+                        saveNotificationBeforeReload("Erreur lors de l'archivage du dépannage", 'error');
+                        console.error('Erreur:', error);
+                    }
+                );
         }
-        toggleModal();
-    }
 
-    function gotoentretien(entretienId) {
-        window.location.href = `/admin/entretien?id=${entretienId}&mois_courant=off`;
-    }
+        function toggleChoice(buttonId) {
+            const buttons = document.querySelectorAll(`#${buttonId}, #${buttonId}-2`); // Sélectionner les deux boutons correspondants
 
-    document.addEventListener('click', function(event) {
-        const isClickInsideMenu = event.target.closest('.relative');
-        const isClickInsideDropdown = event.target.closest('.absolute');
-        const isClickInsideButton = event.target.closest('.cursor-pointer');
+            // Bascule entre les deux états
+            buttons.forEach(button => {
+                button.classList.toggle('bg-blue-500');
+                button.classList.toggle('bg-blue-600');
+                button.classList.toggle('bg-gray-500');
+                button.classList.toggle('bg-gray-600');
+            });
+        }
 
-        // Si le clic n'est pas à l'intérieur d'un bouton de menu ou d'un menu, fermer les menus ouverts
-        if (!isClickInsideMenu && !isClickInsideDropdown && !isClickInsideButton) {
-            if (lastOpenedDropdown) {
-                lastOpenedDropdown.classList.add('hidden');
-                lastOpenedDropdown = null;
+        function openModal(depannageId) {
+            document.getElementById(`modal-${depannageId}`).classList.remove('hidden');
+        }
+
+        // Fonction pour fermer le modal
+        function closeModal(depannageId) {
+            document.getElementById(`modal-${depannageId}`).classList.add('hidden');
+        }
+
+        // Fermer le modal si on clique à l'extérieur
+        window.addEventListener('click', function (event) {
+            if (event.target.classList.contains('bg-opacity-50')) {
+                const modalId = event.target.id.split('-')[1];
+                closeModal(modalId);
             }
+        });
+
+        function toggleModalDate(show = true, id) {
+            console.log("appel de toggleModalDate avec show =", show);
+            const modal = document.getElementById('create-date-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+            currentDeppangeId = id;
         }
-    });
 
-    function showApproModal(dropdownId, statusText, statusColor, depannageId) {
-        pendingStatut = { dropdownId, statusText, statusColor, depannageId };
+        async function validateDateThenOpenTech(event, openTechModal = false) {
+            event.preventDefault();
 
-        const modal = document.getElementById("modal-appro");
-        modal.classList.remove("hidden");
-    }
+            const success = await updateDate(); // ❗️on attend le résultat SANS reload automatique
 
-    function showFactuModal(dropdownId, statusText, statusColor, depannageId) {
-        pendingStatut = { dropdownId, statusText, statusColor, depannageId };
+            if (!success) return;
 
-        const modal = document.getElementById("modal-factu");
-        modal.classList.remove("hidden");
-    }
+            if (openTechModal) {
+                toggleModalAff(true, idForAffectation); // ✅ ici seulement le modal est lancé
+            } else {
+                location.reload(); // ✅ reload uniquement si pas de modal à ouvrir
+            }
 
-    function confirmApproChange() {
-        const { dropdownId, statusText, statusColor, depannageId } = pendingStatut;
-        const button = document.getElementById(`status-${depannageId}-btn`);
+            isFromAffectation = false;
+        }
 
-        performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button, true);
-        closeApproModal();
-    }
 
-    function confirmFactuChange() {
-        const { dropdownId, statusText, statusColor, depannageId } = pendingStatut;
-        const button = document.getElementById(`status-${depannageId}-btn`);
+        function toggleModalAff(show = true, id) {
+            console.log("id = " + id)
+            console.log("idForAffectation = " + idForAffectation)
+            console.log("appel de toggleModalDate avec show =", show);
+            const modal = document.getElementById('create-aff-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+            idForAffectation = id;
+        }
 
-        performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button, true);
-        closeFactuModal();
-    }
+        function cancelTechChoice() {
+            toggleModalAff(false, null);
+            location.reload();
+        }
 
-    function cancelApproChange() {
-        closeApproModal();
-        location.reload();
-    }
+        function toggleMenu(menuId) {
+            const menu = document.getElementById(menuId);
+            // Si le menu est visible, on le cache, sinon on l'affiche
+            menu.classList.toggle('hidden');
+        }
 
-    function closeApproModal() {
-        const modal = document.getElementById("modal-appro"); // ✅ bonne ID
-        modal.classList.add("hidden");
-    }
+        function toggleDropdown(dropdownId, buttonId = null) {
+            const dropdown = document.getElementById(dropdownId);
+            if (!dropdown) return;
 
-    function cancelFactuChange() {
-        closeFactuModal();
-        location.reload();
-    }
+            // Fermer le menu précédent si différent
+            if (openDropdownId && openDropdownId !== dropdownId) {
+                const oldDropdown = document.getElementById(openDropdownId);
+                if (oldDropdown) oldDropdown.classList.add('hidden');
+            }
 
-    function closeFactuModal() {
-        const modal = document.getElementById("modal-factu");
-        modal.classList.add("hidden");
-    }
+            // Basculer l'affichage du menu courant
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+                openDropdownId = dropdownId;
 
-    document.addEventListener('click', function(event) {
-        if (openDropdownId) {
-            const dropdown = document.getElementById(openDropdownId);
-            const button = document.getElementById(openDropdownId + '-btn');
-            if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+                // Enregistrer le statut actuel si un bouton est fourni
+                if (buttonId) {
+                    const button = document.getElementById(buttonId);
+                    if (button) {
+                        originalStatus[dropdownId] = button.textContent.trim();
+                    }
+                }
+            } else {
                 dropdown.classList.add('hidden');
                 openDropdownId = null;
             }
         }
+
+        function toggleModal(depannageID = null) {
+            const modal = document.getElementById('confirm-delete-modal');
+            if (depannageID) {
+                depannageIdToDelete = depannageID;
+            }
+            modal.classList.toggle('hidden');
+        }
+
+        async function updateStatus(dropdownId, statusText, statusColor, buttonId) {
+            const button = document.getElementById(buttonId);
+            const depannageId = buttonId.split('-')[1].trim();
+
+            console.log(depannageId)
+            if (statusText === 'Affecter') {
+                currentDeppangeId = depannageId;
+                isFromAffectation = true;
+                pendingStatut = {
+                    dropdownId,
+                    statusText,
+                    statusColor,
+                    buttonId,
+                };
+                toggleModalDate(true, depannageId);
+                return;
+            }
+
+            await performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button);
+            toggleDropdown(dropdownId);
+        }
+
+        async function performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button, force = false) {
+            // Assurez-vous que loading.js a eu le temps d’attacher les fonctions
+
+            button.textContent = statusText;
+            button.classList.remove('bg-gray-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500');
+            button.classList.add(statusColor);
+
+            await fetch(`/admin/depannage/${depannageId}/update-status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify({statut: statusText, force}),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.message || 'Erreur serveur');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.action === 'confirm_override') {
+                        if (data.type === 'appro') {
+                            showApproModal(dropdownId, statusText, statusColor, depannageId);
+                        } else if (data.type === 'factu') {
+                            showFactuModal(dropdownId, statusText, statusColor, depannageId);
+                        }
+                        return;
+                    }
+
+                    console.log('Statut mis à jour avec succès:', data);
+
+                    // ✅ Ne reload que si ce n'est pas un "affecter"
+                    if (!idForAffectation) {
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    saveNotificationBeforeReload(error.message || 'Une erreur est survenue', 'error');
+                    location.reload();
+                });
+        }
+
+        async function updateTechnicien() {
+
+            console.log("technicien à affecter", idForAffectation);
+
+            const selectedTechniciens = Array.from(document.querySelectorAll('input[name="techniciens[]"]:checked')).map(checkbox => checkbox.value);
+
+            try {
+                const res = await fetch(`/admin/depannage/${idForAffectation}/affectation`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({techniciens: selectedTechniciens})
+                });
+
+                const data = await res.json();
+                console.log("technicien enregistré avec succès", data);
+                saveNotificationBeforeReload("Technicien(s) associé(s) avec succès", 'success');
+                idForAffectation = null;
+                location.reload();
+
+            } catch (err) {
+                console.error("erreur enregistrement du technicien", err);
+                saveNotificationBeforeReload("Erreur lors de l'enregistrement du technicien", 'error');
+                location.reload();
+            }
+        }
+
+        async function updateDate() {
+            const date = document.getElementById('date-create').value;
+
+            try {
+                const res = await fetch(`/admin/depannage/${currentDeppangeId}/update-date`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({date_depannage: date})
+                });
+
+                const data = await res.json();
+
+                if (res.status === 409) {
+                    saveNotificationBeforeReload('Une intervention à cette date existe déjà pour ce dépannage ', 'error');
+                    return false;
+                }
+
+                if (!res.ok) {
+                    throw new Error(data.error || "Erreur inconnue");
+                }
+
+                console.log("date enregistrée avec succès", data);
+
+                if (pendingStatut) {
+                    idForAffectation = currentDeppangeId;
+                    const {dropdownId, statusText, statusColor, buttonId} = pendingStatut;
+                    const button = document.getElementById(buttonId);
+
+                    await performStatusUpdate(dropdownId, statusText, statusColor, currentDeppangeId, button);
+
+                    pendingStatut = null;
+                    toggleModalDate(false, null);
+                }
+
+                return true;
+
+            } catch (err) {
+                console.error("erreur enregistrement de la date", err);
+                saveNotificationBeforeReload("Erreur lors de l'enregistrement de la date", 'error');
+                return false;
+            }
+        }
+
+
+        function delDepannage() {
+            if (depannageIdToDelete !== null) {
+                fetch(`/admin/depannage/del/${depannageIdToDelete}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        saveNotificationBeforeReload("L'opération de suppression a été réalisée avec succès.", 'success');
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.err('Erreur:', error);
+                        saveNotificationBeforeReload("Erreur lors de l'opération du suppression", 'error');
+                    });
+            }
+            toggleModal();
+        }
+
+        function gotoentretien(entretienId) {
+            window.location.href = `/admin/entretien?id=${entretienId}&mois_courant=off`;
+        }
+
+        document.addEventListener('click', function (event) {
+            const isClickInsideMenu = event.target.closest('.relative');
+            const isClickInsideDropdown = event.target.closest('.absolute');
+            const isClickInsideButton = event.target.closest('.cursor-pointer');
+
+            // Si le clic n'est pas à l'intérieur d'un bouton de menu ou d'un menu, fermer les menus ouverts
+            if (!isClickInsideMenu && !isClickInsideDropdown && !isClickInsideButton) {
+                if (lastOpenedDropdown) {
+                    lastOpenedDropdown.classList.add('hidden');
+                    lastOpenedDropdown = null;
+                }
+            }
+        });
+
+        function showApproModal(dropdownId, statusText, statusColor, depannageId) {
+            pendingStatut = {dropdownId, statusText, statusColor, depannageId};
+
+            const modal = document.getElementById("modal-appro");
+            modal.classList.remove("hidden");
+        }
+
+        function showFactuModal(dropdownId, statusText, statusColor, depannageId) {
+            pendingStatut = {dropdownId, statusText, statusColor, depannageId};
+
+            const modal = document.getElementById("modal-factu");
+            modal.classList.remove("hidden");
+        }
+
+        function confirmApproChange() {
+            const {dropdownId, statusText, statusColor, depannageId} = pendingStatut;
+            const button = document.getElementById(`status-${depannageId}-btn`);
+
+            performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button, true);
+            closeApproModal();
+        }
+
+        function confirmFactuChange() {
+            const {dropdownId, statusText, statusColor, depannageId} = pendingStatut;
+            const button = document.getElementById(`status-${depannageId}-btn`);
+
+            performStatusUpdate(dropdownId, statusText, statusColor, depannageId, button, true);
+            closeFactuModal();
+        }
+
+        function cancelApproChange() {
+            closeApproModal();
+            location.reload();
+        }
+
+        function closeApproModal() {
+            const modal = document.getElementById("modal-appro"); // ✅ bonne ID
+            modal.classList.add("hidden");
+        }
+
+        function cancelFactuChange() {
+            closeFactuModal();
+            location.reload();
+        }
+
+        function closeFactuModal() {
+            const modal = document.getElementById("modal-factu");
+            modal.classList.add("hidden");
+        }
+
+        document.addEventListener('click', function (event) {
+            if (openDropdownId) {
+                const dropdown = document.getElementById(openDropdownId);
+                const button = document.getElementById(openDropdownId + '-btn');
+                if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                    openDropdownId = null;
+                }
+            }
+        });
     });
 
 </script>
